@@ -1,4 +1,4 @@
-package com.example.tinder.login.signin.signin;
+package com.example.tinder.login;
 
 import android.content.Context;
 import android.net.Uri;

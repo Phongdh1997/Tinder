@@ -4,8 +4,8 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.tinder.login.signin.signin.LoginFragment;
 import com.example.tinder.home.HomeFragment;
+import com.example.tinder.login.LoginFragment;
 
 public class MainActivity extends AppCompatActivity
                         implements  HomeFragment.OnFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener {
