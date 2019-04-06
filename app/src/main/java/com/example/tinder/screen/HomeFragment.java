@@ -1,4 +1,4 @@
-package com.example.tinder;
+package com.example.tinder.screen;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,9 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import androidx.navigation.Navigation;
+import com.example.tinder.R;
 
 
 /**
@@ -86,8 +85,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button btnGoToLogin = view.findViewById(R.id.btnGoToLogin);
-        btnGoToLogin.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_loginFragment, null));
     }
 
     @Override
