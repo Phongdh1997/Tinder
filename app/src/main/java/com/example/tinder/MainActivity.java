@@ -5,15 +5,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.tinder.home.HomeFragment;
+import com.example.tinder.home.MessageBoxFragment;
+import com.example.tinder.home.ProfileFragment;
+import com.example.tinder.home.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
 
 public class MainActivity extends AppCompatActivity
-                        implements  HomeFragment.OnFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener {
+                        implements  HomeFragment.OnFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener,
+                                    SearchFriendFragment.OnFragmentInteractionListener, MessageBoxFragment.OnFragmentInteractionListener,
+                                    ProfileFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_sign_up);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
