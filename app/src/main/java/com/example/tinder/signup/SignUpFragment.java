@@ -1,4 +1,4 @@
-package com.example.tinder;
+package com.example.tinder.signup;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,16 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tinder.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SignUp.OnFragmentInteractionListener} interface
+ * {@link SignUpFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SignUp#newInstance} factory method to
+ * Use the {@link SignUpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignUp extends Fragment {
+public class SignUpFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,7 +31,7 @@ public class SignUp extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SignUp() {
+    public SignUpFragment() {
         // Required empty public constructor
     }
 
@@ -39,11 +41,11 @@ public class SignUp extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUp.
+     * @return A new instance of fragment SignUpFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SignUp newInstance(String param1, String param2) {
-        SignUp fragment = new SignUp();
+    public static SignUpFragment newInstance(String param1, String param2) {
+        SignUpFragment fragment = new SignUpFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
