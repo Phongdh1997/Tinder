@@ -9,11 +9,13 @@ import com.example.tinder.home.MessageBoxFragment;
 import com.example.tinder.home.ProfileFragment;
 import com.example.tinder.home.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
+import com.example.tinder.userinfor.UserInforFragment;
 
 public class MainActivity extends AppCompatActivity
                         implements  HomeFragment.OnFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener,
                                     SearchFriendFragment.OnFragmentInteractionListener, MessageBoxFragment.OnFragmentInteractionListener,
-                                    ProfileFragment.OnFragmentInteractionListener {
+                                    ProfileFragment.OnFragmentInteractionListener,
+                                    UserInforFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
