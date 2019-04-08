@@ -12,10 +12,18 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_userInforFragment"
+            app:destination="@+id/userInforFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.tinder.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/userInforFragment"
+        android:name="com.example.tinder.userinfor.UserInforFragment"
+        android:label="fragment_user_infor"
+        tools:layout="@layout/fragment_user_infor" />
 </navigation>
