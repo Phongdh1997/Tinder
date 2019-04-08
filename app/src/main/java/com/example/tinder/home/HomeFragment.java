@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 
 import com.example.tinder.R;
@@ -97,15 +98,23 @@ public class HomeFragment extends Fragment {
         listFragment[1] = new SearchFriendFragment();
         listFragment[2] = new MessageBoxFragment();
 
-        String [] listTitle = new String[] {"Profile", "Search", "Message"};
-
-        homePagerAdapter = new HomePagerAdapter(getFragmentManager(), listFragment, listTitle);
+        homePagerAdapter = new HomePagerAdapter(getFragmentManager(), listFragment);
         pgHome = view.findViewById(R.id.pgHome);
         pgHome.setAdapter(homePagerAdapter);
 
-
         TabLayout tabLayout = this.fragment.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pgHome);
+        tabLayout.setSelectedTabIndicatorHeight(0);
+
+        // add custome tab item
+        int[] imageResId = {
+                R.drawable.ic_person_gray_state,
+                R.drawable.ic_search_friend_state,
+                R.drawable.ic_message_state };
+
+        for (int i = 0; i < imageResId.length; i++) {
+            tabLayout.getTabAt(i).setIcon(imageResId[i]);
+        }
 
     }
 

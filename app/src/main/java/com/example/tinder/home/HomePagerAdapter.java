@@ -9,12 +9,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class HomePagerAdapter extends FragmentStatePagerAdapter {
 
     private Fragment [] listFragment;
-    private String [] listTitle;
 
-    public HomePagerAdapter(FragmentManager fm, Fragment [] listFragment, String [] listTitle) {
+    public HomePagerAdapter(FragmentManager fm, Fragment [] listFragment) {
         super(fm);
         this.listFragment = listFragment;
-        this.listTitle = listTitle;
     }
 
     @Override
@@ -30,6 +28,7 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return listTitle != null ? listTitle[position] : "";
+        return null;
     }
+
 }
