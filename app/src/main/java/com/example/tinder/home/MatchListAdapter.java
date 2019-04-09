@@ -1,0 +1,51 @@
+package com.example.tinder.home;
+
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.example.tinder.R;
+
+import java.util.ArrayList;
+
+public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.MatchViewHolder> {
+
+    private ArrayList<String> datas;
+
+    public MatchListAdapter(ArrayList<String> list) {
+        this.datas = list;
+    }
+
+    public static class  MatchViewHolder extends RecyclerView.ViewHolder {
+        public View view;
+
+        public MatchViewHolder(View view) {
+            super(view);
+            this.view = view;
+        }
+    }
+
+    @NonNull
+    @Override
+    public MatchViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+//        View v = LayoutInflater.from(viewGroup.getContext())
+//                .inflate(R.layout.abc, null);
+        return new MatchViewHolder(new TextView(viewGroup.getContext()));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MatchViewHolder matchViewHolder, int i) {
+        TextView textView = (TextView) matchViewHolder.view;
+        textView.setText(this.datas.get(i));
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.datas.size();
+    }
+
+}
