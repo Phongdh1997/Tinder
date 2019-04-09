@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
 import com.example.tinder.R;
@@ -34,6 +35,7 @@ public class UserInforFragment extends Fragment {
     ViewFlipper viewFlipper;
     Button btnNext, btnPre;
     Animation in,out;
+    int[] imageUserList = {R.drawable.girl_2,R.drawable.girl_3,R.drawable.girl_demo};
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -85,22 +87,32 @@ public class UserInforFragment extends Fragment {
         viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
         btnNext = (Button) view.findViewById(R.id.buttonNext);
         btnPre = (Button) view.findViewById(R.id.buttonPre);
-        in = AnimationUtils.loadAnimation(getActivity(),R.anim.fade_in);
-        out = AnimationUtils.loadAnimation(getActivity(),R.anim.fade_out);
-        viewFlipper.setInAnimation(in);
-        viewFlipper.setOutAnimation(out);
+        for (int i = 0; i < imageUserList.length; i++){
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageResource(imageUserList[i]);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            viewFlipper.addView(imageView);
+        }
 
 
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                in = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_in_right);
+                out = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_out_left);
+                viewFlipper.setInAnimation(in);
+                viewFlipper.setOutAnimation(out);
                 viewFlipper.showNext();
             }
         });
         btnPre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                in = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_in_left);
+                out = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_out_right);
+                viewFlipper.setInAnimation(in);
+                viewFlipper.setOutAnimation(out);
                 viewFlipper.showPrevious();
             }
         });
