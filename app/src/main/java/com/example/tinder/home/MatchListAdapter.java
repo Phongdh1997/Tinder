@@ -1,5 +1,7 @@
 package com.example.tinder.home;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,26 +23,25 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
     }
 
     public static class  MatchViewHolder extends RecyclerView.ViewHolder {
-        public View view;
+        public TextView textView;
 
         public MatchViewHolder(View view) {
             super(view);
-            this.view = view;
         }
     }
 
     @NonNull
     @Override
     public MatchViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//        View v = LayoutInflater.from(viewGroup.getContext())
-//                .inflate(R.layout.abc, null);
-        return new MatchViewHolder(new TextView(viewGroup.getContext()));
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.match_item, viewGroup, false);
+        return new MatchViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MatchViewHolder matchViewHolder, int i) {
-        TextView textView = (TextView) matchViewHolder.view;
-        textView.setText(this.datas.get(i));
+//        TextView textView = matchViewHolder.textView;
+//        textView.setText(this.datas.get(i));
     }
 
     @Override

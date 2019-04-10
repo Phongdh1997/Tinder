@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +37,9 @@ public class MessageBoxFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView rvMatchList;
+    private RecyclerView rvMessageList;
 
     public MessageBoxFragment() {
         // Required empty public constructor
@@ -79,36 +83,41 @@ public class MessageBoxFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.rvMatchList);
+        addControls(view);
+        addEvents(view);
+    }
 
-        recyclerView.setHasFixedSize(true);
+    private void addEvents(View view) {
+
+    }
+
+    private void addControls(View view) {
+        rvMatchList = view.findViewById(R.id.rvMatchList);
+        rvMessageList = view.findViewById(R.id.rvMessageList);
+
+        rvMatchList.setHasFixedSize(true);
+        rvMessageList.setHasFixedSize(true);
 
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
+        rvMatchList.setLayoutManager(layoutManager);
 
-        // specify an adapter (see also next example)
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rvMessageList.setLayoutManager(layoutManager);
+        rvMessageList.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
+
         ArrayList<String> list = new ArrayList<String>();
         list.add("item 1");
         list.add("item 2");
         list.add("item 1");
         list.add("item 2");
-        list.add("item 1");
-        list.add("item 2");
-        list.add("item 1");
-        list.add("item 2");
-        list.add("item 1");
-        list.add("item 2");
-        list.add("item 1");
-        list.add("item 2");
-        list.add("item 1");
-        list.add("item 2");
-        list.add("item 1");
-        list.add("item 2");
         MatchListAdapter adapter = new MatchListAdapter(list);
-        recyclerView.setAdapter(adapter);
+        rvMatchList.setAdapter(adapter);
 
+        MessageListAdapter mssAdapter = new MessageListAdapter(list);
+        rvMessageList.setAdapter(mssAdapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
