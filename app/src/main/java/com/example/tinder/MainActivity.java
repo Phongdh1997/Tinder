@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.example.tinder.home.HomeFragment;
 import com.example.tinder.home.MessageBoxFragment;
+import com.example.tinder.home.MessageChatFragment;
 import com.example.tinder.home.ProfileFragment;
 import com.example.tinder.home.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
@@ -15,7 +16,8 @@ public class MainActivity extends AppCompatActivity
                         implements  HomeFragment.OnFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener,
                                     SearchFriendFragment.OnFragmentInteractionListener, MessageBoxFragment.OnFragmentInteractionListener,
                                     ProfileFragment.OnFragmentInteractionListener,
-                                    UserInforFragment.OnFragmentInteractionListener {
+                                    UserInforFragment.OnFragmentInteractionListener,
+                                    MessageChatFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_homeFragment_to_userInforFragment"
             app:destination="@+id/userInforFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_messageChatFragment"
+            app:destination="@id/messageChatFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -26,4 +29,9 @@
         android:name="com.example.tinder.userinfor.UserInforFragment"
         android:label="fragment_user_infor"
         tools:layout="@layout/fragment_user_infor" />
+    <fragment
+        android:id="@+id/messageChatFragment"
+        android:name="com.example.tinder.home.MessageChatFragment"
+        android:label="fragment_message_chat"
+        tools:layout="@layout/fragment_message_chat" />
 </navigation>
