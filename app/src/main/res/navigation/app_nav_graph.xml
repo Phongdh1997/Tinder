@@ -25,5 +25,14 @@
         android:id="@+id/userInforFragment"
         android:name="com.example.tinder.userinfor.UserInforFragment"
         android:label="fragment_user_infor"
-        tools:layout="@layout/fragment_user_infor" />
+        tools:layout="@layout/fragment_user_infor" >
+        <action
+            android:id="@+id/action_userInforFragment_to_editInforFragment"
+            app:destination="@id/editInforFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editInforFragment"
+        android:name="com.example.tinder.editinfor.EditInforFragment"
+        android:label="fragment_edit_infor"
+        tools:layout="@layout/fragment_edit_infor" />
 </navigation>

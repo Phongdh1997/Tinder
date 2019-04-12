@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.AnimatorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.tinder.R;
+
+import androidx.navigation.Navigation;
 
 
 /**
@@ -34,6 +38,7 @@ public class UserInforFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     ViewFlipper viewFlipper;
     Button btnNext, btnPre;
+    FloatingActionButton fab;
     Animation in,out;
     int[] imageUserList = {R.drawable.girl_2,R.drawable.girl_3,R.drawable.girl_demo};
 
@@ -87,6 +92,7 @@ public class UserInforFragment extends Fragment {
         viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
         btnNext = (Button) view.findViewById(R.id.buttonNext);
         btnPre = (Button) view.findViewById(R.id.buttonPre);
+        fab =(FloatingActionButton) view.findViewById(R.id.fab);
         for (int i = 0; i < imageUserList.length; i++){
             ImageView imageView = new ImageView(getActivity());
             imageView.setImageResource(imageUserList[i]);
@@ -116,6 +122,8 @@ public class UserInforFragment extends Fragment {
                 viewFlipper.showPrevious();
             }
         });
+
+        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, null));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
