@@ -41,6 +41,7 @@ public class EditInforFragment extends Fragment {
     private List<ImageView> arrayImg = new ArrayList<>();
     private int currSelect = 0;
     private Button btnAdd1, btnAdd2, btnAdd3, btnAdd4, btnAdd5, btnDelete;
+    private Toolbar toolbar;
 
     private OnFragmentInteractionListener mListener;
 
@@ -85,28 +86,35 @@ public class EditInforFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView1));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView2));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView3));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView4));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView5));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView6));
 
-        btnAdd1 = (Button) view.findViewById(R.id.buttonAdd1);
-        btnAdd2 = (Button) view.findViewById(R.id.buttonAdd2);
-        btnAdd3 = (Button) view.findViewById(R.id.buttonAdd3);
-        btnAdd4 = (Button) view.findViewById(R.id.buttonAdd4);
-        btnAdd5 = (Button) view.findViewById(R.id.buttonAdd5);
-        btnDelete = (Button) view.findViewById(R.id.buttonDelete);
+        addControls(view);
+        addEvent(view);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar3);
 
-        arrayImage.add(R.drawable.girl_demo);
-        arrayImage.add(R.drawable.girl_3);
-        arrayImage.add(R.drawable.girl_2);
-        arrayImage.add(R.drawable.girl_demo);
-        setImage();
 
+    }
+
+    private void addEvent(View view) {
+        //click button
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(arrayImage.isEmpty()) {
+                    Toast.makeText(getActivity(), "empty", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    arrayImage.remove(currSelect);
+                    if(arrayImage.isEmpty()){
+                        arrayImg.get(0).setImageResource(0);
+                        arrayImg.get(5).setImageResource(0);
+                    }else {
+                        setImage();
+                        currSelect=0;
+                    }
+
+                }
+            }
+        });
         //click Up back button
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,27 +155,30 @@ public class EditInforFragment extends Fragment {
             }
         });
         // end Select View
-        //click button
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(arrayImage.isEmpty()) {
-                    Toast.makeText(getActivity(), "empty", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    arrayImage.remove(currSelect);
-                    if(arrayImage.isEmpty()){
-                        arrayImg.get(0).setImageResource(0);
-                        arrayImg.get(5).setImageResource(0);
-                    }else {
-                        setImage();
-                        currSelect=0;
-                    }
+    }
 
-                }
-            }
-        });
+    private void addControls(View view) {
+        arrayImg.add((ImageView) view.findViewById(R.id.imageView1));
+        arrayImg.add((ImageView) view.findViewById(R.id.imageView2));
+        arrayImg.add((ImageView) view.findViewById(R.id.imageView3));
+        arrayImg.add((ImageView) view.findViewById(R.id.imageView4));
+        arrayImg.add((ImageView) view.findViewById(R.id.imageView5));
+        arrayImg.add((ImageView) view.findViewById(R.id.imageView6));
 
+        btnAdd1 = view.findViewById(R.id.buttonAdd1);
+        btnAdd2 = view.findViewById(R.id.buttonAdd2);
+        btnAdd3 = view.findViewById(R.id.buttonAdd3);
+        btnAdd4 = view.findViewById(R.id.buttonAdd4);
+        btnAdd5 = view.findViewById(R.id.buttonAdd5);
+        btnDelete = view.findViewById(R.id.buttonDelete);
+
+        toolbar =  view.findViewById(R.id.toolbar3);
+
+        arrayImage.add(R.drawable.girl_demo);
+        arrayImage.add(R.drawable.girl_3);
+        arrayImage.add(R.drawable.girl_2);
+        arrayImage.add(R.drawable.girl_demo);
+        setImage();
     }
 
 
