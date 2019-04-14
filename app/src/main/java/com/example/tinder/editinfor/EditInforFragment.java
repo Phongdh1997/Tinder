@@ -1,12 +1,20 @@
 package com.example.tinder.editinfor;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +24,8 @@ import android.widget.Toast;
 
 import com.example.tinder.R;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +47,14 @@ public class EditInforFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private List<Integer> arrayImage = new ArrayList<>();
+    private List<Bitmap> arrayImage = new ArrayList<>();
     private List<ImageView> arrayImg = new ArrayList<>();
+    private List<Button> arrayButton = new ArrayList<>();
     private int currSelect = 0;
-    private Button btnAdd1, btnAdd2, btnAdd3, btnAdd4, btnAdd5, btnDelete;
+    private Button btnDelete;
     private Toolbar toolbar;
+    private int RESULT_LOAD_IMG = 1234;
+    private int RC_REQUEST_PERMISSION = 999;
 
     private OnFragmentInteractionListener mListener;
 
@@ -107,12 +120,53 @@ public class EditInforFragment extends Fragment {
                     if(arrayImage.isEmpty()){
                         arrayImg.get(0).setImageResource(0);
                         arrayImg.get(5).setImageResource(0);
+                        arrayButton.get(0).setVisibility(View.VISIBLE);
                     }else {
                         setImage();
                         currSelect=0;
                     }
 
                 }
+            }
+        });
+        arrayButton.get(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
+            }
+        });
+        arrayButton.get(1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
+            }
+        });
+        arrayButton.get(2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
+            }
+        });
+        arrayButton.get(3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
+            }
+        });
+        arrayButton.get(4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
             }
         });
         //click Up back button
@@ -154,6 +208,7 @@ public class EditInforFragment extends Fragment {
                 viewImage(4);
             }
         });
+
         // end Select View
     }
 
@@ -165,35 +220,100 @@ public class EditInforFragment extends Fragment {
         arrayImg.add((ImageView) view.findViewById(R.id.imageView5));
         arrayImg.add((ImageView) view.findViewById(R.id.imageView6));
 
-        btnAdd1 = view.findViewById(R.id.buttonAdd1);
-        btnAdd2 = view.findViewById(R.id.buttonAdd2);
-        btnAdd3 = view.findViewById(R.id.buttonAdd3);
-        btnAdd4 = view.findViewById(R.id.buttonAdd4);
-        btnAdd5 = view.findViewById(R.id.buttonAdd5);
+        arrayButton.add((Button) view.findViewById(R.id.buttonAdd1));
+        arrayButton.add((Button) view.findViewById(R.id.buttonAdd2));
+        arrayButton.add((Button) view.findViewById(R.id.buttonAdd3));
+        arrayButton.add((Button) view.findViewById(R.id.buttonAdd4));
+        arrayButton.add((Button) view.findViewById(R.id.buttonAdd5));
+
+
         btnDelete = view.findViewById(R.id.buttonDelete);
 
         toolbar =  view.findViewById(R.id.toolbar3);
 
-        arrayImage.add(R.drawable.girl_demo);
-        arrayImage.add(R.drawable.girl_3);
-        arrayImage.add(R.drawable.girl_2);
-        arrayImage.add(R.drawable.girl_demo);
+        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
+        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
+        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
+        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
         setImage();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMG && resultCode == Activity.RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContext().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            arrayImage.add(decodeFile(picturePath));
+            setImage();
+            Toast.makeText(getActivity(),arrayImage.size()+" ",Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    private static Bitmap decodeResource(Resources res, int id) {
+        Bitmap bitmap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        for (options.inSampleSize = 1; options.inSampleSize <= 32; options.inSampleSize++) {
+            try {
+                bitmap = BitmapFactory.decodeResource(res, id, options);
+                Log.d("log", "Decoded successfully for sampleSize" + options.inSampleSize);
+                break;
+            } catch (OutOfMemoryError outOfMemoryError) {
+        // If an OutOfMemoryError occurred, we continue with for loop and next inSampleSize value
+                Log.e("log", "outOfMemoryError while reading file for sampleSize" + options.inSampleSize
+                        + "retrying with higher value");
+            }
+        }
+        return Bitmap.createScaledBitmap(bitmap, 700, 875, true);
+    }
+
+    public static Bitmap decodeFile(String pathName) {
+        Bitmap bitmap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        // m chua request
+
+        for (options.inSampleSize = 1; options.inSampleSize <= 32; options.inSampleSize *= 2) {
+            try {
+                bitmap = BitmapFactory.decodeFile(pathName, options);
+               // Log.d("log", "Decoded successfully for sampleSize " + options.inSampleSize);
+                break;
+            } catch (OutOfMemoryError outOfMemoryError) {
+        // If an OutOfMemoryError occurred, we continue with for loop and next inSampleSize value
+                Log.e("log", "outOfMemoryError while reading file for sampleSize " + options.inSampleSize
+                        + " retrying with higher value");
+            }
+        }
+
+        // k phai,..
+        return Bitmap.createScaledBitmap(bitmap, 700, 875, true);
+    }
 
     private  void setImage(){
+
         if(arrayImage.isEmpty()) {
             return;
         }
         else {
             for(int i =0; i < arrayImage.size(); i++){
-                arrayImg.get(i).setImageResource(arrayImage.get(i));
+                arrayImg.get(i).setImageBitmap(arrayImage.get(i));
+                arrayButton.get(i).setVisibility(View.GONE);
             }
             for (int i = arrayImage.size(); i < 5; i++){
                 arrayImg.get(i).setImageResource(0);
+                arrayButton.get(i).setVisibility(View.VISIBLE);
             }
-            arrayImg.get(5).setImageResource(arrayImage.get(0));
+            arrayImg.get(5).setImageBitmap(arrayImage.get(0));
         }
     }
 
@@ -201,7 +321,7 @@ public class EditInforFragment extends Fragment {
         if(arrayImg.get(index).getDrawable() == null)
             Toast.makeText(getActivity(),"image empty", Toast.LENGTH_SHORT).show();
         else {
-            arrayImg.get(5).setImageResource(arrayImage.get(index));
+            arrayImg.get(5).setImageBitmap(arrayImage.get(index));
             currSelect = index;
         }
     }
