@@ -28,10 +28,23 @@
         android:id="@+id/userInforFragment"
         android:name="com.example.tinder.userinfor.UserInforFragment"
         android:label="fragment_user_infor"
+<<<<<<< HEAD
         tools:layout="@layout/fragment_user_infor" />
     <fragment
         android:id="@+id/messageChatFragment"
         android:name="com.example.tinder.home.MessageChatFragment"
         android:label="fragment_message_chat"
         tools:layout="@layout/fragment_message_chat" />
+=======
+        tools:layout="@layout/fragment_user_infor" >
+        <action
+            android:id="@+id/action_userInforFragment_to_editInforFragment"
+            app:destination="@id/editInforFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editInforFragment"
+        android:name="com.example.tinder.editinfor.EditInforFragment"
+        android:label="fragment_edit_infor"
+        tools:layout="@layout/fragment_edit_infor" />
+>>>>>>> 5f1006d8c9ceb1cde77d73b7adbf561fedb16891
 </navigation>
