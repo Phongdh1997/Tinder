@@ -11,11 +11,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TableLayout;
 
 import com.example.tinder.R;
-import com.example.tinder.login.LoginFragment;
 
 
 /**
@@ -31,6 +28,19 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private static final int [] TAB_LAYOUT_RES_LIST = {
+            R.layout.layout_tab_profile,
+            R.layout.layout_tab_search_friend,
+            R.layout.layout_tab_message_box
+    };
+
+    // add custome tab item
+    private static final int [] TAB_ICON_RES_LIST = {
+            R.drawable.ic_person_gray_state,
+            R.drawable.ic_search_friend_state,
+            R.drawable.ic_message_state
+    };
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -93,29 +103,27 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Fragment [] listFragment = new Fragment[3];
-        listFragment[0] = new ProfileFragment();
-        listFragment[1] = new SearchFriendFragment();
-        listFragment[2] = new MessageBoxFragment();
+        addControls(view);
+        addEvents(view);
 
-        homePagerAdapter = new HomePagerAdapter(getFragmentManager(), listFragment);
+    }
+
+    private void addEvents(View view) {
+
+    }
+
+    private void addControls(View view) {
+        // setup tab layout with pager
+        homePagerAdapter = new HomePagerAdapter(getContext(), HomeFragment.TAB_LAYOUT_RES_LIST);
         pgHome = view.findViewById(R.id.pgHome);
         pgHome.setAdapter(homePagerAdapter);
-
         TabLayout tabLayout = this.fragment.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pgHome);
         tabLayout.setSelectedTabIndicatorHeight(0);
-
-        // add custome tab item
-        int[] imageResId = {
-                R.drawable.ic_person_gray_state,
-                R.drawable.ic_search_friend_state,
-                R.drawable.ic_message_state };
-
-        for (int i = 0; i < imageResId.length; i++) {
-            tabLayout.getTabAt(i).setIcon(imageResId[i]);
+        int [] tabIconResList = HomeFragment.TAB_ICON_RES_LIST;
+        for (int i = 0; i < tabIconResList.length; i++) {
+            tabLayout.getTabAt(i).setIcon(tabIconResList[i]);
         }
-
     }
 
     @Override
