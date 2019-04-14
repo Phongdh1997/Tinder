@@ -16,8 +16,10 @@ import com.example.tinder.login.LoginFragment;
 import com.example.tinder.userinfor.UserInforFragment;
 
 public class MainActivity extends AppCompatActivity
-                        implements  HomeFragment.OnFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener,
-                                    UserInforFragment.OnFragmentInteractionListener, EditInforFragment.OnFragmentInteractionListener {
+        implements  HomeFragment.OnFragmentInteractionListener,
+                    LoginFragment.OnFragmentInteractionListener,
+                    UserInforFragment.OnFragmentInteractionListener,
+                    EditInforFragment.OnFragmentInteractionListener {
 
     public static final int RC_REQUEST_PERMISSION = 999;
 

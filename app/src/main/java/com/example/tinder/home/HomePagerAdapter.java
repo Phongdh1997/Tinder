@@ -3,10 +3,13 @@ package com.example.tinder.home;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +48,7 @@ public class HomePagerAdapter extends PagerAdapter {
                 setUpControlForProfile(retView);
                 break;
             case R.layout.layout_tab_search_friend:
+                setUpControlForSearchFriend(retView);
                 break;
             case R.layout.layout_tab_message_box:
                 setUpControlForMessageBox(retView);
@@ -53,6 +57,14 @@ public class HomePagerAdapter extends PagerAdapter {
                     break;
         }
         return retView;
+    }
+
+    private void setUpControlForSearchFriend(View view) {
+        ViewPager vpSearchFriend = view.findViewById(R.id.vpSearchFriend);
+        Log.d("item: ", " " + vpSearchFriend.getCurrentItem());
+        SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.context);
+        vpSearchFriend.setAdapter(adapter);
+        vpSearchFriend.setCurrentItem(1000, true);
     }
 
     /**
