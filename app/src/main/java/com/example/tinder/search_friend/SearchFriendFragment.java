@@ -1,32 +1,24 @@
-package com.example.tinder.home;
+package com.example.tinder.search_friend;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import com.example.tinder.R;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MessageBoxFragment.OnFragmentInteractionListener} interface
+ * {@link SearchFriendFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MessageBoxFragment#newInstance} factory method to
+ * Use the {@link SearchFriendFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessageBoxFragment extends Fragment {
+public class SearchFriendFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,10 +30,7 @@ public class MessageBoxFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private RecyclerView rvMatchList;
-    private RecyclerView rvMessageList;
-
-    public MessageBoxFragment() {
+    public SearchFriendFragment() {
         // Required empty public constructor
     }
 
@@ -51,11 +40,11 @@ public class MessageBoxFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MessageBoxFragment.
+     * @return A new instance of fragment SearchFriendFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MessageBoxFragment newInstance(String param1, String param2) {
-        MessageBoxFragment fragment = new MessageBoxFragment();
+    public static SearchFriendFragment newInstance(String param1, String param2) {
+        SearchFriendFragment fragment = new SearchFriendFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -76,48 +65,7 @@ public class MessageBoxFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message_box, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        addControls(view);
-        addEvents(view);
-    }
-
-    private void addEvents(View view) {
-
-    }
-
-    private void addControls(View view) {
-        rvMatchList = view.findViewById(R.id.rvMatchList);
-        rvMessageList = view.findViewById(R.id.rvMessageList);
-
-        rvMatchList.setHasFixedSize(true);
-        rvMessageList.setHasFixedSize(true);
-
-        // use a linear layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvMatchList.setLayoutManager(layoutManager);
-
-        layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rvMessageList.setLayoutManager(layoutManager);
-        rvMessageList.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
-
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("item 1");
-        list.add("item 2");
-        list.add("item 1");
-        list.add("item 2");
-        MatchListAdapter adapter = new MatchListAdapter(list);
-        rvMatchList.setAdapter(adapter);
-
-        MessageListAdapter mssAdapter = new MessageListAdapter(list);
-        rvMessageList.setAdapter(mssAdapter);
+        return inflater.inflate(R.layout.fragment_search_friend, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
