@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".search_friend.SearchFriendFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".profile.ProfileContainerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <fragment
+        android:id="@+id/navHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="search" />
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/profile_nav_graph" />
 
 </FrameLayout>

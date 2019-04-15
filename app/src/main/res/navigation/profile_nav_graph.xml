@@ -3,19 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_nav_graph"
-    app:startDestination="@id/homeFragment">
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.tinder.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_userInforFragment"
-            app:destination="@+id/userInforFragment" />
-    </fragment>
+    app:startDestination="@id/profileFragment">
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.tinder.login.LoginFragment"
@@ -35,4 +23,16 @@
         android:name="com.example.tinder.editinfor.EditInforFragment"
         android:label="fragment_edit_infor"
         tools:layout="@layout/fragment_edit_infor" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.tinder.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_userInforFragment"
+            app:destination="@id/userInforFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>
