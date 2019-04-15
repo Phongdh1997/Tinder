@@ -3,12 +3,21 @@ package com.example.tinder.profile;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.common.OnBackPressCallBack;
+import com.example.common.OnBackPressImpl;
 import com.example.tinder.R;
+
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +27,7 @@ import com.example.tinder.R;
  * Use the {@link ProfileContainerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileContainerFragment extends Fragment {
+public class ProfileContainerFragment extends Fragment implements OnBackPressCallBack {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +38,8 @@ public class ProfileContainerFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private View view;
 
     public ProfileContainerFragment() {
         // Required empty public constructor
@@ -68,6 +79,12 @@ public class ProfileContainerFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_profile_container, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.view = view;
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -90,6 +107,12 @@ public class ProfileContainerFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPress() {
+        NavHostFragment navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.profileNavHostFragment);
+        return new OnBackPressImpl(navHostFragment).onBackPress();
     }
 
     /**

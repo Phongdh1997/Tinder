@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.example.common.OnBackPressCallBack;
 import com.example.tinder.R;
 
 import androidx.navigation.Navigation;
@@ -34,6 +36,8 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private ImageButton btnToUserInfo;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -77,8 +81,16 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton btnToUserInfo = view.findViewById(R.id.btnToUserInfo);
+        addControls(view);
+        addEvents(view);
+    }
+
+    private void addEvents(View view) {
         btnToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_profileFragment_to_userInforFragment, null));
+    }
+
+    private void addControls(View view) {
+        btnToUserInfo = view.findViewById(R.id.btnToUserInfo);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
