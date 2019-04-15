@@ -22,6 +22,7 @@ import com.example.tinder.profile.ProfileFragment;
 import com.example.tinder.search_friend.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
 import com.example.tinder.profile.ProfileContainerFragment;
+import com.example.tinder.search_friend.SearchFriendItemFragment;
 import com.example.tinder.userinfor.UserInforFragment;
 
 import java.util.List;
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity
                                     ProfileFragment.OnFragmentInteractionListener,
                                     UserInforFragment.OnFragmentInteractionListener,
                                     EditInforFragment.OnFragmentInteractionListener,
-                                    ProfileContainerFragment.OnFragmentInteractionListener{
+                                    ProfileContainerFragment.OnFragmentInteractionListener,
+                                    SearchFriendItemFragment.OnFragmentInteractionListener {
 
     public static final int RC_REQUEST_PERMISSION = 999;
 
@@ -80,7 +82,6 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < imageResId.length; i++) {
             tabLayout.getTabAt(i).setIcon(imageResId[i]);
         }
-        Log.d("fragment", "number: " + getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override

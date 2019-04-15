@@ -5,25 +5,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.example.common.OnBackPressCallBack;
 import com.example.tinder.R;
+
+import java.security.spec.ECField;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SearchFriendFragment.OnFragmentInteractionListener} interface
+ * {@link SearchFriendItemFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchFriendFragment#newInstance} factory method to
+ * Use the {@link SearchFriendItemFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFriendFragment extends Fragment implements OnBackPressCallBack {
+public class SearchFriendItemFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,10 +37,12 @@ public class SearchFriendFragment extends Fragment implements OnBackPressCallBac
 
     private OnFragmentInteractionListener mListener;
 
-    private ViewPager pgSearchFriend;
+    private Object data;
 
-    public SearchFriendFragment() {
-        // Required empty public constructor
+    private TextView txtName;
+
+    public  SearchFriendItemFragment() {
+
     }
 
     /**
@@ -47,11 +51,11 @@ public class SearchFriendFragment extends Fragment implements OnBackPressCallBac
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFriendFragment.
+     * @return A new instance of fragment SearchFriendItemFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchFriendFragment newInstance(String param1, String param2) {
-        SearchFriendFragment fragment = new SearchFriendFragment();
+    public static SearchFriendItemFragment newInstance(String param1, String param2) {
+        SearchFriendItemFragment fragment = new SearchFriendItemFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,8 +75,10 @@ public class SearchFriendFragment extends Fragment implements OnBackPressCallBac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_friend, container, false);
+        return inflater.inflate(R.layout.fragment_search_friend_item, container, false);
     }
 
     @Override
@@ -83,34 +89,13 @@ public class SearchFriendFragment extends Fragment implements OnBackPressCallBac
         addEvents(view);
     }
 
-    private void addControls(View view) {
-        pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
+    private void addEvents(View view) {
 
-        SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(getChildFragmentManager());
-        pgSearchFriend.setAdapter(adapter);
-        pgSearchFriend.setCurrentItem(2, false);
     }
 
-    private void addEvents(View view) {
-        pgSearchFriend.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            private int jumpPosition = 2;
-
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-                pgSearchFriend.setCurrentItem(jumpPosition, true);
-            }
-        });
+    private void addControls(View view) {
+        Bundle data = getArguments();
+        txtName = view.findViewById(R.id.txtName);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -135,11 +120,6 @@ public class SearchFriendFragment extends Fragment implements OnBackPressCallBac
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public boolean onBackPress() {
-        return false;
     }
 
     /**

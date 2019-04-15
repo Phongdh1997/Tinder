@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".search_friend.SearchFriendFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pgSearchFriend"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="search" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
