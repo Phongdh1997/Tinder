@@ -10,12 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.tinder.R;
 
 import java.security.spec.ECField;
 import java.util.Random;
+
+import androidx.navigation.Navigation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +43,7 @@ public class SearchFriendItemFragment extends Fragment {
     private Object data;
 
     private TextView txtName;
+    private ImageButton btnDetailInfo;
 
     public  SearchFriendItemFragment() {
 
@@ -90,12 +94,16 @@ public class SearchFriendItemFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-
     }
 
     private void addControls(View view) {
         Bundle data = getArguments();
         txtName = view.findViewById(R.id.txtName);
+
+        Random r = new Random();
+        txtName.setText("item " + r.nextInt());
+
+        btnDetailInfo = view.findViewById(R.id.btnDetailInfo);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

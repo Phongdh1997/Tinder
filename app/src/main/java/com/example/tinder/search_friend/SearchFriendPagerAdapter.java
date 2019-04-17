@@ -3,6 +3,10 @@ package com.example.tinder.search_friend;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class SearchFriendPagerAdapter extends FragmentStatePagerAdapter {
 
