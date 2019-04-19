@@ -8,23 +8,20 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.common.OnBackPressCallBack;
 import com.example.tinder.editinfor.EditInforFragment;
 import com.example.tinder.message_box.MessageBoxFragment;
 import com.example.tinder.profile.ProfileFragment;
+import com.example.tinder.search_friend.SearchFriendContainerFragment;
 import com.example.tinder.search_friend.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
 import com.example.tinder.profile.ProfileContainerFragment;
 import com.example.tinder.userinfor.UserInforFragment;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
                         implements  LoginFragment.OnFragmentInteractionListener,
@@ -33,7 +30,8 @@ public class MainActivity extends AppCompatActivity
                                     ProfileFragment.OnFragmentInteractionListener,
                                     UserInforFragment.OnFragmentInteractionListener,
                                     EditInforFragment.OnFragmentInteractionListener,
-                                    ProfileContainerFragment.OnFragmentInteractionListener{
+                                    ProfileContainerFragment.OnFragmentInteractionListener,
+                                    SearchFriendContainerFragment.OnFragmentInteractionListener {
 
     public static final int RC_REQUEST_PERMISSION = 999;
 
@@ -80,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         for (int i = 0; i < imageResId.length; i++) {
             tabLayout.getTabAt(i).setIcon(imageResId[i]);
         }
-        Log.d("fragment", "number: " + getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
