@@ -3,32 +3,22 @@ package com.example.tinder.search_friend;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.example.tinder.R;
-
-import java.security.spec.ECField;
-import java.util.Random;
-
-import androidx.navigation.Navigation;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SearchFriendItemFragment.OnFragmentInteractionListener} interface
+ * {@link SearchFriendContainerFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchFriendItemFragment#newInstance} factory method to
+ * Use the {@link SearchFriendContainerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFriendItemFragment extends Fragment {
+public class SearchFriendContainerFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,13 +30,8 @@ public class SearchFriendItemFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private Object data;
-
-    private TextView txtName;
-    private ImageButton btnDetailInfo;
-
-    public  SearchFriendItemFragment() {
-
+    public SearchFriendContainerFragment() {
+        // Required empty public constructor
     }
 
     /**
@@ -55,11 +40,11 @@ public class SearchFriendItemFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFriendItemFragment.
+     * @return A new instance of fragment SearchFriendContainerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchFriendItemFragment newInstance(String param1, String param2) {
-        SearchFriendItemFragment fragment = new SearchFriendItemFragment();
+    public static SearchFriendContainerFragment newInstance(String param1, String param2) {
+        SearchFriendContainerFragment fragment = new SearchFriendContainerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -79,31 +64,8 @@ public class SearchFriendItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_friend_item, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        addControls(view);
-        addEvents(view);
-    }
-
-    private void addEvents(View view) {
-    }
-
-    private void addControls(View view) {
-        Bundle data = getArguments();
-        txtName = view.findViewById(R.id.txtName);
-
-        Random r = new Random();
-        txtName.setText("item " + r.nextInt());
-
-        btnDetailInfo = view.findViewById(R.id.btnDetailInfo);
+        return inflater.inflate(R.layout.fragment_search_friend_container, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

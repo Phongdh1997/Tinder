@@ -8,24 +8,20 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.common.OnBackPressCallBack;
 import com.example.tinder.editinfor.EditInforFragment;
 import com.example.tinder.message_box.MessageBoxFragment;
 import com.example.tinder.profile.ProfileFragment;
+import com.example.tinder.search_friend.SearchFriendContainerFragment;
 import com.example.tinder.search_friend.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
 import com.example.tinder.profile.ProfileContainerFragment;
-import com.example.tinder.search_friend.SearchFriendItemFragment;
 import com.example.tinder.userinfor.UserInforFragment;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
                         implements  LoginFragment.OnFragmentInteractionListener,
@@ -35,7 +31,7 @@ public class MainActivity extends AppCompatActivity
                                     UserInforFragment.OnFragmentInteractionListener,
                                     EditInforFragment.OnFragmentInteractionListener,
                                     ProfileContainerFragment.OnFragmentInteractionListener,
-                                    SearchFriendItemFragment.OnFragmentInteractionListener {
+                                    SearchFriendContainerFragment.OnFragmentInteractionListener {
 
     public static final int RC_REQUEST_PERMISSION = 999;
 

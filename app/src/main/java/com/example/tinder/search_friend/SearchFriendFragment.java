@@ -85,32 +85,13 @@ public class SearchFriendFragment extends Fragment implements OnBackPressCallBac
 
     private void addControls(View view) {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
-
-        SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(getChildFragmentManager());
+        SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
-        pgSearchFriend.setCurrentItem(2, false);
+        pgSearchFriend.setCurrentItem(1000, false);
     }
 
     private void addEvents(View view) {
-        pgSearchFriend.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            private int jumpPosition = 2;
-
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-                pgSearchFriend.setCurrentItem(jumpPosition, true);
-            }
-        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
