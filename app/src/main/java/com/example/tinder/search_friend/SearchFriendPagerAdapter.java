@@ -10,12 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.tinder.R;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import androidx.navigation.Navigation;
 
 public class SearchFriendPagerAdapter extends PagerAdapter {
 
@@ -40,6 +43,10 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
 
         // add controls
         TextView txtName = view.findViewById(R.id.txtName);
+        ImageButton btnDetailInfo = view.findViewById(R.id.btnDetailInfo);
+
+        // add event
+        btnDetailInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
 
         // set first item to view and remove it from buffer
         if (!this.isBufferEmpty()) {

@@ -1,4 +1,4 @@
-package com.example.tinder;
+package com.example.tinder.home;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,11 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 
-public class MainPagerAdapter extends FragmentPagerAdapter {
+public class HomePagerAdapter extends FragmentPagerAdapter {
 
     private Fragment [] listFragment;
 
-    public MainPagerAdapter(FragmentManager fm, Fragment [] listFragment) {
+    public HomePagerAdapter(FragmentManager fm, Fragment [] listFragment) {
         super(fm);
         this.listFragment = listFragment;
     }

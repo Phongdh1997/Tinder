@@ -6,17 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pgHome"
+    <fragment
+        android:id="@+id/profileNavHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/profile_nav_graph" />
 
 </LinearLayout>

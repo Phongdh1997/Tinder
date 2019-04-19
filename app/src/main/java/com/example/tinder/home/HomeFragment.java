@@ -1,24 +1,31 @@
-package com.example.tinder.search_friend;
+package com.example.tinder.home;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tinder.R;
+import com.example.tinder.message_box.MessageBoxFragment;
+import com.example.tinder.profile.ProfileFragment;
+import com.example.tinder.search_friend.SearchFriendFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SearchFriendContainerFragment.OnFragmentInteractionListener} interface
+ * {@link HomeFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchFriendContainerFragment#newInstance} factory method to
+ * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFriendContainerFragment extends Fragment {
+public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +37,10 @@ public class SearchFriendContainerFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SearchFriendContainerFragment() {
+    private HomePagerAdapter homePagerAdapter;
+    private ViewPager pgHome;
+
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -40,11 +50,11 @@ public class SearchFriendContainerFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFriendContainerFragment.
+     * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchFriendContainerFragment newInstance(String param1, String param2) {
-        SearchFriendContainerFragment fragment = new SearchFriendContainerFragment();
+    public static HomeFragment newInstance(String param1, String param2) {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,10 +72,42 @@ public class SearchFriendContainerFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addControls(view);
+    }
+
+    private void addControls(View view) {
+        Fragment[] listFragment = new Fragment[3];
+        listFragment[0] = new ProfileFragment();
+        listFragment[1] = new SearchFriendFragment();
+        listFragment[2] = new MessageBoxFragment();
+
+        homePagerAdapter = new HomePagerAdapter(this.getChildFragmentManager(), listFragment);
+        pgHome = view.findViewById(R.id.pgHome);
+        pgHome.setAdapter(homePagerAdapter);
+
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(pgHome);
+        tabLayout.setSelectedTabIndicatorHeight(0);
+
+        // add custome tab item
+        int[] imageResId = {
+                R.drawable.ic_person_gray_state,
+                R.drawable.ic_search_friend_state,
+                R.drawable.ic_message_state };
+
+        for (int i = 0; i < imageResId.length; i++) {
+            tabLayout.getTabAt(i).setIcon(imageResId[i]);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_friend_container, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -23,7 +23,7 @@ import com.example.tinder.R;
  * Use the {@link SearchFriendFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFriendFragment extends Fragment implements OnBackPressCallBack {
+public class SearchFriendFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -88,6 +88,8 @@ public class SearchFriendFragment extends Fragment implements OnBackPressCallBac
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
         pgSearchFriend.setCurrentItem(1000, false);
+
+
     }
 
     private void addEvents(View view) {
@@ -118,10 +120,6 @@ public class SearchFriendFragment extends Fragment implements OnBackPressCallBac
         mListener = null;
     }
 
-    @Override
-    public boolean onBackPress() {
-        return false;
-    }
 
     /**
      * This interface must be implemented by activities that contain this

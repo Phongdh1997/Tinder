@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-        btnToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_profileFragment_to_userInforFragment, null));
+        btnToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
     }
 
     private void addControls(View view) {
