@@ -1,13 +1,28 @@
 package com.example.model;
 
+import android.util.Log;
+
+import com.example.rest.RetrofitClient;
+import com.example.rest.model.UserPojo;
+import com.example.rest.service.SignupService;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class User {
+
     private int id;
     private String phone;
     private String mail;
     private String password;
     private String name;
     private String decription;
-    private String age;
+    private int age;
     private String gender;
     private int longtitude;
     private int latitude;
@@ -21,7 +36,18 @@ public class User {
     private String created_at;
     private String updated_at;
 
-    public User(String mail, String password, String name, String age, String gender) {
+    // call back
+    private OnRegisterCallBack registerCallBack;
+
+    public void setRegisterCallBack(OnRegisterCallBack registerCallBack) {
+        this.registerCallBack = registerCallBack;
+    }
+
+    public User() {
+
+    }
+
+    public User(String mail, String password, String name, int age, String gender) {
         this.mail = mail;
         this.password = password;
         this.name = name;
@@ -29,6 +55,70 @@ public class User {
         this.gender = gender;
     }
 
+    public void register() {
+        SignupService signupService = RetrofitClient.getSignupService();
+        signupService.getNonce().enqueue(new Callback<SignupService.Nonce>() {
+            @Override
+            public void onResponse(Call<SignupService.Nonce> call, Response<SignupService.Nonce> response) {
+                if (response.body() != null) {
+                    String nonce = response.body().getNonce();
+                    if (nonce != null) {
+                        // perform sign up
+                        performRegister(nonce);
+                        return;
+                    }
+                }
+                if (registerCallBack != null) {
+                    registerCallBack.onRegisterFail(OnRegisterCallBack.NONCE_NULL);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupService.Nonce> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void performRegister(String nonce) {
+        UserPojo userPojo = new UserPojo(name, mail, password, gender, age, nonce);
+        SignupService signupService = RetrofitClient.getSignupService();
+        signupService.register(userPojo).enqueue(new Callback<SignupService.Message>() {
+            @Override
+            public void onResponse(Call<SignupService.Message> call, Response<SignupService.Message> response) {
+                switch (response.code()) {
+                    case OnRegisterCallBack.SUCCESS:
+                        if (registerCallBack != null) {
+                            registerCallBack.onRegisterSuccess(response.body());
+                        }
+                        break;
+                        default:
+                            if (registerCallBack != null) {
+                                registerCallBack.onRegisterFail(response.code());
+                            }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupService.Message> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static interface OnRegisterCallBack {
+        int NONCE_NULL = -1;
+        int SUCCESS = 200;
+        int EMAIL_INVALID = 400;
+        int REGISTED_EMAIL = 409;
+        int SERVER_ERROR = 500;
+
+        void onRegisterSuccess(SignupService.Message message);
+
+        void onRegisterFail(int error);
+    }
+
+    // getter / setter
     public int getId() {
         return id;
     }
@@ -57,8 +147,11 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        byte[] bytesOfMessage = password.getBytes("UTF-8");
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] hashPass = md.digest(bytesOfMessage);
+        this.password = new String(hashPass);
     }
 
     public String getName() {
@@ -77,11 +170,11 @@ public class User {
         this.decription = decription;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
