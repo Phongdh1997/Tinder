@@ -19,13 +19,13 @@ import com.example.tinder.login.LoginFragment;
 import com.example.tinder.userinfor.UserInforFragment;
 
 public class MainActivity extends AppCompatActivity
-                        implements  LoginFragment.OnFragmentInteractionListener,
-                                    SearchFriendFragment.OnFragmentInteractionListener,
-                                    MessageBoxFragment.OnFragmentInteractionListener,
-                                    ProfileFragment.OnFragmentInteractionListener,
-                                    UserInforFragment.OnFragmentInteractionListener,
-                                    EditInforFragment.OnFragmentInteractionListener,
-                                    HomeFragment.OnFragmentInteractionListener {
+        implements  LoginFragment.OnFragmentInteractionListener,
+        SearchFriendFragment.OnFragmentInteractionListener,
+        MessageBoxFragment.OnFragmentInteractionListener,
+        ProfileFragment.OnFragmentInteractionListener,
+        UserInforFragment.OnFragmentInteractionListener,
+        EditInforFragment.OnFragmentInteractionListener,
+        HomeFragment.OnFragmentInteractionListener {
 
     public static final int RC_REQUEST_PERMISSION = 999;
 

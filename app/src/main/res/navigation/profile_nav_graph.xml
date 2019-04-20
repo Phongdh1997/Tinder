@@ -13,7 +13,7 @@
         android:id="@+id/userInforFragment"
         android:name="com.example.tinder.userinfor.UserInforFragment"
         android:label="fragment_user_infor"
-        tools:layout="@layout/fragment_user_infor" >
+        tools:layout="@layout/fragment_user_infor">
         <action
             android:id="@+id/action_userInforFragment_to_editInforFragment"
             app:destination="@id/editInforFragment" />
@@ -27,7 +27,7 @@
         android:id="@+id/homeFragment"
         android:name="com.example.tinder.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_userInforFragment"
             app:destination="@id/userInforFragment" />

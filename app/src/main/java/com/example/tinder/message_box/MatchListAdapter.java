@@ -37,8 +37,6 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
 
     @Override
     public void onBindViewHolder(@NonNull MatchViewHolder matchViewHolder, int i) {
-//        TextView textView = matchViewHolder.textView;
-//        textView.setText(this.datas.get(i));
     }
 
     @Override

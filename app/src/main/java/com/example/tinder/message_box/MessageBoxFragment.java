@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.tinder.R;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,7 +88,6 @@ public class MessageBoxFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-
     }
 
     private void addControls(View view) {
@@ -107,7 +107,8 @@ public class MessageBoxFragment extends Fragment {
         rvMessageList.setLayoutManager(layoutManager);
         rvMessageList.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
 
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
+        // append conversations in Messages List
         list.add("item 1");
         list.add("item 2");
         list.add("item 1");
