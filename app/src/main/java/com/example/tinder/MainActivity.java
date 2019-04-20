@@ -16,7 +16,10 @@ import com.example.tinder.message_box.MessageBoxFragment;
 import com.example.tinder.profile.ProfileFragment;
 import com.example.tinder.search_friend.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
+import com.example.tinder.signup.SignUpFragment;
 import com.example.tinder.userinfor.UserInforFragment;
+
+import androidx.navigation.Navigation;
 
 public class MainActivity extends AppCompatActivity
                         implements  LoginFragment.OnFragmentInteractionListener,
@@ -25,7 +28,8 @@ public class MainActivity extends AppCompatActivity
                                     ProfileFragment.OnFragmentInteractionListener,
                                     UserInforFragment.OnFragmentInteractionListener,
                                     EditInforFragment.OnFragmentInteractionListener,
-                                    HomeFragment.OnFragmentInteractionListener {
+                                    HomeFragment.OnFragmentInteractionListener,
+                                    SignUpFragment.OnFragmentInteractionListener {
 
     public static final int RC_REQUEST_PERMISSION = 999;
 
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void addControls() {
-
+        Navigation.findNavController(this, R.id.profileNavHostFragment).navigate(R.id.action_homeFragment_to_loginFragment);
     }
 
     @Override
