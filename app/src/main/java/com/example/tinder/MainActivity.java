@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.tinder.editinfor.EditInforFragment;
 import com.example.tinder.home.HomeFragment;
 import com.example.tinder.message_box.MessageBoxFragment;
+import com.example.tinder.message_box.MessageChatFragment;
 import com.example.tinder.profile.ProfileFragment;
 import com.example.tinder.search_friend.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity
         ProfileFragment.OnFragmentInteractionListener,
         UserInforFragment.OnFragmentInteractionListener,
         EditInforFragment.OnFragmentInteractionListener,
-        HomeFragment.OnFragmentInteractionListener {
+        HomeFragment.OnFragmentInteractionListener,
+        MessageChatFragment.OnFragmentInteractionListener{
 
     public static final int RC_REQUEST_PERMISSION = 999;
 

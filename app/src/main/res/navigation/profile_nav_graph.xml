@@ -34,5 +34,16 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_messageChatFragment"
+            app:destination="@id/messageChatFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/messageChatFragment"
+        android:name="com.example.tinder.message_box.MessageChatFragment"
+        android:label="fragment_message_chat"
+        tools:layout="@layout/fragment_message_chat">
+    </fragment>
+
 </navigation>

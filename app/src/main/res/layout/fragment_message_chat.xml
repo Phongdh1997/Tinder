@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/message_chat_fragment"
     tools:context=".message_box.MessageChatFragment">
 
     <android.support.constraint.ConstraintLayout
