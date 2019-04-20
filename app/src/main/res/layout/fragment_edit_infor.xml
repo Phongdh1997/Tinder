@@ -245,11 +245,11 @@
                 tools:src="@tools:sample/avatars" />
 
             <Button
-                android:id="@+id/buttonDelete"
+                android:id="@+id/buttonAdd6"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="240dp"
-                android:background="@drawable/delete_image"
+                android:background="@drawable/add_image"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
                 app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
