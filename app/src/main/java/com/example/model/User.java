@@ -86,6 +86,7 @@ public class User {
         signupService.register(userPojo).enqueue(new Callback<SignupService.Message>() {
             @Override
             public void onResponse(Call<SignupService.Message> call, Response<SignupService.Message> response) {
+                Log.i("responseCode", " " + response.code());
                 switch (response.code()) {
                     case OnRegisterCallBack.SUCCESS:
                         if (registerCallBack != null) {
