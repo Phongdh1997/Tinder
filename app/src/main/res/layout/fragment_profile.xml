@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF"
-    tools:context=".home.ProfileFragment">
+    tools:context=".profile.ProfileFragment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -84,24 +84,30 @@
             app:layout_constraintStart_toStartOf="@+id/imageButton4"
             app:layout_constraintTop_toBottomOf="@+id/imageButton4" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
             android:background="#F5F7FA"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnMyTinder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/pgIntroduceSlider"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <it.xabaras.android.viewpagerindicator.widget.ViewPagerIndicator
+                android:id="@+id/introducePagerIndicator"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="fdsafdsafsda" />
-        </LinearLayout>
+                android:layout_alignParentBottom="true"
+                app:defaultIndicatorTheme="light"
+                app:itemDividerWidth="8dp" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/textView6"
@@ -117,6 +123,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <Button
+            android:id="@+id/btnMyTinder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Tinder Cua Toi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -1,12 +1,18 @@
 package com.example.tinder.userinfor;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.AnimatorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +20,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.tinder.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.navigation.Navigation;
 
 
 /**
@@ -32,10 +44,10 @@ public class UserInforFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    ViewFlipper viewFlipper;
-    Button btnNext, btnPre;
-    Animation in,out;
-    int[] imageUserList = {R.drawable.girl_2,R.drawable.girl_3,R.drawable.girl_demo};
+    FloatingActionButton fab;
+    List<Bitmap> arrayImage = new ArrayList<>();
+    ViewPager viewPager;
+    ImageViewAdapter imageViewAdapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -84,38 +96,36 @@ public class UserInforFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.viewFlipper);
-        btnNext = (Button) view.findViewById(R.id.buttonNext);
-        btnPre = (Button) view.findViewById(R.id.buttonPre);
-        for (int i = 0; i < imageUserList.length; i++){
-            ImageView imageView = new ImageView(getActivity());
-            imageView.setImageResource(imageUserList[i]);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            viewFlipper.addView(imageView);
+
+        fab =(FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, null));
+
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+
+        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
+        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
+        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
+
+        imageViewAdapter = new ImageViewAdapter(getContext(), arrayImage);
+        viewPager.setAdapter(imageViewAdapter);
+
+    }
+
+    private static Bitmap decodeResource(Resources res, int id) {
+        Bitmap bitmap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        for (options.inSampleSize = 1; options.inSampleSize <= 32; options.inSampleSize++) {
+            try {
+                bitmap = BitmapFactory.decodeResource(res, id, options);
+                Log.d("log", "Decoded successfully for sampleSize" + options.inSampleSize);
+                break;
+            } catch (OutOfMemoryError outOfMemoryError) {
+                // If an OutOfMemoryError occurred, we continue with for loop and next inSampleSize value
+                Log.e("log", "outOfMemoryError while reading file for sampleSize" + options.inSampleSize
+                        + "retrying with higher value");
+            }
         }
-
-
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                in = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_in_right);
-                out = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_out_left);
-                viewFlipper.setInAnimation(in);
-                viewFlipper.setOutAnimation(out);
-                viewFlipper.showNext();
-            }
-        });
-        btnPre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                in = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_in_left);
-                out = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_out_right);
-                viewFlipper.setInAnimation(in);
-                viewFlipper.setOutAnimation(out);
-                viewFlipper.showPrevious();
-            }
-        });
+        return Bitmap.createScaledBitmap(bitmap, 700, 875, true);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

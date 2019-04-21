@@ -1,4 +1,4 @@
-package com.example.tinder.home;
+package com.example.tinder.profile;
 
 import android.content.Context;
 import android.net.Uri;
@@ -6,16 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.tinder.R;
 
 import androidx.navigation.Navigation;
+import it.xabaras.android.viewpagerindicator.widget.ViewPagerIndicator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +36,10 @@ public class ProfileFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private ImageButton btnToUserInfo;
+    private ViewPager pgIntroduceSlider;
+    private ViewPagerIndicator introducePagerIndicator;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -79,8 +83,22 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageButton btnToUserInfo = view.findViewById(R.id.btnToUserInfo);
+        addControls(view);
+        addEvents(view);
+    }
+
+    private void addEvents(View view) {
         btnToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
+    }
+
+    private void addControls(View view) {
+        btnToUserInfo = view.findViewById(R.id.btnToUserInfo);
+
+        pgIntroduceSlider = view.findViewById(R.id.pgIntroduceSlider);
+        pgIntroduceSlider.setAdapter(new IntroducePagerAdapter(this.getContext()));
+
+        introducePagerIndicator = view.findViewById(R.id.introducePagerIndicator);
+        introducePagerIndicator.initWithViewPager(pgIntroduceSlider);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

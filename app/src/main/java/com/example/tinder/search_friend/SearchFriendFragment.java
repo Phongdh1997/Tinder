@@ -1,9 +1,13 @@
-package com.example.tinder.home;
+package com.example.tinder.search_friend;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +33,8 @@ public class SearchFriendFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private ViewPager pgSearchFriend;
 
     public SearchFriendFragment() {
         // Required empty public constructor
@@ -68,6 +74,27 @@ public class SearchFriendFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_search_friend, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addControls(view);
+        addEvents(view);
+    }
+
+    private void addControls(View view) {
+        pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
+        SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
+        pgSearchFriend.setAdapter(adapter);
+        pgSearchFriend.setCurrentItem(1000, false);
+
+
+    }
+
+    private void addEvents(View view) {
+
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -91,6 +118,7 @@ public class SearchFriendFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

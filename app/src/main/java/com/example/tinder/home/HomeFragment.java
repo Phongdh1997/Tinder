@@ -11,12 +11,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TableLayout;
 
 import com.example.tinder.R;
-import com.example.tinder.login.LoginFragment;
-
+import com.example.tinder.message_box.MessageBoxFragment;
+import com.example.tinder.profile.ProfileFragment;
+import com.example.tinder.search_friend.SearchFriendFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,8 +36,6 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
-    private View fragment;
 
     private HomePagerAdapter homePagerAdapter;
     private ViewPager pgHome;
@@ -75,34 +72,23 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        this.fragment = inflater.inflate(R.layout.fragment_home, container, false);
-        return this.fragment;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Fragment [] listFragment = new Fragment[3];
+        addControls(view);
+    }
+
+    private void addControls(View view) {
+        Fragment[] listFragment = new Fragment[3];
         listFragment[0] = new ProfileFragment();
         listFragment[1] = new SearchFriendFragment();
         listFragment[2] = new MessageBoxFragment();
 
-        homePagerAdapter = new HomePagerAdapter(getFragmentManager(), listFragment);
+        homePagerAdapter = new HomePagerAdapter(this.getChildFragmentManager(), listFragment);
         pgHome = view.findViewById(R.id.pgHome);
         pgHome.setAdapter(homePagerAdapter);
 
-        TabLayout tabLayout = this.fragment.findViewById(R.id.tab_layout);
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pgHome);
         tabLayout.setSelectedTabIndicatorHeight(0);
 
@@ -115,7 +101,20 @@ public class HomeFragment extends Fragment {
         for (int i = 0; i < imageResId.length; i++) {
             tabLayout.getTabAt(i).setIcon(imageResId[i]);
         }
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     @Override
