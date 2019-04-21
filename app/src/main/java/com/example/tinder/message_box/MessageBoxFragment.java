@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import com.example.internet_connection.SocketIO;
 
 import com.example.tinder.R;
 
@@ -31,6 +32,7 @@ import androidx.navigation.fragment.NavHostFragment;
  * Use the {@link MessageBoxFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class MessageBoxFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -103,13 +105,10 @@ public class MessageBoxFragment extends Fragment {
         rvMessageList.setLayoutManager(layoutManager);
         rvMessageList.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
 
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         list.add("item 1");
         list.add("item 2");
         list.add("item 3");
-        list.add("item 4");
-        list.add("item 5");
-        list.add("item 6");
         MatchListAdapter adapter = new MatchListAdapter(list);
         rvMatchList.setAdapter(adapter);
 

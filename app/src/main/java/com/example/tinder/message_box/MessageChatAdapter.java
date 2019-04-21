@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tinder.R;
+import com.example.model.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,14 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
 
-    private ArrayList<String> mMessageList;
+    private ArrayList<Messages> mMessageList;
 
     public MessageChatAdapter() {
         // empty constructor
         this.mMessageList = new ArrayList<>();
     }
 
-    public MessageChatAdapter(ArrayList<String> mMessageList) {
+    public MessageChatAdapter(ArrayList<Messages> mMessageList) {
         this.mMessageList = mMessageList;
     }
 
@@ -40,32 +41,35 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = null;
         RecyclerView.ViewHolder viewHolder = null;
-        if (i == VIEW_TYPE_MESSAGE_SENT) {
+        Messages messages = mMessageList.get(i-1);
+        int user_id = messages.getSender_id();
+        if (user_id == VIEW_TYPE_MESSAGE_SENT) {
             v = inflater.inflate(R.layout.item_message_sent, viewGroup, false);
             return new SentMessageHolder(v);
         }
-        else if (i == VIEW_TYPE_MESSAGE_RECEIVED) {
+        else {
             v = inflater.inflate(R.layout.item_message_received, viewGroup, false);
             return new ReceivedMessageHolder(v);
         }
-        return viewHolder;
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        String message = mMessageList.get(i);
-        switch (viewHolder.getItemViewType()) {
+        Messages message = mMessageList.get(i);
+        int user_id = message.getSender_id();
+        switch (user_id) {
             case VIEW_TYPE_MESSAGE_SENT:
-                ((SentMessageHolder) viewHolder).bind(message);
+                ((SentMessageHolder) viewHolder).bind(message.getMessage());
                 break;
-            case VIEW_TYPE_MESSAGE_RECEIVED:
-                ((ReceivedMessageHolder) viewHolder).bind(message);
+            default:
+                ((ReceivedMessageHolder) viewHolder).bind(message.getMessage());
                 break;
         }
 
     }
 
-    public void sendMessage(String message) {
+    public void addMessage(Messages message) {
         // add message into dataset of Apdapter
         mMessageList.add(message);
 
@@ -75,7 +79,16 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return VIEW_TYPE_MESSAGE_SENT;
+        Messages message = mMessageList.get(position);
+        int user_id = message.getSender_id();
+
+        if (user_id == VIEW_TYPE_MESSAGE_SENT) {
+            // If the current user is the sender of the message
+            return VIEW_TYPE_MESSAGE_SENT;
+        } else {
+            // If some other user sent the message
+            return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
     }
 
     @Override

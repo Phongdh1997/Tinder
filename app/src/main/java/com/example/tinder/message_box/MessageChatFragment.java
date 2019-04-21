@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.model.Messages;
 import com.example.tinder.R;
+import com.example.internet_connection.SocketIO;
+import com.github.nkzawa.emitter.Emitter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,9 +36,11 @@ import com.example.tinder.R;
  */
 public class MessageChatFragment extends Fragment {
     private RecyclerView recyclerView;
+    private MessageChatAdapter messageChatAdapter;
     private Button sendButton;
     private EditText messageText;
     private OnFragmentInteractionListener mListener;
+    private static SocketIO mSocket;
 
     public MessageChatFragment() {
         // Required empty public constructor
@@ -39,6 +50,13 @@ public class MessageChatFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // init socket
+        mSocket = new SocketIO("http://10.28.8.98:8888");
+        mSocket.establish_connection();
+
+        // listen event
+        // event_name = "receive_message_" + <conversation_id>
+        mSocket.getInstance().on("receive_message", onNewMessage);
     }
 
     @Override
@@ -62,21 +80,68 @@ public class MessageChatFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
-
-        final MessageChatAdapter adapter = new MessageChatAdapter();
-        recyclerView.setAdapter(adapter);
+        messageChatAdapter = new MessageChatAdapter();
+        recyclerView.setAdapter(messageChatAdapter);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg = messageText.getText().toString();
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                adapter.sendMessage(msg);
+                addMessage(1, 1, msg);
                 messageText.setText("");
+
+                // create data object
+                JSONObject message = new JSONObject();
+                try {
+
+                    message.put("sender_id", 1);
+                    message.put("conversation_id", 1);
+                    message.put("message", msg);
+                } catch (JSONException e) {
+                    Log.e("JSOn exception", e.toString());
+                }
+
+                mSocket.push_data(message, "send_message");
             }
         });
-
     }
+
+    private void addMessage(Integer user_id, Integer conversation_id, String message) {
+        Messages new_message = new Messages(user_id, conversation_id, message);
+        messageChatAdapter.addMessage(new_message);
+    }
+
+
+    // receving a new message
+    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Integer sender_id;
+                        Integer conversation_id;
+                        String message;
+                        try {
+                            JSONObject data = new JSONObject(args[0].toString());
+                            sender_id = data.getInt("sender_id");
+                            conversation_id = data.getInt("conversation_id");
+                            message = data.getString("message");
+                        } catch (JSONException e) {
+                            return;
+                        }
+
+                        // add message to view
+                        addMessage(sender_id, conversation_id, message);
+                    }
+                });
+            }
+
+        }
+    };
 
 
     // TODO: Rename method, update argument and hook method into UI event
