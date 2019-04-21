@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void addControls() {
-        //Navigation.findNavController(this, R.id.profileNavHostFragment).navigate(R.id.action_homeFragment_to_loginFragment);
+        Navigation.findNavController(this, R.id.profileNavHostFragment).navigate(R.id.action_homeFragment_to_loginFragment);
     }
 
     @Override
