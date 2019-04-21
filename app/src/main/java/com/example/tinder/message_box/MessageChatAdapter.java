@@ -3,18 +3,15 @@ package com.example.tinder.message_box;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tinder.R;
-import com.example.model.Messages;
+import com.example.model.Message;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MessageChatAdapter extends RecyclerView.Adapter {
 
@@ -23,14 +20,14 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
 
-    private ArrayList<Messages> mMessageList;
+    private ArrayList<Message> mMessageList;
 
     public MessageChatAdapter() {
         // empty constructor
         this.mMessageList = new ArrayList<>();
     }
 
-    public MessageChatAdapter(ArrayList<Messages> mMessageList) {
+    public MessageChatAdapter(ArrayList<Message> mMessageList) {
         this.mMessageList = mMessageList;
     }
 
@@ -41,7 +38,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = null;
         RecyclerView.ViewHolder viewHolder = null;
-        Messages messages = mMessageList.get(i-1);
+        Message messages = mMessageList.get(i-1);
         int user_id = messages.getSender_id();
         if (user_id == VIEW_TYPE_MESSAGE_SENT) {
             v = inflater.inflate(R.layout.item_message_sent, viewGroup, false);
@@ -56,7 +53,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        Messages message = mMessageList.get(i);
+        Message message = mMessageList.get(i);
         int user_id = message.getSender_id();
         switch (user_id) {
             case VIEW_TYPE_MESSAGE_SENT:
@@ -69,7 +66,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     }
 
-    public void addMessage(Messages message) {
+    public void addMessage(Message message) {
         // add message into dataset of Apdapter
         mMessageList.add(message);
 
@@ -79,7 +76,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        Messages message = mMessageList.get(position);
+        Message message = mMessageList.get(position);
         int user_id = message.getSender_id();
 
         if (user_id == VIEW_TYPE_MESSAGE_SENT) {

@@ -16,15 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.model.Messages;
+import com.example.model.Message;
 import com.example.tinder.R;
 import com.example.internet_connection.SocketIO;
 import com.github.nkzawa.emitter.Emitter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -108,7 +106,7 @@ public class MessageChatFragment extends Fragment {
     }
 
     private void addMessage(Integer user_id, Integer conversation_id, String message) {
-        Messages new_message = new Messages(user_id, conversation_id, message);
+        Message new_message = new Message(user_id, conversation_id, message);
         messageChatAdapter.addMessage(new_message);
     }
 

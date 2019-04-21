@@ -44,7 +44,7 @@ public class SocketIO {
         }
     }
 
-    public Boolean push_data(JSONObject message, String event_name) {
+    public boolean push_data(JSONObject message, String event_name) {
         try {
             _socket.emit(event_name, message);
             return true;
