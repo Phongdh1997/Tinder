@@ -3,12 +3,18 @@ package com.example.tinder.login;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.tinder.R;
+
+import androidx.navigation.fragment.NavHostFragment;
 
 
 /**
@@ -30,6 +36,8 @@ public class LoginFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private TextView txtSignUp;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -67,6 +75,27 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addControls(view);
+        addEvents(view);
+    }
+
+    private void addEvents(View view) {
+        txtSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_signUpFragment);
+            }
+        });
+    }
+
+    private void addControls(View view) {
+        txtSignUp = view.findViewById(R.id.txtSignUp);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
