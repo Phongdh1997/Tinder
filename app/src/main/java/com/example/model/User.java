@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.rest.RetrofitClient;
 import com.example.rest.model.UserPojo;
+import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 
 import java.io.UnsupportedEncodingException;
@@ -13,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class User {
 
@@ -38,9 +40,14 @@ public class User {
 
     // call back
     private OnRegisterCallBack registerCallBack;
+    private OnLoginCallBack onLoginCallBack;
 
     public void setRegisterCallBack(OnRegisterCallBack registerCallBack) {
         this.registerCallBack = registerCallBack;
+    }
+
+    public void setOnLoginCallBack(OnLoginCallBack onLoginCallBack) {
+        this.onLoginCallBack = onLoginCallBack;
     }
 
     public User() {
@@ -75,7 +82,9 @@ public class User {
 
             @Override
             public void onFailure(Call<SignupService.Nonce> call, Throwable t) {
-
+                if (registerCallBack != null) {
+                    registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
+                }
             }
         });
     }
@@ -86,6 +95,7 @@ public class User {
         signupService.register(userPojo).enqueue(new Callback<SignupService.Message>() {
             @Override
             public void onResponse(Call<SignupService.Message> call, Response<SignupService.Message> response) {
+                Log.i("responseCode", " " + response.code());
                 switch (response.code()) {
                     case OnRegisterCallBack.SUCCESS:
                         if (registerCallBack != null) {
@@ -101,7 +111,42 @@ public class User {
 
             @Override
             public void onFailure(Call<SignupService.Message> call, Throwable t) {
+                if (registerCallBack != null) {
+                    registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
+                }
+            }
+        });
+    }
 
+    public void login() {
+        if (this.mail == null || this.password == null) {
+            return;
+        }
+        SigninService signinService = RetrofitClient.getSigninService();
+        signinService.login(new SigninService.SignBody(this.mail, this.password))
+                .enqueue(new Callback<SigninService.SigninResponse>() {
+            @Override
+            public void onResponse(Call<SigninService.SigninResponse> call, Response<SigninService.SigninResponse> response) {
+                Log.d("Sign In", " Login success, code: " + response.code());
+                switch (response.code()) {
+                    case OnLoginCallBack.SUCCESS:
+                        if (onLoginCallBack != null) {
+                            onLoginCallBack.onLoginSuccess(response.body());
+                        }
+                        break;
+                    default:
+                        if (onLoginCallBack != null) {
+                            onLoginCallBack.onLoginFail(response.code());
+                        }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SigninService.SigninResponse> call, Throwable t) {
+
+                if (onLoginCallBack != null) {
+                    onLoginCallBack.onLoginFail(OnLoginCallBack.REQUEST_FAIL);
+                }
             }
         });
     }
@@ -112,10 +157,20 @@ public class User {
         int EMAIL_INVALID = 400;
         int REGISTED_EMAIL = 409;
         int SERVER_ERROR = 500;
+        int REQUEST_FAIL = -100;
 
         void onRegisterSuccess(SignupService.Message message);
 
         void onRegisterFail(int error);
+    }
+
+    public static interface OnLoginCallBack {
+        int SUCCESS = 200;
+        int REQUEST_FAIL = -100;
+
+        void onLoginSuccess(SigninService.SigninResponse message);
+
+        void onLoginFail(int error);
     }
 
     // getter / setter

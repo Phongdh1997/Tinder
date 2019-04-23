@@ -10,21 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.model.User;
-import com.example.rest.RetrofitClient;
 import com.example.rest.service.SignupService;
 import com.example.tinder.R;
 
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import okio.ByteString;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
@@ -46,6 +39,8 @@ public class SignUpFragment extends Fragment implements User.OnRegisterCallBack 
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private Button btnRegister;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -93,11 +88,44 @@ public class SignUpFragment extends Fragment implements User.OnRegisterCallBack 
     }
 
     private void addControls(View view) {
-
+        btnRegister = view.findViewById(R.id.btnRegister);
     }
 
     private void addEvents(View view) {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User newUser = getUserFromUI();
+                if (newUser != null) {
+                    newUser.setRegisterCallBack(SignUpFragment.this);
+                    newUser.register();
+                } else {
+                    Log.e("newuser", "new user is null");
+                }
+            }
+        });
+    }
 
+    /**
+     * TODO: get user info from UI
+     */
+    private User getUserFromUI() {
+        // TODO: get user infor from UI here
+        User user = new User();
+        user.setName("Phong Duong");
+        user.setGender("male");
+        user.setMail("thpttsdhp95@gmail.com");
+        user.setAge(22);
+        try {
+            user.setPassword("12345678");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return user;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -126,12 +154,12 @@ public class SignUpFragment extends Fragment implements User.OnRegisterCallBack 
 
     @Override
     public void onRegisterSuccess(SignupService.Message message) {
-        Log.d("messs", message.getMessage());
+        Log.d("Register Status", message.getMessage());
     }
 
     @Override
     public void onRegisterFail(int error) {
-        Log.d("erorr", "fad" + error);
+        Log.d("Register Error", "ErrorCode: " + error);
     }
 
     /**

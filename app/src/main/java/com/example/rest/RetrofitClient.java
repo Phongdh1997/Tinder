@@ -1,5 +1,6 @@
 package com.example.rest;
 
+import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 
 import retrofit2.Retrofit;
@@ -22,5 +23,9 @@ public class RetrofitClient {
 
     public static SignupService getSignupService() {
         return getNewInstance(BASE_URL).create(SignupService.class);
+    }
+
+    public static SigninService getSigninService() {
+        return getNewInstance(BASE_URL).create(SigninService.class);
     }
 }
