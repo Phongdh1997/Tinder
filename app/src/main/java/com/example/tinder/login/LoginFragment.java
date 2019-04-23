@@ -163,8 +163,10 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack {
     }
 
     @Override
-    public void onLoginSuccess(SigninService.SigninResponse message) {
+    public void onLoginSuccess(SigninService.SigninResponse response) {
         Log.d("Sign In", " Login success: ");
+        Log.i("user", "name: " + response.getUser().getName());
+
     }
 
     @Override

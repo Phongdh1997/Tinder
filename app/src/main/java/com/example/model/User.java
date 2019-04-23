@@ -122,12 +122,13 @@ public class User {
         if (this.mail == null || this.password == null) {
             return;
         }
+        Log.d("login: ", "email: " + this.mail + "; pass: "+ this.password);
         SigninService signinService = RetrofitClient.getSigninService();
         signinService.login(new SigninService.SignBody(this.mail, this.password))
                 .enqueue(new Callback<SigninService.SigninResponse>() {
             @Override
             public void onResponse(Call<SigninService.SigninResponse> call, Response<SigninService.SigninResponse> response) {
-                Log.d("Sign In", " Login success, code: " + response.code());
+                Log.d("Sign In", "response code: " + response.code());
                 switch (response.code()) {
                     case OnLoginCallBack.SUCCESS:
                         if (onLoginCallBack != null) {

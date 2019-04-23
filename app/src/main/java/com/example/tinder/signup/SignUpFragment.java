@@ -114,7 +114,7 @@ public class SignUpFragment extends Fragment implements User.OnRegisterCallBack 
         User user = new User();
         user.setName("Phong Duong");
         user.setGender("male");
-        user.setMail("thpttsdhp95@gmail.com");
+        user.setMail("duonghoaiphong65@gmail.com");
         user.setAge(22);
         try {
             user.setPassword("12345678");
