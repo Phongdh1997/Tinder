@@ -17,10 +17,13 @@ import android.widget.TextView;
 import com.example.model.User;
 import com.example.rest.service.SigninService;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 
@@ -43,6 +46,8 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private UserAuth userAuth;
 
     private TextView txtSignUp;
     private EditText txtEmail;
@@ -106,36 +111,38 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = getUserFromUI();
-                if (user != null) {
-                    user.setOnLoginCallBack(LoginFragment.this);
-                    user.login();
-                } else {
-                    Log.d("User", "User is null");
-                }
+                userAuth.authenticate(txtEmail.getText().toString(), txtPassword.getText().toString());
             }
         });
     }
 
     private void addControls(View view) {
+        userAuth = UserAuth.getInstance();
+
         txtSignUp = view.findViewById(R.id.txtSignUp);
         txtEmail = view.findViewById(R.id.txtEmail);
         txtPassword = view.findViewById(R.id.txtPassword);
         btnLogin = view.findViewById(R.id.btnLogin);
+
+        final NavController navController = Navigation.findNavController(view);
+        userAuth.addStateObserver(new UserAuth.StateObserver() {
+            @Override
+            public void onStateChange(int state) {
+                switch (state) {
+                    case UserAuth.AUTHENTICATED:
+                        navController.popBackStack();
+                        break;
+                    case UserAuth.INVALID_AUTHEN:
+                        handleAuthenFails();
+                        default:
+                            break;
+                }
+            }
+        });
     }
 
-    private User getUserFromUI() {
-        User user = new User();
-        user.setMail(txtEmail.getText().toString());
-        try {
-            user.setPassword(txtPassword.getText().toString());
-            return user;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private void handleAuthenFails() {
+        Log.d("error", "handleAuthenFails: ");
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -166,7 +173,7 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack {
     public void onLoginSuccess(SigninService.SigninResponse response) {
         Log.d("Sign In", " Login success: ");
         Log.i("user", "name: " + response.getUser().getName());
-
+        NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_signUpFragment);
     }
 
     @Override
