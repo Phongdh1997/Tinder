@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity
         String userToken = sharedPreferences.getString(USER_TOKEN, USER_TOKEN_DEFAULT);
         if (userToken == null || userToken.equals(USER_TOKEN_DEFAULT)) {
             userAuth.setState(UserAuth.UN_AUTHENTICATED);
+            Log.d("authen", "continue");
         } else {
             userAuth.setState(UserAuth.AUTHENTICATED);
             userAuth.authencationWithToken(userToken);
@@ -103,6 +104,20 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+        userAuth.setOnFirstAuthenListener(new UserAuth.OnFirstAuthenListener() {
+            @Override
+            public void onAuthenSuccess(String authenToken) {
+                saveAthenToken(authenToken);
+            }
+        });
+    }
+
+    private void saveAthenToken(String authenToken) {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_TOKEN, authenToken);
+        editor.apply();
+        Log.d("save", "saveAthenToken: ");
     }
 
     @Override

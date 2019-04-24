@@ -19,6 +19,7 @@ import retrofit2.Response;
 public class User {
 
     private int id;
+    private String authen_token;
     private String phone;
     private String mail;
     private String password;
@@ -60,6 +61,15 @@ public class User {
         this.name = name;
         this.age = age;
         this.gender = gender;
+    }
+
+    public User(SigninService.User user) {
+        this.name = user.getName();
+        this.mail = user.getEmail();
+        this.age = user.getAge();
+        this.id = user.getId();
+        this.phone = user.getPhone();
+        this.decription = user.getDescription();
     }
 
     public void register() {
@@ -210,6 +220,10 @@ public class User {
         this.password = new String(hashPass);
     }
 
+    public void setHashedPassword(String password) {
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
@@ -240,6 +254,14 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getAuthen_token() {
+        return authen_token;
+    }
+
+    public void setAuthen_token(String authen_token) {
+        this.authen_token = authen_token;
     }
 
     public int getLongtitude() {

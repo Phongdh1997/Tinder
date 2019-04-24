@@ -15,6 +15,7 @@ public class UserAuth implements User.OnLoginCallBack {
     public static final int INVALID_AUTHEN = -100;
 
     private ArrayList<StateObserver> observers;
+    private OnFirstAuthenListener onFirstAuthenListener;
 
     private int state;
     private User user;
@@ -31,6 +32,10 @@ public class UserAuth implements User.OnLoginCallBack {
 
     public void addStateObserver(StateObserver observer) {
         observers.add(observer);
+    }
+
+    public void setOnFirstAuthenListener(OnFirstAuthenListener onFirstAuthenListener) {
+        this.onFirstAuthenListener = onFirstAuthenListener;
     }
 
     private UserAuth() {
@@ -83,9 +88,11 @@ public class UserAuth implements User.OnLoginCallBack {
 
 
     @Override
-    public void onLoginSuccess(SigninService.SigninResponse message) {
+    public void onLoginSuccess(SigninService.SigninResponse response) {
         this.state = AUTHENTICATED;
-        this.user = new User();
+        this.user = new User(response.getUser());
+        this.user.setAuthen_token(response.getAuthToken());
+        this.onFirstAuthenListener.onAuthenSuccess(response.getAuthToken());
         setState(AUTHENTICATED);
     }
 
@@ -97,5 +104,9 @@ public class UserAuth implements User.OnLoginCallBack {
 
     public interface StateObserver {
         void onStateChange(int state);
+    }
+
+    public interface OnFirstAuthenListener {
+        void onAuthenSuccess(String authenToken);
     }
 }
