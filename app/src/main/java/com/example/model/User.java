@@ -19,6 +19,7 @@ import retrofit2.Response;
 public class User {
 
     private int id;
+    private String authen_token;
     private String phone;
     private String mail;
     private String password;
@@ -60,6 +61,15 @@ public class User {
         this.name = name;
         this.age = age;
         this.gender = gender;
+    }
+
+    public User(SigninService.User user) {
+        this.name = user.getName();
+        this.mail = user.getEmail();
+        this.age = user.getAge();
+        this.id = user.getId();
+        this.phone = user.getPhone();
+        this.decription = user.getDescription();
     }
 
     public void register() {
@@ -122,12 +132,13 @@ public class User {
         if (this.mail == null || this.password == null) {
             return;
         }
+        Log.d("login: ", "email: " + this.mail + "; pass: "+ this.password);
         SigninService signinService = RetrofitClient.getSigninService();
         signinService.login(new SigninService.SignBody(this.mail, this.password))
                 .enqueue(new Callback<SigninService.SigninResponse>() {
             @Override
             public void onResponse(Call<SigninService.SigninResponse> call, Response<SigninService.SigninResponse> response) {
-                Log.d("Sign In", " Login success, code: " + response.code());
+                Log.d("Sign In", "response code: " + response.code());
                 switch (response.code()) {
                     case OnLoginCallBack.SUCCESS:
                         if (onLoginCallBack != null) {
@@ -209,6 +220,10 @@ public class User {
         this.password = new String(hashPass);
     }
 
+    public void setHashedPassword(String password) {
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
@@ -239,6 +254,14 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getAuthen_token() {
+        return authen_token;
+    }
+
+    public void setAuthen_token(String authen_token) {
+        this.authen_token = authen_token;
     }
 
     public int getLongtitude() {
