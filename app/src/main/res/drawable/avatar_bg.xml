@@ -8,8 +8,6 @@
                 android:startColor="#E4E4E4"
                 android:endColor="#E4E4E4"
                 android:angle="45"/>
-            <corners android:radius="60dp" />
-            <size android:height="120dp" android:width="120dp"/>
         </shape>
     </item>
 
