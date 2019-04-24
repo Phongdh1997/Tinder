@@ -7,11 +7,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.common.OnBackPressEvent;
 import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.editinfor.EditInforFragment;
 import com.example.tinder.home.HomeFragment;
@@ -23,7 +25,10 @@ import com.example.tinder.login.LoginFragment;
 import com.example.tinder.signup.SignUpFragment;
 import com.example.tinder.userinfor.UserInforFragment;
 
+import java.util.List;
+
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 public class MainActivity extends AppCompatActivity
         implements LoginFragment.OnFragmentInteractionListener,
@@ -67,6 +72,8 @@ public class MainActivity extends AppCompatActivity
             userAuth.setState(UserAuth.AUTHENTICATED);
             userAuth.authencationWithToken(userToken);
         }
+
+
     }
 
     private void addEvents() {
@@ -111,7 +118,28 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        String path = uri.getPath();
+        if (path != null && path.equals("ExitApp")) {
+            finishAffinity();
+            System.exit(0);
+            super.onBackPressed();
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments.size() > 0) {
+            NavHostFragment navHostFragment = (NavHostFragment) fragments.get(0);
+            Fragment currFragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+            if (currFragment instanceof OnBackPressEvent) {
+                Log.d("child call", "back");
+                if (!((OnBackPressEvent) currFragment).onBackPress()) {
+                    return;
+                }
+            }
+        }
+        Log.d("parent", "press");
+        super.onBackPressed();
+    }
 }

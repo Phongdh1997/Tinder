@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.common.OnBackPressEvent;
 import com.example.model.User;
 import com.example.rest.service.SigninService;
 import com.example.tinder.R;
@@ -35,7 +36,7 @@ import androidx.navigation.fragment.NavHostFragment;
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment implements User.OnLoginCallBack {
+public class LoginFragment extends Fragment implements User.OnLoginCallBack, OnBackPressEvent {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,6 +49,7 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack {
     private OnFragmentInteractionListener mListener;
 
     private UserAuth userAuth;
+    private NavController navController;
 
     private TextView txtSignUp;
     private EditText txtEmail;
@@ -124,7 +126,7 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack {
         txtPassword = view.findViewById(R.id.txtPassword);
         btnLogin = view.findViewById(R.id.btnLogin);
 
-        final NavController navController = Navigation.findNavController(view);
+        navController = Navigation.findNavController(view);
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
             public void onStateChange(int state) {
@@ -179,6 +181,15 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack {
     @Override
     public void onLoginFail(int error) {
         Log.d("Sign In", " Login Fails");
+    }
+
+    @Override
+    public boolean onBackPress() {
+        Log.d("child", "onBackPress: login");
+        if (mListener != null) {
+            mListener.onFragmentInteraction(Uri.parse("ExitApp"));
+        }
+        return false;
     }
 
     /**

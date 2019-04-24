@@ -1,6 +1,5 @@
 package com.example.rest.service;
 
-import com.example.rest.model.UserPojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
