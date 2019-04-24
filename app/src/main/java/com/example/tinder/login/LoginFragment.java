@@ -36,7 +36,7 @@ import androidx.navigation.fragment.NavHostFragment;
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment implements User.OnLoginCallBack, OnBackPressEvent {
+public class LoginFragment extends Fragment implements OnBackPressEvent {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,7 +49,6 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack, OnB
     private OnFragmentInteractionListener mListener;
 
     private UserAuth userAuth;
-    private NavController navController;
 
     private TextView txtSignUp;
     private EditText txtEmail;
@@ -126,7 +125,7 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack, OnB
         txtPassword = view.findViewById(R.id.txtPassword);
         btnLogin = view.findViewById(R.id.btnLogin);
 
-        navController = Navigation.findNavController(view);
+        final NavController navController = Navigation.findNavController(view);
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
             public void onStateChange(int state) {
@@ -169,18 +168,6 @@ public class LoginFragment extends Fragment implements User.OnLoginCallBack, OnB
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onLoginSuccess(SigninService.SigninResponse response) {
-        Log.d("Sign In", " Login success: ");
-        Log.i("user", "name: " + response.getUser().getName());
-        NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_signUpFragment);
-    }
-
-    @Override
-    public void onLoginFail(int error) {
-        Log.d("Sign In", " Login Fails");
     }
 
     @Override

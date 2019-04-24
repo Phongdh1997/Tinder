@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.tinder.R;
 
@@ -37,7 +38,7 @@ public class ProfileFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private ImageButton btnToUserInfo;
+    private ImageView imvToUserInfo;
     private ViewPager pgIntroduceSlider;
     private ViewPagerIndicator introducePagerIndicator;
 
@@ -88,11 +89,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-        btnToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
+        imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
     }
 
     private void addControls(View view) {
-        btnToUserInfo = view.findViewById(R.id.btnToUserInfo);
+        imvToUserInfo = view.findViewById(R.id.imvToUserInfo);
 
         pgIntroduceSlider = view.findViewById(R.id.pgIntroduceSlider);
         pgIntroduceSlider.setAdapter(new IntroducePagerAdapter(this.getContext()));
