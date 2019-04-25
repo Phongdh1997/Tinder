@@ -16,20 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="0dp"
-                android:layout_height="260dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/backround_image_edit_infor"
-                android:padding="6dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toTopOf="@+id/guideline10"
-                tools:src="@tools:sample/avatars" />
+            <!--<ImageView-->
+                <!---->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="260dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:background="@drawable/backround_image_edit_infor"-->
+                <!--android:padding="6dp"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/guideline13"-->
+                <!--app:layout_constraintHorizontal_bias="0.0"-->
+                <!--app:layout_constraintStart_toStartOf="@+id/guideline11"-->
+                <!--app:layout_constraintTop_toTopOf="@+id/guideline10"-->
+                <!--tools:src="@tools:sample/avatars" />-->
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline10"
@@ -66,62 +65,170 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="16dp" />
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imageView1"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/backround_image_edit_infor"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toStartOf="@+id/guideline14"
+                app:layout_constraintStart_toStartOf="@+id/guideline13"
+                app:layout_constraintTop_toTopOf="@+id/guideline10"
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/imageView2"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
-                android:padding="6dp"
-                android:background="@drawable/backround_image_edit_infor"
                 android:scaleType="centerCrop"
+                android:background="@drawable/backround_image_edit_infor"
                 app:layout_constraintEnd_toStartOf="@+id/guideline14"
                 app:layout_constraintStart_toStartOf="@+id/guideline13"
                 app:layout_constraintTop_toBottomOf="@+id/imageView1"
-                />
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
-            <ImageView
+            <!--<ImageView-->
+                <!---->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="120dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:padding="6dp"-->
+                <!--android:background="@drawable/backround_image_edit_infor"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/guideline14"-->
+                <!--app:layout_constraintStart_toStartOf="@+id/guideline13"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageView1"-->
+                <!--/>-->
+
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/imageView5"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:padding="6dp"
                 android:background="@drawable/backround_image_edit_infor"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
                 app:layout_constraintTop_toBottomOf="@+id/imageView6"
-                />
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
-            <ImageView
+            <!--<ImageView-->
+               <!---->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="120dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:padding="6dp"-->
+                <!--android:background="@drawable/backround_image_edit_infor"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/guideline12"-->
+                <!--app:layout_constraintStart_toStartOf="@+id/guideline11"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageView6"-->
+                <!--/>-->
+
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/imageView4"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:padding="6dp"
-                android:background="@drawable/backround_image_edit_infor"
                 android:scaleType="centerCrop"
+                android:background="@drawable/backround_image_edit_infor"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
                 app:layout_constraintStart_toStartOf="@+id/guideline12"
                 app:layout_constraintTop_toBottomOf="@+id/imageView6"
-                 />
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
-            <ImageView
+            <!--<ImageView-->
+             <!---->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="120dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:padding="6dp"-->
+                <!--android:background="@drawable/backround_image_edit_infor"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/guideline13"-->
+                <!--app:layout_constraintStart_toStartOf="@+id/guideline12"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageView6"-->
+                 <!--/>-->
+
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/imageView3"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
-                android:padding="6dp"
-                android:background="@drawable/backround_image_edit_infor"
                 android:scaleType="centerCrop"
+                android:background="@drawable/backround_image_edit_infor"
                 app:layout_constraintEnd_toStartOf="@+id/guideline14"
                 app:layout_constraintStart_toStartOf="@+id/guideline13"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                 />
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
+
+            <!--<ImageView-->
+                <!---->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="120dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:padding="6dp"-->
+                <!--android:background="@drawable/backround_image_edit_infor"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/guideline14"-->
+                <!--app:layout_constraintStart_toStartOf="@+id/guideline13"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageView2"-->
+                 <!--/>-->
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imageView6"
+                android:layout_width="0dp"
+                android:layout_height="260dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/backround_image_edit_infor"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toStartOf="@+id/guideline13"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline11"
+                app:layout_constraintTop_toTopOf="@+id/guideline10"
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -169,7 +276,7 @@
             <EditText
                 android:id="@+id/editText3"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="25dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@null"
@@ -219,30 +326,18 @@
                     android:text="Nữ" />
             </RadioGroup>
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="8dp"
-                android:padding="6dp"
-                android:scaleType="centerCrop"
-                android:background="@drawable/backround_image_edit_infor"
-                app:layout_constraintEnd_toStartOf="@+id/guideline14"
-                app:layout_constraintStart_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toTopOf="@+id/guideline10"
-                />
-
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="0dp"
-                android:layout_height="260dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toTopOf="@+id/imageView6"
-                app:srcCompat="@android:color/transparent"
-                tools:src="@tools:sample/avatars" />
+            <!--<ImageView-->
+                <!--android:id="@+id/imageView1"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="120dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:padding="6dp"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:background="@drawable/backround_image_edit_infor"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/guideline14"-->
+                <!--app:layout_constraintStart_toStartOf="@+id/guideline13"-->
+                <!--app:layout_constraintTop_toTopOf="@+id/guideline10"-->
+                <!--/>-->
 
             <Button
                 android:id="@+id/buttonAdd6"
@@ -253,17 +348,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
                 app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toStartOf="@+id/guideline14"
-                app:layout_constraintStart_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toTopOf="@+id/guideline10"
-                tools:src="@tools:sample/avatars" />
-
             <Button
                 android:id="@+id/buttonAdd1"
                 android:layout_width="30dp"
@@ -272,17 +356,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/add_image"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView10" />
-
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/imageView1" />
 
             <Button
                 android:id="@+id/buttonAdd2"
@@ -292,17 +366,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/add_image"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView13" />
-
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toEndOf="@+id/imageView3"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
             <Button
                 android:id="@+id/buttonAdd3"
@@ -312,17 +376,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/add_image"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView14" />
-
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
-                app:layout_constraintStart_toStartOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="@+id/imageView4"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
             <Button
                 android:id="@+id/buttonAdd4"
@@ -331,17 +385,7 @@
                 android:layout_marginTop="100dp"
                 android:background="@drawable/add_image"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toTopOf="@+id/imageView15" />
-
-            <ImageView
-                android:id="@+id/imageView16"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toEndOf="@+id/imageView5"
-                app:layout_constraintStart_toStartOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView5"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
             <Button
                 android:id="@+id/buttonAdd5"
@@ -350,7 +394,7 @@
                 android:layout_marginTop="100dp"
                 android:background="@drawable/add_image"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
-                app:layout_constraintTop_toTopOf="@+id/imageView16" />
+                app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

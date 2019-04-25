@@ -45,7 +45,7 @@ public class EditInforFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private List<Bitmap> arrayImage = new ArrayList<>();
+    private List<String> arrayImage = new ArrayList<>();
     private List<ImageView> arrayImg = new ArrayList<>();
     private List<Button> arrayButton = new ArrayList<>();
     private int currSelect = 0;
@@ -139,7 +139,7 @@ public class EditInforFragment extends Fragment {
                     if(!arrayImage.isEmpty())
                         setImage();
                     else {
-                        arrayImg.get(0).setImageResource(0);
+                        arrayImg.get(0).setImageDrawable(null);
                         v.setBackgroundResource(R.drawable.add_image);
                     }
                 }
@@ -273,10 +273,10 @@ public class EditInforFragment extends Fragment {
 
         toolbar =  view.findViewById(R.id.toolbar3);
 
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
+//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
+//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
+//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
+//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
         setImage();
     }
 
@@ -295,7 +295,7 @@ public class EditInforFragment extends Fragment {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            arrayImage.add(decodeFile(picturePath));
+            arrayImage.add(picturePath);
             setImage();
             Toast.makeText(getActivity(),arrayImage.size()+" ",Toast.LENGTH_SHORT).show();
 
@@ -348,24 +348,24 @@ public class EditInforFragment extends Fragment {
         }
         else {
             for(int i =0; i < arrayImage.size(); i++){
-                arrayImg.get(i).setImageBitmap(arrayImage.get(i));
+                arrayImg.get(i).setImageURI(Uri.parse(arrayImage.get(i)));
                 arrayButton.get(i).setBackgroundResource(R.drawable.delete_image);
             }
             for (int i = arrayImage.size(); i < 6; i++){
-                arrayImg.get(i).setImageResource(0);
+                arrayImg.get(i).setImageDrawable(null);
                 arrayButton.get(i).setBackgroundResource(R.drawable.add_image);
             }
         }
     }
 
-    private void viewImage(int index){
-        if(arrayImg.get(index).getDrawable() == null)
-            Toast.makeText(getActivity(),"image empty", Toast.LENGTH_SHORT).show();
-        else {
-            arrayImg.get(5).setImageBitmap(arrayImage.get(index));
-            currSelect = index;
-        }
-    }
+//    private void viewImage(int index){
+//        if(arrayImg.get(index).getDrawable() == null)
+//            Toast.makeText(getActivity(),"image empty", Toast.LENGTH_SHORT).show();
+//        else {
+//            arrayImg.get(5).setImageBitmap(arrayImage.get(index));
+//            currSelect = index;
+//        }
+//    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
