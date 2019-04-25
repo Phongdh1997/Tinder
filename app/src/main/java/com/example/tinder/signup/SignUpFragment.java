@@ -114,17 +114,8 @@ public class SignUpFragment extends Fragment {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Name = txtName.getText().toString();
-                Email = txtEmail.getText().toString();
-                age = Integer.parseInt(txtAge.getText().toString());
-                Pass = txtPass.getText().toString();
-                if(rdBtnMale.isChecked())
-                    Gender = "male";
-                else {
-                    Gender = "female";
-                }
 
-                User newUser = getUserFromUI(Name,Email,Gender,age,Pass);
+                User newUser = getUserFromUI();
                 if (newUser != null) {
                     newUser.setRegisterCallBack(new User.OnRegisterCallBack() {
                         @Override
@@ -148,15 +139,25 @@ public class SignUpFragment extends Fragment {
     /**
      * TODO: get user info from UI
      */
-    private User getUserFromUI(String name, String email, String gender, int age, String pass ) {
+    private User getUserFromUI() {
         // TODO: get user infor from UI here
+        Name = txtName.getText().toString();
+        Email = txtEmail.getText().toString();
+        age = Integer.parseInt(txtAge.getText().toString());
+        Pass = txtPass.getText().toString();
+        if(rdBtnMale.isChecked())
+            Gender = "male";
+        else {
+            Gender = "female";
+        }
+
         User user = new User();
-        user.setName(name);
-        user.setGender(gender);
-        user.setMail(email);
+        user.setName(Name);
+        user.setGender(Gender);
+        user.setMail(Email);
         user.setAge(age);
         try {
-            user.setPassword(pass);
+            user.setPassword(Pass);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
@@ -164,7 +165,7 @@ public class SignUpFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
-
+        
         return user;
     }
 
