@@ -11,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.model.User;
@@ -45,6 +49,10 @@ public class SignUpFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private Button btnRegister;
+    private EditText txtName, txtEmail,txtPass,txtAge;
+    private RadioButton rdBtnMale, rdBtnFemale;
+    private String Name,Email,Pass,Gender;
+    private int age;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -93,6 +101,12 @@ public class SignUpFragment extends Fragment {
 
     private void addControls(View view) {
         btnRegister = view.findViewById(R.id.btnRegister);
+        txtAge = view.findViewById(R.id.txtAge);
+        txtEmail = view.findViewById(R.id.txtEmail);
+        txtName = view.findViewById(R.id.txtName);
+        txtPass = view.findViewById(R.id.txtPassword);
+        rdBtnMale = view.findViewById(R.id.radioButtonMale);
+        rdBtnFemale = view.findViewById(R.id.radioButtonMale);
     }
 
     private void addEvents(View view) {
@@ -100,7 +114,17 @@ public class SignUpFragment extends Fragment {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User newUser = getUserFromUI();
+                Name = txtName.getText().toString();
+                Email = txtEmail.getText().toString();
+                age = Integer.parseInt(txtAge.getText().toString());
+                Pass = txtPass.getText().toString();
+                if(rdBtnMale.isChecked())
+                    Gender = "male";
+                else {
+                    Gender = "female";
+                }
+
+                User newUser = getUserFromUI(Name,Email,Gender,age,Pass);
                 if (newUser != null) {
                     newUser.setRegisterCallBack(new User.OnRegisterCallBack() {
                         @Override
@@ -124,15 +148,15 @@ public class SignUpFragment extends Fragment {
     /**
      * TODO: get user info from UI
      */
-    private User getUserFromUI() {
+    private User getUserFromUI(String name, String email, String gender, int age, String pass ) {
         // TODO: get user infor from UI here
         User user = new User();
-        user.setName("Phong Duong");
-        user.setGender("male");
-        user.setMail("duonghoaiphong65@gmail.com");
-        user.setAge(22);
+        user.setName(name);
+        user.setGender(gender);
+        user.setMail(email);
+        user.setAge(age);
         try {
-            user.setPassword("12345678");
+            user.setPassword(pass);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
@@ -140,8 +164,10 @@ public class SignUpFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
+
         return user;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
