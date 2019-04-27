@@ -14,6 +14,8 @@ public class UserAuth implements User.OnLoginCallBack {
     public static final int AUTHENTICATED = 1;
     public static final int INVALID_AUTHEN = -100;
 
+    public static final int NONE = -5;
+
     private ArrayList<StateObserver> observers;
     private OnFirstAuthenListener onFirstAuthenListener;
 
@@ -50,10 +52,10 @@ public class UserAuth implements User.OnLoginCallBack {
         return userAuth;
     }
 
-    public void setState(int state) {
+    public void setState(int state, int messageCode) {
         this.state = state;
         for (StateObserver observer : observers) {
-            observer.onStateChange(state);
+            observer.onStateChange(state, messageCode);
         }
     }
 
@@ -71,10 +73,10 @@ public class UserAuth implements User.OnLoginCallBack {
             user.login();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            setState(UN_AUTHENTICATED);
+            setState(INVALID_AUTHEN, NONE);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            setState(UN_AUTHENTICATED);
+            setState(INVALID_AUTHEN, NONE);
         }
     }
 
@@ -83,7 +85,7 @@ public class UserAuth implements User.OnLoginCallBack {
     }
 
     public void refuseAuthentication() {
-        setState(UN_AUTHENTICATED);
+        setState(UN_AUTHENTICATED, NONE);
     }
 
 
@@ -93,17 +95,16 @@ public class UserAuth implements User.OnLoginCallBack {
         this.user = new User(response.getUser());
         this.user.setAuthen_token(response.getAuthToken());
         this.onFirstAuthenListener.onAuthenSuccess(response.getAuthToken());
-        setState(AUTHENTICATED);
+        setState(AUTHENTICATED, NONE);
     }
 
     @Override
     public void onLoginFail(int error) {
-        this.state = INVALID_AUTHEN;
-        setState(INVALID_AUTHEN);
+        setState(INVALID_AUTHEN, error);
     }
 
     public interface StateObserver {
-        void onStateChange(int state);
+        void onStateChange(int state, int messageCode);
     }
 
     public interface OnFirstAuthenListener {
