@@ -46,13 +46,11 @@ public class SignUpFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
 
-    private Button btnRegister;
-    private EditText txtName, txtEmail,txtPass,txtAge;
-    private RadioButton rdBtnMale, rdBtnFemale;
-    private String Name,Email,Pass,Gender;
-    private int age;
+    private OnFragmentInteractionListener mListener;
+    Button btnRegister;
+    EditText txtName, txtEmail,txtPass,txtAge;
+    RadioButton rdBtnMale, rdBtnFemale;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -141,10 +139,7 @@ public class SignUpFragment extends Fragment {
      */
     private User getUserFromUI() {
         // TODO: get user infor from UI here
-        Name = txtName.getText().toString();
-        Email = txtEmail.getText().toString();
-        age = Integer.parseInt(txtAge.getText().toString());
-        Pass = txtPass.getText().toString();
+        String Gender;
         if(rdBtnMale.isChecked())
             Gender = "male";
         else {
@@ -152,12 +147,12 @@ public class SignUpFragment extends Fragment {
         }
 
         User user = new User();
-        user.setName(Name);
+        user.setName(txtName.getText().toString());
         user.setGender(Gender);
-        user.setMail(Email);
-        user.setAge(age);
+        user.setMail(txtEmail.getText().toString());
+        user.setAge(Integer.parseInt(txtAge.getText().toString()));
         try {
-            user.setPassword(Pass);
+            user.setPassword(txtPass.getText().toString());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
@@ -165,7 +160,7 @@ public class SignUpFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
-
+        
         return user;
     }
 
