@@ -165,7 +165,7 @@ public class SignUpFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
-        
+
         return user;
     }
 
