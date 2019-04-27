@@ -11,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.model.User;
@@ -42,9 +46,11 @@ public class SignUpFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
 
-    private Button btnRegister;
+    private OnFragmentInteractionListener mListener;
+    Button btnRegister;
+    EditText txtName, txtEmail,txtPass,txtAge;
+    RadioButton rdBtnMale, rdBtnFemale;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -93,6 +99,12 @@ public class SignUpFragment extends Fragment {
 
     private void addControls(View view) {
         btnRegister = view.findViewById(R.id.btnRegister);
+        txtAge = view.findViewById(R.id.txtAge);
+        txtEmail = view.findViewById(R.id.txtEmail);
+        txtName = view.findViewById(R.id.txtName);
+        txtPass = view.findViewById(R.id.txtPassword);
+        rdBtnMale = view.findViewById(R.id.radioButtonMale);
+        rdBtnFemale = view.findViewById(R.id.radioButtonMale);
     }
 
     private void addEvents(View view) {
@@ -100,6 +112,7 @@ public class SignUpFragment extends Fragment {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 User newUser = getUserFromUI();
                 if (newUser != null) {
                     newUser.setRegisterCallBack(new User.OnRegisterCallBack() {
@@ -126,13 +139,20 @@ public class SignUpFragment extends Fragment {
      */
     private User getUserFromUI() {
         // TODO: get user infor from UI here
+        String Gender;
+        if(rdBtnMale.isChecked())
+            Gender = "male";
+        else {
+            Gender = "female";
+        }
+
         User user = new User();
-        user.setName("Phong Duong");
-        user.setGender("male");
-        user.setMail("duonghoaiphong65@gmail.com");
-        user.setAge(22);
+        user.setName(txtName.getText().toString());
+        user.setGender(Gender);
+        user.setMail(txtEmail.getText().toString());
+        user.setAge(Integer.parseInt(txtAge.getText().toString()));
         try {
-            user.setPassword("12345678");
+            user.setPassword(txtPass.getText().toString());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
@@ -140,8 +160,10 @@ public class SignUpFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
+        
         return user;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
