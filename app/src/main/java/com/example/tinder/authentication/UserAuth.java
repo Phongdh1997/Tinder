@@ -14,12 +14,7 @@ public class UserAuth implements User.OnLoginCallBack {
     public static final int AUTHENTICATED = 1;
     public static final int INVALID_AUTHEN = -100;
 
-    public static final String REQUEST_ERROR = "REQUEST_ERROR";
-    public static final String LOGIN_SUCCESS = "LOGIN_SUCCESS";
-    public static final String USER_NAME_PASS_WORD_INVALID = "USER_NAME_PASS_WORD_INVALID";
-    public static final String WEAK_PASSWORD = "WEAK_PASSWORD";
-    public static final String BACK_PRESS = "BACK_PRESS";
-    public static final String NO_LOGIN = "NO_LOGIN";
+    public static final int NONE = -5;
 
     private ArrayList<StateObserver> observers;
     private OnFirstAuthenListener onFirstAuthenListener;
@@ -57,10 +52,10 @@ public class UserAuth implements User.OnLoginCallBack {
         return userAuth;
     }
 
-    public void setState(int state, String message) {
+    public void setState(int state, int messageCode) {
         this.state = state;
         for (StateObserver observer : observers) {
-            observer.onStateChange(state, message);
+            observer.onStateChange(state, messageCode);
         }
     }
 
@@ -78,10 +73,10 @@ public class UserAuth implements User.OnLoginCallBack {
             user.login();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            setState(INVALID_AUTHEN, REQUEST_ERROR);
+            setState(INVALID_AUTHEN, NONE);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            setState(INVALID_AUTHEN, REQUEST_ERROR);
+            setState(INVALID_AUTHEN, NONE);
         }
     }
 
@@ -90,7 +85,7 @@ public class UserAuth implements User.OnLoginCallBack {
     }
 
     public void refuseAuthentication() {
-        setState(UN_AUTHENTICATED, BACK_PRESS);
+        setState(UN_AUTHENTICATED, NONE);
     }
 
 
@@ -100,16 +95,16 @@ public class UserAuth implements User.OnLoginCallBack {
         this.user = new User(response.getUser());
         this.user.setAuthen_token(response.getAuthToken());
         this.onFirstAuthenListener.onAuthenSuccess(response.getAuthToken());
-        setState(AUTHENTICATED, LOGIN_SUCCESS);
+        setState(AUTHENTICATED, NONE);
     }
 
     @Override
     public void onLoginFail(int error) {
-        setState(INVALID_AUTHEN, USER_NAME_PASS_WORD_INVALID);
+        setState(INVALID_AUTHEN, error);
     }
 
     public interface StateObserver {
-        void onStateChange(int state, String message);
+        void onStateChange(int state, int messageCode);
     }
 
     public interface OnFirstAuthenListener {

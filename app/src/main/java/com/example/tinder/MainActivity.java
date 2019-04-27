@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         String userToken = sharedPreferences.getString(USER_TOKEN, USER_TOKEN_DEFAULT);
         if (userToken == null || userToken.equals(USER_TOKEN_DEFAULT)) {
-            userAuth.setState(UserAuth.UN_AUTHENTICATED, UserAuth.LOGIN_SUCCESS);
+            userAuth.setState(UserAuth.UN_AUTHENTICATED, UserAuth.NONE);
             Log.d("authen", "continue");
         } else {
-            userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NO_LOGIN);
+            userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
             userAuth.authencationWithToken(userToken);
         }
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         // listen authen state changed
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
-            public void onStateChange(int state, String message) {
+            public void onStateChange(int state, int messageCode) {
                 switch (state){
                     case UserAuth.AUTHENTICATED:
                         updateUI();

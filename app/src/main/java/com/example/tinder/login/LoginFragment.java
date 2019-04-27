@@ -129,7 +129,7 @@ public class LoginFragment extends Fragment implements OnBackPressEvent {
         final NavController navController = Navigation.findNavController(view);
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
-            public void onStateChange(int state, String message) {
+            public void onStateChange(int state, int messageCode) {
                 switch (state) {
                     case UserAuth.AUTHENTICATED:
                         navController.popBackStack();
