@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.common.OnBackPressEvent;
 import com.example.model.User;
@@ -128,7 +129,7 @@ public class LoginFragment extends Fragment implements OnBackPressEvent {
         final NavController navController = Navigation.findNavController(view);
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
-            public void onStateChange(int state) {
+            public void onStateChange(int state, String message) {
                 switch (state) {
                     case UserAuth.AUTHENTICATED:
                         navController.popBackStack();
@@ -144,6 +145,7 @@ public class LoginFragment extends Fragment implements OnBackPressEvent {
 
     private void handleAuthenFails() {
         Log.d("error", "handleAuthenFails: ");
+        Toast.makeText(this.getContext(), "login fail", Toast.LENGTH_LONG).show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
