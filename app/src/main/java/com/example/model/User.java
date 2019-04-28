@@ -92,6 +92,7 @@ public class User {
 
             @Override
             public void onFailure(Call<SignupService.Nonce> call, Throwable t) {
+                t.printStackTrace();
                 if (registerCallBack != null) {
                     registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
                 }
@@ -121,6 +122,7 @@ public class User {
 
             @Override
             public void onFailure(Call<SignupService.Message> call, Throwable t) {
+                t.printStackTrace();
                 if (registerCallBack != null) {
                     registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
                 }
@@ -154,7 +156,7 @@ public class User {
 
             @Override
             public void onFailure(Call<SigninService.SigninResponse> call, Throwable t) {
-
+                t.printStackTrace();
                 if (onLoginCallBack != null) {
                     onLoginCallBack.onLoginFail(OnLoginCallBack.REQUEST_FAIL);
                 }

@@ -34,11 +34,7 @@ public class SearchFriendFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private static ViewPager pgSearchFriend;
-
-    public static ViewPager getPgSearchFriend() {
-        return pgSearchFriend;
-    }
+    private ViewPager pgSearchFriend;
 
     public SearchFriendFragment() {
         // Required empty public constructor

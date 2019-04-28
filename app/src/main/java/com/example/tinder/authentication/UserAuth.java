@@ -1,6 +1,7 @@
 package com.example.tinder.authentication;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.model.User;
 import com.example.rest.service.SigninService;
