@@ -20,10 +20,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.example.model.User;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +51,7 @@ public class UserInforFragment extends Fragment {
     List<Bitmap> arrayImage = new ArrayList<>();
     ViewPager viewPager;
     ImageViewAdapter imageViewAdapter;
+    TextView txtNameAge, txtDecription, txtLocation;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -96,16 +100,21 @@ public class UserInforFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        User user = UserAuth.getInstance().getUser();
+        txtNameAge = view.findViewById(R.id.textViewNameAge);
+        txtDecription = view.findViewById(R.id.textViewDecription);
+        txtLocation = view.findViewById(R.id.textViewLocation);
         fab =(FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, null));
-
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
-
+//        txtNameAge.setText(user.getName() +" , " + user.getAge());
+//        if(user.getDecription() == null)
+//            txtDecription.setText("Add Decription...");
+//        else txtDecription.setText(user.getDecription());
+//        txtLocation.setText(user.getMail());
+        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, null));
         imageViewAdapter = new ImageViewAdapter(getContext(), arrayImage);
         viewPager.setAdapter(imageViewAdapter);
 

@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/textViewNameAge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -58,12 +58,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNameAge"
                 app:srcCompat="@mipmap/work"
                 tools:src="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/textViewDecription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -87,7 +87,7 @@
                 tools:src="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/textViewLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
