@@ -1,5 +1,6 @@
 package com.example.model;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.rest.RetrofitClient;
@@ -17,6 +18,19 @@ import retrofit2.Response;
 
 
 public class User {
+
+    public static final String NAME = "name";
+    public static final String PHONE = "phone";
+    public static final String ID = "id";
+    public static final String AUTHEN_TOKEN = "authen_token";
+    public static final String MAIL = "mail";
+    public static final String PASSWORD = "password";
+    public static final String DESCRIPTION = "description";
+    public static final String AGE = "age";
+    public static final String GENDER = "gender";
+    public static final String IS_ACTIVE = "is_active";
+    public static final String IS_BANNED = "is_banned";
+    public static final int INT_NULL = -100;
 
     private int id;
     private String authen_token;
@@ -72,6 +86,34 @@ public class User {
         this.decription = user.getDescription();
     }
 
+    public static User getLocalUser(SharedPreferences sharedPreferences) {
+        User user = new User();
+        int id = sharedPreferences.getInt(ID, INT_NULL);
+        if (id == INT_NULL) {
+            return null;
+        }
+        user.setId(id);
+        user.setMail(sharedPreferences.getString(MAIL, ""));
+        user.setHashedPassword(sharedPreferences.getString(PASSWORD, ""));
+        user.setName(sharedPreferences.getString(NAME, ""));
+        user.setAge(sharedPreferences.getInt(AGE, 0));
+        user.setGender(sharedPreferences.getString(GENDER, ""));
+        user.setPhone(sharedPreferences.getString(PHONE, ""));
+        user.setDecription(sharedPreferences.getString(DESCRIPTION, ""));
+        return user;
+    }
+
+    public void storeToLocal(SharedPreferences.Editor editor) {
+        editor.putString(MAIL, this.mail);
+        editor.putString(PASSWORD, this.password);
+        editor.putInt(AGE, this.age);
+        editor.putInt(ID, this.id);
+        editor.putString(PHONE, this.phone);
+        editor.putString(DESCRIPTION, this.decription);
+        editor.apply();
+        Log.d("save", "saveAthenToken: ");
+    }
+
     public void register() {
         SignupService signupService = RetrofitClient.getSignupService();
         signupService.getNonce().enqueue(new Callback<SignupService.Nonce>() {
@@ -92,6 +134,7 @@ public class User {
 
             @Override
             public void onFailure(Call<SignupService.Nonce> call, Throwable t) {
+                t.printStackTrace();
                 if (registerCallBack != null) {
                     registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
                 }
@@ -121,6 +164,7 @@ public class User {
 
             @Override
             public void onFailure(Call<SignupService.Message> call, Throwable t) {
+                t.printStackTrace();
                 if (registerCallBack != null) {
                     registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
                 }
@@ -154,7 +198,7 @@ public class User {
 
             @Override
             public void onFailure(Call<SigninService.SigninResponse> call, Throwable t) {
-
+                t.printStackTrace();
                 if (onLoginCallBack != null) {
                     onLoginCallBack.onLoginFail(OnLoginCallBack.REQUEST_FAIL);
                 }
@@ -185,6 +229,7 @@ public class User {
     }
 
     // getter / setter
+
     public int getId() {
         return id;
     }
