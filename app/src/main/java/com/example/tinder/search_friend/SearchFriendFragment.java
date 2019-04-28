@@ -86,8 +86,7 @@ public class SearchFriendFragment extends Fragment {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
-        pgSearchFriend.setCurrentItem(1000, false);
-
+        pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
 
     }
 

@@ -38,7 +38,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+<<<<<<< HEAD
                 android:id="@+id/textViewNameAge"
+=======
+                android:id="@+id/txtNameAge"
+>>>>>>> 7780255cf063a2e75192e4f5c762de9fabcc9617
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -58,12 +62,20 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
+<<<<<<< HEAD
                 app:layout_constraintTop_toBottomOf="@+id/textViewNameAge"
+=======
+                app:layout_constraintTop_toBottomOf="@+id/txtNameAge"
+>>>>>>> 7780255cf063a2e75192e4f5c762de9fabcc9617
                 app:srcCompat="@mipmap/work"
                 tools:src="@tools:sample/avatars" />
 
             <TextView
+<<<<<<< HEAD
                 android:id="@+id/textViewDecription"
+=======
+                android:id="@+id/txtSchool"
+>>>>>>> 7780255cf063a2e75192e4f5c762de9fabcc9617
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -87,7 +99,11 @@
                 tools:src="@tools:sample/avatars" />
 
             <TextView
+<<<<<<< HEAD
                 android:id="@+id/textViewLocation"
+=======
+                android:id="@+id/txtLocation"
+>>>>>>> 7780255cf063a2e75192e4f5c762de9fabcc9617
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

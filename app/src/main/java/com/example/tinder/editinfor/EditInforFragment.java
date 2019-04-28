@@ -22,10 +22,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.rest.RetrofitClient;
+import com.example.rest.service.PostImageService;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -45,7 +52,7 @@ public class EditInforFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private List<Bitmap> arrayImage = new ArrayList<>();
+    private List<String> arrayImage = new ArrayList<>();
     private List<ImageView> arrayImg = new ArrayList<>();
     private List<Button> arrayButton = new ArrayList<>();
     private int currSelect = 0;
@@ -53,6 +60,7 @@ public class EditInforFragment extends Fragment {
     private Toolbar toolbar;
     private int RESULT_LOAD_IMG = 1234;
     private int RC_REQUEST_PERMISSION = 999;
+    private PostImageService postImageService;
 
     private OnFragmentInteractionListener mListener;
 
@@ -139,7 +147,7 @@ public class EditInforFragment extends Fragment {
                     if(!arrayImage.isEmpty())
                         setImage();
                     else {
-                        arrayImg.get(0).setImageResource(0);
+                        arrayImg.get(0).setImageDrawable(null);
                         v.setBackgroundResource(R.drawable.add_image);
                     }
                 }
@@ -273,11 +281,12 @@ public class EditInforFragment extends Fragment {
 
         toolbar =  view.findViewById(R.id.toolbar3);
 
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
+//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
+//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
+//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
+//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
         setImage();
+        postImageService = RetrofitClient.getPostImageService();
     }
 
     @Override
@@ -295,11 +304,28 @@ public class EditInforFragment extends Fragment {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            arrayImage.add(decodeFile(picturePath));
+            arrayImage.add(picturePath);
+            saveImageToSever(picturePath);
             setImage();
             Toast.makeText(getActivity(),arrayImage.size()+" ",Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    private void saveImageToSever(String picturePath) {
+            postImageService.upImage(picturePath,1,UserAuth.getInstance().getUser().getAuthen_token()).enqueue(new Callback<PostImageService.ResponseMessage>() {
+                @Override
+                public void onResponse(Call<PostImageService.ResponseMessage> call, Response<PostImageService.ResponseMessage> response) {
+                    if(response.isSuccessful()){
+                        Toast.makeText(getContext(),response.body().getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PostImageService.ResponseMessage> call, Throwable t) {
+                    Toast.makeText(getContext(),"fail",Toast.LENGTH_LONG).show();
+                }
+            });
     }
 
     private static Bitmap decodeResource(Resources res, int id) {
@@ -348,24 +374,24 @@ public class EditInforFragment extends Fragment {
         }
         else {
             for(int i =0; i < arrayImage.size(); i++){
-                arrayImg.get(i).setImageBitmap(arrayImage.get(i));
+                arrayImg.get(i).setImageURI(Uri.parse(arrayImage.get(i)));
                 arrayButton.get(i).setBackgroundResource(R.drawable.delete_image);
             }
             for (int i = arrayImage.size(); i < 6; i++){
-                arrayImg.get(i).setImageResource(0);
+                arrayImg.get(i).setImageDrawable(null);
                 arrayButton.get(i).setBackgroundResource(R.drawable.add_image);
             }
         }
     }
 
-    private void viewImage(int index){
-        if(arrayImg.get(index).getDrawable() == null)
-            Toast.makeText(getActivity(),"image empty", Toast.LENGTH_SHORT).show();
-        else {
-            arrayImg.get(5).setImageBitmap(arrayImage.get(index));
-            currSelect = index;
-        }
-    }
+//    private void viewImage(int index){
+//        if(arrayImg.get(index).getDrawable() == null)
+//            Toast.makeText(getActivity(),"image empty", Toast.LENGTH_SHORT).show();
+//        else {
+//            arrayImg.get(5).setImageBitmap(arrayImage.get(index));
+//            currSelect = index;
+//        }
+//    }
 
 
     // TODO: Rename method, update argument and hook method into UI event

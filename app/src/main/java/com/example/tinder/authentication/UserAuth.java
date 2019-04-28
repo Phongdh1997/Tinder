@@ -1,6 +1,7 @@
 package com.example.tinder.authentication;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.model.User;
 import com.example.rest.service.SigninService;
@@ -30,6 +31,10 @@ public class UserAuth implements User.OnLoginCallBack {
 
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void addStateObserver(StateObserver observer) {

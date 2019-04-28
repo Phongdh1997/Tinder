@@ -104,7 +104,7 @@ public class SignUpFragment extends Fragment {
         txtName = view.findViewById(R.id.txtName);
         txtPass = view.findViewById(R.id.txtPassword);
         rdBtnMale = view.findViewById(R.id.radioButtonMale);
-        rdBtnFemale = view.findViewById(R.id.radioButtonMale);
+        rdBtnFemale = view.findViewById(R.id.radioButtonFemale);
     }
 
     private void addEvents(View view) {
@@ -123,7 +123,7 @@ public class SignUpFragment extends Fragment {
 
                         @Override
                         public void onRegisterFail(int error) {
-                            Toast.makeText(getContext(), "Sign Up faild", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Sign Up faild, code: "+ error, Toast.LENGTH_SHORT).show();
                         }
                     });
                     newUser.register();
