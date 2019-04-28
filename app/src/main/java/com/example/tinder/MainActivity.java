@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.common.OnBackPressEvent;
+import com.example.model.User;
 import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.editinfor.EditInforFragment;
 import com.example.tinder.home.HomeFragment;
@@ -64,14 +65,13 @@ public class MainActivity extends AppCompatActivity
 
     private void checkLogin() {
         // check login
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        String userToken = sharedPreferences.getString(USER_TOKEN, USER_TOKEN_DEFAULT);
-        if (userToken == null || userToken.equals(USER_TOKEN_DEFAULT)) {
+        User user = User.getLocalUser(getPreferences(MODE_PRIVATE));
+        if (user == null) {
             userAuth.setState(UserAuth.UN_AUTHENTICATED, UserAuth.NONE);
             Log.d("authen", "continue");
         } else {
             userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
-            userAuth.authencationWithToken(userToken);
+            userAuth.setUser(user);
         }
 
 
@@ -115,11 +115,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void saveAthenToken(String authenToken) {
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USER_TOKEN, authenToken);
-        editor.apply();
-        Log.d("save", "saveAthenToken: ");
+        User user = UserAuth.getInstance().getUser();
+        user.storeToLocal(getPreferences(MODE_PRIVATE).edit());
     }
 
     @Override

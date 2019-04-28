@@ -33,6 +33,10 @@ public class UserAuth implements User.OnLoginCallBack {
         return user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void addStateObserver(StateObserver observer) {
         observers.add(observer);
     }
