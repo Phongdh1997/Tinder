@@ -135,6 +135,7 @@ public class LoginFragment extends Fragment implements OnBackPressEvent {
                         navController.popBackStack();
                         break;
                     case UserAuth.INVALID_AUTHEN:
+                        navController.popBackStack();
                         handleAuthenFails();
                         default:
                             break;

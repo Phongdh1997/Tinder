@@ -34,7 +34,11 @@ public class SearchFriendFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private ViewPager pgSearchFriend;
+    private static ViewPager pgSearchFriend;
+
+    public static ViewPager getPgSearchFriend() {
+        return pgSearchFriend;
+    }
 
     public SearchFriendFragment() {
         // Required empty public constructor
@@ -86,8 +90,7 @@ public class SearchFriendFragment extends Fragment {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
-        pgSearchFriend.setCurrentItem(1000, false);
-
+        pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
 
     }
 

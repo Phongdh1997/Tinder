@@ -185,6 +185,7 @@ public class User {
     }
 
     // getter / setter
+
     public int getId() {
         return id;
     }
