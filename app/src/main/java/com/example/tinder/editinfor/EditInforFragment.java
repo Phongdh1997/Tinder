@@ -307,7 +307,7 @@ public class EditInforFragment extends Fragment {
             arrayImage.add(picturePath);
             saveImageToSever(picturePath);
             setImage();
-            Toast.makeText(getActivity(),arrayImage.size()+" ",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(),arrayImage.size()+" ",Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -316,13 +316,17 @@ public class EditInforFragment extends Fragment {
             postImageService.upImage(picturePath,1,UserAuth.getInstance().getUser().getAuthen_token()).enqueue(new Callback<PostImageService.ResponseMessage>() {
                 @Override
                 public void onResponse(Call<PostImageService.ResponseMessage> call, Response<PostImageService.ResponseMessage> response) {
+                    Toast.makeText(getContext(),"up success", Toast.LENGTH_LONG).show();
                     if(response.isSuccessful()){
                         Toast.makeText(getContext(),response.body().getMessage(),Toast.LENGTH_LONG).show();
+                    }else {
+                        Toast.makeText(getContext(),response.code(),Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<PostImageService.ResponseMessage> call, Throwable t) {
+                    t.printStackTrace();
                     Toast.makeText(getContext(),"fail",Toast.LENGTH_LONG).show();
                 }
             });
