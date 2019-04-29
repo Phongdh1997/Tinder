@@ -44,9 +44,9 @@ public class SocketIO {
         }
     }
 
-    public boolean push_data(JSONObject message, String event_name) {
+    public boolean push_data(JSONObject data, String event_name) {
         try {
-            _socket.emit(event_name, message);
+            _socket.emit(event_name, data);
             return true;
         } catch (Exception e) {
             Log.e("Exception in SocketIO", e.toString());

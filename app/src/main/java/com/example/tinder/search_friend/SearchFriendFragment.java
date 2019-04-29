@@ -15,8 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.QuickContactBadge;
 
+import com.example.internet_connection.SocketIO;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +43,8 @@ public class SearchFriendFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ViewPager pgSearchFriend;
+    private ImageButton like_btn;
+    private SocketIO mSocket;
 
     private ImageButton btnLike;
 
@@ -71,6 +77,11 @@ public class SearchFriendFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // init socket
+//        mSocket = new SocketIO("http://167.99.69.92:8889");
+        mSocket = new SocketIO("http://10.28.8.98:8889");
+        mSocket.establish_connection();
     }
 
     @Override
@@ -90,6 +101,7 @@ public class SearchFriendFragment extends Fragment {
 
     private void addControls(View view) {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
+        like_btn = view.findViewById(R.id.imageButton2);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
         pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);

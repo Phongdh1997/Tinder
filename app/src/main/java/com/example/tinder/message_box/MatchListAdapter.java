@@ -8,16 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.model.Conversation;
 import com.example.tinder.R;
+
+import com.example.model.Message;
 
 import java.util.ArrayList;
 
 public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.MatchViewHolder> {
 
-    private ArrayList<String> datas;
+    private ArrayList<Conversation> conversations;
 
-    public MatchListAdapter(ArrayList<String> list) {
-        this.datas = list;
+    public MatchListAdapter(ArrayList<Conversation> conversations) {
+        this.conversations = conversations;
+    }
+
+    public MatchListAdapter(Conversation new_conversation) {
+        this.conversations.add(new_conversation);
     }
 
     public static class  MatchViewHolder extends RecyclerView.ViewHolder {
@@ -41,7 +48,18 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
 
     @Override
     public int getItemCount() {
-        return this.datas.size();
+        return this.conversations.size();
+    }
+
+    public void createNewConversation(Conversation conversation) {
+        this.conversations.add(conversation);
+        notifyDataSetChanged();
+    }
+
+    public void updateLastedMessage(int position, String message) {
+        Conversation conversation = this.conversations.get(position);
+        conversation.setLasted_message(message);
+        notifyDataSetChanged();
     }
 
 }
