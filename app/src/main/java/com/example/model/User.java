@@ -77,6 +77,15 @@ public class User {
         this.gender = gender;
     }
 
+    public User(int id, String mail, String password, String name, int age, String gender) {
+        this.mail = mail;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.id = id;
+    }
+
     public User(SigninService.User user) {
         this.name = user.getName();
         this.mail = user.getEmail();
