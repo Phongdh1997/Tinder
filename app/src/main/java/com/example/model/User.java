@@ -93,6 +93,7 @@ public class User {
         this.id = user.getId();
         this.phone = user.getPhone();
         this.decription = user.getDescription();
+        this.gender = user.getGender();
     }
 
     public static User getLocalUser(SharedPreferences sharedPreferences) {
