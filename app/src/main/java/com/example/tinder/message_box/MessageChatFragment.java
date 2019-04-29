@@ -103,7 +103,7 @@ public class MessageChatFragment extends Fragment {
                 String msg = messageText.getText().toString();
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
                 int USER_ID = UserAuth.getInstance().getUser().getId();
-                int conversation_id = 1;
+                int conversation_id = 4;
                 addMessage(USER_ID, conversation_id, msg);
                 messageText.setText("");
 

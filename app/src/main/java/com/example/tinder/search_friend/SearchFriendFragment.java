@@ -43,7 +43,6 @@ public class SearchFriendFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ViewPager pgSearchFriend;
-    private ImageButton like_btn;
     private SocketIO mSocket;
 
     private ImageButton btnLike;
@@ -96,12 +95,10 @@ public class SearchFriendFragment extends Fragment {
 
     private void addControls(View view) {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
-        like_btn = view.findViewById(R.id.imageButton2);
+        btnLike = view.findViewById(R.id.btnLike);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
         pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
-
-        btnLike = view.findViewById(R.id.btnLike);
     }
 
     private void addEvents(final View view) {
