@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.model.Message;
 import com.example.tinder.R;
 import com.example.internet_connection.SocketIO;
+import com.example.tinder.authentication.UserAuth;
 import com.github.nkzawa.emitter.Emitter;
 
 import org.json.JSONException;
@@ -61,13 +62,13 @@ public class MessageChatFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String authenToken = UserAuth.getInstance().getUser().getAuthen_token();
         // init socket
-        mSocket = new SocketIO("http://167.99.69.92:8889");
+        mSocket = new SocketIO("http://167.99.69.92:8888", authenToken);
         mSocket.establish_connection();
 
-        // listen event
-        // event_name = "receive_message_" + <conversation_id>
-        mSocket.getInstance().on("receive_message", onNewMessage);
+        // listen new message
+        mSocket.getInstance().on("chat_message", onNewMessage);
     }
 
     @Override
@@ -101,21 +102,23 @@ public class MessageChatFragment extends Fragment {
             public void onClick(View v) {
                 String msg = messageText.getText().toString();
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-                addMessage(1, 1, msg);
+                int USER_ID = UserAuth.getInstance().getUser().getId();
+                int conversation_id = 1;
+                addMessage(USER_ID, conversation_id, msg);
                 messageText.setText("");
 
                 // create data object
                 JSONObject message = new JSONObject();
                 try {
 
-                    message.put("sender_id", 1);
-                    message.put("conversation_id", 1);
+                    message.put("sender_id", USER_ID);
+                    message.put("conversation_id", conversation_id);
                     message.put("message", msg);
                 } catch (JSONException e) {
                     Log.e("JSOn exception", e.toString());
                 }
 
-                mSocket.push_data(message, "send_message");
+                mSocket.push_data(message, "chat_message");
             }
         });
     }

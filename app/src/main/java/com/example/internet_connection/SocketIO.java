@@ -17,9 +17,11 @@ public class SocketIO {
         // empty constructor
     }
 
-    public SocketIO(String URL) {
+    public SocketIO(String URL, String authenToken) {
         try {
-            _socket = IO.socket(URL);
+            IO.Options opts = new IO.Options();
+            opts.query = "token=" + authenToken;
+            _socket = IO.socket(URL, opts);
         }
         catch (URISyntaxException e) {
             Log.e("Exception in SocketIO", e.toString());

@@ -75,11 +75,6 @@ public class SearchFriendFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        // init socket
-//        mSocket = new SocketIO("http://167.99.69.92:8889");
-        mSocket = new SocketIO("http://10.28.8.98:8889");
-        mSocket.establish_connection();
     }
 
     @Override
