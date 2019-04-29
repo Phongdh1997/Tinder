@@ -35,49 +35,30 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
         this.isLoading = false;
         dataBuff = new ArrayList<>();
         for (int i = 1; i < 30; i++) {
-            dataBuff.add(new User(i + "@gmail.com", "fds", "user " + i, i, "male"));
+            dataBuff.add(new User(i,i + "@gmail.com", "fds", "user " + i, i, "male"));
         }
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.fragment_search_friend_item, container, false);
-
-        // add controls
-        TextView txtName = view.findViewById(R.id.txtName);
-        ImageButton btnDetailInfo = view.findViewById(R.id.btnDetailInfo);
-
         User currUser = null;
 
         // set first item to view and remove it from buffer
         if (!this.isBufferEmpty()) {
             currUser = this.dataBuff.get(0);
-            txtName.setText(currUser.getName());
+            Log.d("id", "id" + currUser.getId());
             this.dataBuff.remove(0);
         }
 
-        // add event
-        Bundle user = new Bundle();
-        if (currUser != null) {
-            user.putInt("id", currUser.getId());
-            user.putString("authen_token", currUser.getAuthen_token());
-            user.putString("phone", currUser.getPhone());
-            user.putString("mail", currUser.getMail());
-            user.putString("password", currUser.getPassword());
-            user.putString("name", currUser.getName());
-            user.putString("decription", currUser.getDecription());
-            user.putString("gender", currUser.getGender());
-            user.putInt("age", currUser.getAge());
-        }
-        btnDetailInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, user));
+        FriendView view = new FriendView(this.context, currUser);
 
         if (this.isExhaustedBuff()) {
             this.loadData();
         }
 
         // add view to container
+        view.setTag(position);
         container.addView(view);
         return view;
     }
@@ -101,7 +82,7 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
         Random r = new Random();
         String item = "";
         for (int i = 0; i < 20; i++) {
-            dataBuff.add(new User(r.nextInt() + "@gmail.com", "fds", "user " + r.nextInt(), r.nextInt(), "male"));
+            dataBuff.add(new User(r.nextInt(), r.nextInt() + "@gmail.com", "fds", "user " + r.nextInt(), r.nextInt(), "male"));
             Log.d("item", "new item");
         }
 

@@ -8,11 +8,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.QuickContactBadge;
 
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +39,8 @@ public class SearchFriendFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ViewPager pgSearchFriend;
+
+    private ImageButton btnLike;
 
     public SearchFriendFragment() {
         // Required empty public constructor
@@ -88,10 +94,18 @@ public class SearchFriendFragment extends Fragment {
         pgSearchFriend.setAdapter(adapter);
         pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
 
+        btnLike = view.findViewById(R.id.btnLike);
     }
 
-    private void addEvents(View view) {
-
+    private void addEvents(final View view) {
+        btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("like", "like");
+                FriendView page = (FriendView) pgSearchFriend.findViewWithTag(pgSearchFriend.getCurrentItem());
+                page.likeFriend(UserAuth.getInstance().getUser().getId());
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
