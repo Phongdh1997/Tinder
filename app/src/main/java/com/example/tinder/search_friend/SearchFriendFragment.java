@@ -45,7 +45,6 @@ public class SearchFriendFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ViewPager pgSearchFriend;
-    private ImageButton like_btn;
     private SocketIO mSocket;
 
     private ImageButton btnLike;
@@ -98,36 +97,10 @@ public class SearchFriendFragment extends Fragment {
 
     private void addControls(View view) {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
-        like_btn = view.findViewById(R.id.imageButton2);
+        btnLike = view.findViewById(R.id.btnLike);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
-
-        like_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "onClick Like button event", Toast.LENGTH_SHORT).show();
-
-                int id = v.getId();
-                Log.d("Id friend search view", Integer.toString(id));
-                JSONObject data = new JSONObject();
-                try {
-                    // current user_id
-                    data.put("liker_user_id", 1);
-
-                    // liked user_id
-                    data.put("liked_user_id", 2);
-                } catch (JSONException e) {
-                    Log.e("JSON exception", e.toString());
-                }
-
-
-                mSocket.push_data(data, "like");
-            }
-        });
-
         pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
-
-        btnLike = view.findViewById(R.id.btnLike);
     }
 
     private void addEvents(final View view) {
