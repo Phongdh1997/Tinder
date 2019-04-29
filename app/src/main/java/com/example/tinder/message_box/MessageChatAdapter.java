@@ -74,6 +74,14 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void setMessageList(ArrayList<Message> mMessageList) {
+        this.mMessageList = mMessageList;
+    }
+
+    public ArrayList<Message> getMessageList() {
+        return mMessageList;
+    }
+
     @Override
     public int getItemViewType(int position) {
         Message message = mMessageList.get(position);

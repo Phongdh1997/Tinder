@@ -8,11 +8,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.internet_connection.SocketIO;
 import com.example.tinder.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +43,8 @@ public class SearchFriendFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ViewPager pgSearchFriend;
+    private ImageButton like_btn;
+    private SocketIO mSocket;
 
     public SearchFriendFragment() {
         // Required empty public constructor
@@ -65,6 +75,11 @@ public class SearchFriendFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // init socket
+//        mSocket = new SocketIO("http://167.99.69.92:8889");
+        mSocket = new SocketIO("http://10.28.8.98:8889");
+        mSocket.establish_connection();
     }
 
     @Override
@@ -84,10 +99,33 @@ public class SearchFriendFragment extends Fragment {
 
     private void addControls(View view) {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
+        like_btn = view.findViewById(R.id.imageButton2);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
         pgSearchFriend.setCurrentItem(1000, false);
 
+        like_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "onClick Like button event", Toast.LENGTH_SHORT).show();
+
+                int id = v.getId();
+                Log.d("Id friend search view", Integer.toString(id));
+                JSONObject data = new JSONObject();
+                try {
+                    // current user_id
+                    data.put("liker_user_id", 1);
+
+                    // liked user_id
+                    data.put("liked_user_id", 2);
+                } catch (JSONException e) {
+                    Log.e("JSON exception", e.toString());
+                }
+
+
+                mSocket.push_data(data, "like");
+            }
+        });
 
     }
 

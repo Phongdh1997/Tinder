@@ -1,11 +1,20 @@
 package com.example.tinder.message_box;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,6 +33,8 @@ import com.github.nkzawa.emitter.Emitter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.navigation.NavType;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -34,10 +45,12 @@ import org.json.JSONObject;
  */
 public class MessageChatFragment extends Fragment {
     private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
     private MessageChatAdapter messageChatAdapter;
     private Button sendButton;
     private EditText messageText;
     private OnFragmentInteractionListener mListener;
+    private String CHANNEL_ID = "notification_recevied_message";
     private static SocketIO mSocket;
 
     public MessageChatFragment() {
@@ -49,7 +62,7 @@ public class MessageChatFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // init socket
-        mSocket = new SocketIO("http://10.28.8.98:8888");
+        mSocket = new SocketIO("http://167.99.69.92:8889");
         mSocket.establish_connection();
 
         // listen event
@@ -74,11 +87,13 @@ public class MessageChatFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.reyclerview_message_list);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
-        messageChatAdapter = new MessageChatAdapter();
+        if (messageChatAdapter == null) {
+            messageChatAdapter = new MessageChatAdapter();
+        }
         recyclerView.setAdapter(messageChatAdapter);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +135,7 @@ public class MessageChatFragment extends Fragment {
                     @Override
                     public void run() {
 
+                        // get information from received message
                         Integer sender_id;
                         Integer conversation_id;
                         String message;
@@ -131,6 +147,24 @@ public class MessageChatFragment extends Fragment {
                         } catch (JSONException e) {
                             return;
                         }
+
+                        // create notification
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
+                                .setSmallIcon(R.drawable.ic_message)
+                                .setContentTitle("Tin nhắn mới từ Tinder")
+                                .setContentText(message)
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText(message))
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(true)
+                                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+
+                        // show notification
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
+
+                        // notificationId is a unique int for each notification that you must define
+                        int notificationId = 456;
+                        notificationManager.notify(notificationId, builder.build());
 
                         // add message to view
                         addMessage(sender_id, conversation_id, message);

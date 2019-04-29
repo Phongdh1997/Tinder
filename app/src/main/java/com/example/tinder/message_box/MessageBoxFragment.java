@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import com.example.internet_connection.SocketIO;
 
+import com.example.model.Conversation;
 import com.example.tinder.R;
 
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ public class MessageBoxFragment extends Fragment {
                 Log.d("Navigate: ", "navigate " + position);
                 Toast.makeText(getActivity(), "Onclick Event on Item" + Integer.toString(position),
                         Toast.LENGTH_LONG).show();
+                updateConversation(position, "I have received new message");
                 NavHostFragment.findNavController(MessageBoxFragment.this).navigate(R.id.action_homeFragment_to_messageChatFragment);
             }
         });
@@ -88,9 +90,6 @@ public class MessageBoxFragment extends Fragment {
     private void addControls(View view) {
         rvMatchList = view.findViewById(R.id.rvMatchList);
         rvMessageList = view.findViewById(R.id.rvMessageList);
-
-//        rvMatchList.setHasFixedSize(true);
-//        rvMessageList.setHasFixedSize(true);
 
         rvMatchList.setNestedScrollingEnabled(true);
         rvMessageList.setNestedScrollingEnabled(true);
@@ -105,15 +104,23 @@ public class MessageBoxFragment extends Fragment {
         rvMessageList.setLayoutManager(layoutManager);
         rvMessageList.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
 
-        ArrayList<String> list = new ArrayList<>();
-        list.add("item 1");
-        list.add("item 2");
-        list.add("item 3");
-        MatchListAdapter adapter = new MatchListAdapter(list);
+        ArrayList<Conversation> conversations = new ArrayList<>();
+        for(int i = 1; i <= 3; i++) {
+            Conversation conversation = new Conversation(i, 1, i+1);
+            conversations.add(conversation);
+        }
+
+        MatchListAdapter adapter = new MatchListAdapter(conversations);
+        adapter.createNewConversation(new Conversation(4, 1, 5));
         rvMatchList.setAdapter(adapter);
 
-        messageListAdapter = new MessageListAdapter(list);
+        messageListAdapter = new MessageListAdapter(conversations);
         rvMessageList.setAdapter(messageListAdapter);
+    }
+
+    public void updateConversation(int position, String message) {
+        messageListAdapter.updateConversation(position, message);
+        messageListAdapter.notifyDataSetChanged();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
