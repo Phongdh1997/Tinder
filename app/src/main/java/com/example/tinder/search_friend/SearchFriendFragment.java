@@ -102,7 +102,6 @@ public class SearchFriendFragment extends Fragment {
         like_btn = view.findViewById(R.id.imageButton2);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
-        pgSearchFriend.setCurrentItem(1000, false);
 
         like_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +125,8 @@ public class SearchFriendFragment extends Fragment {
                 mSocket.push_data(data, "like");
             }
         });
+
+        pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
 
     }
 

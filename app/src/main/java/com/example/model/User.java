@@ -1,9 +1,11 @@
 package com.example.model;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.rest.RetrofitClient;
 import com.example.rest.model.UserPojo;
+import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 
 import java.io.UnsupportedEncodingException;
@@ -14,9 +16,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class User {
 
+    public static final String NAME = "name";
+    public static final String PHONE = "phone";
+    public static final String ID = "id";
+    public static final String AUTHEN_TOKEN = "authen_token";
+    public static final String MAIL = "mail";
+    public static final String PASSWORD = "password";
+    public static final String DESCRIPTION = "description";
+    public static final String AGE = "age";
+    public static final String GENDER = "gender";
+    public static final String IS_ACTIVE = "is_active";
+    public static final String IS_BANNED = "is_banned";
+    public static final int INT_NULL = -100;
+
     private int id;
+    private String authen_token;
     private String phone;
     private String mail;
     private String password;
@@ -38,9 +55,14 @@ public class User {
 
     // call back
     private OnRegisterCallBack registerCallBack;
+    private OnLoginCallBack onLoginCallBack;
 
     public void setRegisterCallBack(OnRegisterCallBack registerCallBack) {
         this.registerCallBack = registerCallBack;
+    }
+
+    public void setOnLoginCallBack(OnLoginCallBack onLoginCallBack) {
+        this.onLoginCallBack = onLoginCallBack;
     }
 
     public User() {
@@ -53,6 +75,43 @@ public class User {
         this.name = name;
         this.age = age;
         this.gender = gender;
+    }
+
+    public User(SigninService.User user) {
+        this.name = user.getName();
+        this.mail = user.getEmail();
+        this.age = user.getAge();
+        this.id = user.getId();
+        this.phone = user.getPhone();
+        this.decription = user.getDescription();
+    }
+
+    public static User getLocalUser(SharedPreferences sharedPreferences) {
+        User user = new User();
+        int id = sharedPreferences.getInt(ID, INT_NULL);
+        if (id == INT_NULL) {
+            return null;
+        }
+        user.setId(id);
+        user.setMail(sharedPreferences.getString(MAIL, ""));
+        user.setHashedPassword(sharedPreferences.getString(PASSWORD, ""));
+        user.setName(sharedPreferences.getString(NAME, ""));
+        user.setAge(sharedPreferences.getInt(AGE, 0));
+        user.setGender(sharedPreferences.getString(GENDER, ""));
+        user.setPhone(sharedPreferences.getString(PHONE, ""));
+        user.setDecription(sharedPreferences.getString(DESCRIPTION, ""));
+        return user;
+    }
+
+    public void storeToLocal(SharedPreferences.Editor editor) {
+        editor.putString(MAIL, this.mail);
+        editor.putString(PASSWORD, this.password);
+        editor.putInt(AGE, this.age);
+        editor.putInt(ID, this.id);
+        editor.putString(PHONE, this.phone);
+        editor.putString(DESCRIPTION, this.decription);
+        editor.apply();
+        Log.d("save", "saveAthenToken: ");
     }
 
     public void register() {
@@ -75,7 +134,10 @@ public class User {
 
             @Override
             public void onFailure(Call<SignupService.Nonce> call, Throwable t) {
-
+                t.printStackTrace();
+                if (registerCallBack != null) {
+                    registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
+                }
             }
         });
     }
@@ -86,6 +148,7 @@ public class User {
         signupService.register(userPojo).enqueue(new Callback<SignupService.Message>() {
             @Override
             public void onResponse(Call<SignupService.Message> call, Response<SignupService.Message> response) {
+                Log.i("responseCode", " " + response.code());
                 switch (response.code()) {
                     case OnRegisterCallBack.SUCCESS:
                         if (registerCallBack != null) {
@@ -101,7 +164,44 @@ public class User {
 
             @Override
             public void onFailure(Call<SignupService.Message> call, Throwable t) {
+                t.printStackTrace();
+                if (registerCallBack != null) {
+                    registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
+                }
+            }
+        });
+    }
 
+    public void login() {
+        if (this.mail == null || this.password == null) {
+            return;
+        }
+        Log.d("login: ", "email: " + this.mail + "; pass: "+ this.password);
+        SigninService signinService = RetrofitClient.getSigninService();
+        signinService.login(new SigninService.SignBody(this.mail, this.password))
+                .enqueue(new Callback<SigninService.SigninResponse>() {
+            @Override
+            public void onResponse(Call<SigninService.SigninResponse> call, Response<SigninService.SigninResponse> response) {
+                Log.d("Sign In", "response code: " + response.code());
+                switch (response.code()) {
+                    case OnLoginCallBack.SUCCESS:
+                        if (onLoginCallBack != null) {
+                            onLoginCallBack.onLoginSuccess(response.body());
+                        }
+                        break;
+                    default:
+                        if (onLoginCallBack != null) {
+                            onLoginCallBack.onLoginFail(response.code());
+                        }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SigninService.SigninResponse> call, Throwable t) {
+                t.printStackTrace();
+                if (onLoginCallBack != null) {
+                    onLoginCallBack.onLoginFail(OnLoginCallBack.REQUEST_FAIL);
+                }
             }
         });
     }
@@ -112,13 +212,24 @@ public class User {
         int EMAIL_INVALID = 400;
         int REGISTED_EMAIL = 409;
         int SERVER_ERROR = 500;
+        int REQUEST_FAIL = -100;
 
         void onRegisterSuccess(SignupService.Message message);
 
         void onRegisterFail(int error);
     }
 
+    public static interface OnLoginCallBack {
+        int SUCCESS = 200;
+        int REQUEST_FAIL = -100;
+
+        void onLoginSuccess(SigninService.SigninResponse message);
+
+        void onLoginFail(int error);
+    }
+
     // getter / setter
+
     public int getId() {
         return id;
     }
@@ -154,6 +265,10 @@ public class User {
         this.password = new String(hashPass);
     }
 
+    public void setHashedPassword(String password) {
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
@@ -184,6 +299,14 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getAuthen_token() {
+        return authen_token;
+    }
+
+    public void setAuthen_token(String authen_token) {
+        this.authen_token = authen_token;
     }
 
     public int getLongtitude() {

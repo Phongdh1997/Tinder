@@ -1,6 +1,7 @@
 package com.example.tinder.search_friend;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.model.User;
 import com.example.tinder.R;
 
 import java.util.ArrayList;
@@ -22,8 +24,10 @@ import androidx.navigation.Navigation;
 
 public class SearchFriendPagerAdapter extends PagerAdapter {
 
+    public static final int PAGE_NUM = 2000;
+
     private Context context;
-    private ArrayList<String> dataBuff;
+    private ArrayList<User> dataBuff;
     private boolean isLoading;
 
     public SearchFriendPagerAdapter(Context context) {
@@ -31,7 +35,7 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
         this.isLoading = false;
         dataBuff = new ArrayList<>();
         for (int i = 1; i < 30; i++) {
-            dataBuff.add("item" + i);
+            dataBuff.add(new User(i + "@gmail.com", "fds", "user " + i, i, "male"));
         }
     }
 
@@ -45,14 +49,29 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
         TextView txtName = view.findViewById(R.id.txtName);
         ImageButton btnDetailInfo = view.findViewById(R.id.btnDetailInfo);
 
-        // add event
-        btnDetailInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
+        User currUser = null;
 
         // set first item to view and remove it from buffer
         if (!this.isBufferEmpty()) {
-            txtName.setText(this.dataBuff.get(0));
+            currUser = this.dataBuff.get(0);
+            txtName.setText(currUser.getName());
             this.dataBuff.remove(0);
         }
+
+        // add event
+        Bundle user = new Bundle();
+        if (currUser != null) {
+            user.putInt("id", currUser.getId());
+            user.putString("authen_token", currUser.getAuthen_token());
+            user.putString("phone", currUser.getPhone());
+            user.putString("mail", currUser.getMail());
+            user.putString("password", currUser.getPassword());
+            user.putString("name", currUser.getName());
+            user.putString("decription", currUser.getDecription());
+            user.putString("gender", currUser.getGender());
+            user.putInt("age", currUser.getAge());
+        }
+        btnDetailInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, user));
 
         if (this.isExhaustedBuff()) {
             this.loadData();
@@ -82,8 +101,7 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
         Random r = new Random();
         String item = "";
         for (int i = 0; i < 20; i++) {
-            item = "item" + r.nextInt();
-            this.dataBuff.add(item);
+            dataBuff.add(new User(r.nextInt() + "@gmail.com", "fds", "user " + r.nextInt(), r.nextInt(), "male"));
             Log.d("item", "new item");
         }
 
@@ -93,7 +111,7 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 2000;
+        return PAGE_NUM;
     }
 
     @Override

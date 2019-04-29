@@ -10,21 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.model.User;
-import com.example.rest.RetrofitClient;
 import com.example.rest.service.SignupService;
 import com.example.tinder.R;
 
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import okio.ByteString;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 
 /**
@@ -35,7 +36,7 @@ import retrofit2.Response;
  * Use the {@link SignUpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignUpFragment extends Fragment implements User.OnRegisterCallBack {
+public class SignUpFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,7 +46,11 @@ public class SignUpFragment extends Fragment implements User.OnRegisterCallBack 
     private String mParam1;
     private String mParam2;
 
+
     private OnFragmentInteractionListener mListener;
+    Button btnRegister;
+    EditText txtName, txtEmail,txtPass,txtAge;
+    RadioButton rdBtnMale, rdBtnFemale;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -93,12 +98,72 @@ public class SignUpFragment extends Fragment implements User.OnRegisterCallBack 
     }
 
     private void addControls(View view) {
-
+        btnRegister = view.findViewById(R.id.btnRegister);
+        txtAge = view.findViewById(R.id.txtAge);
+        txtEmail = view.findViewById(R.id.txtEmail);
+        txtName = view.findViewById(R.id.txtName);
+        txtPass = view.findViewById(R.id.txtPassword);
+        rdBtnMale = view.findViewById(R.id.radioButtonMale);
+        rdBtnFemale = view.findViewById(R.id.radioButtonFemale);
     }
 
     private void addEvents(View view) {
+        final NavController navController = Navigation.findNavController(view);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                User newUser = getUserFromUI();
+                if (newUser != null) {
+                    newUser.setRegisterCallBack(new User.OnRegisterCallBack() {
+                        @Override
+                        public void onRegisterSuccess(SignupService.Message message) {
+                            navController.popBackStack();
+                        }
+
+                        @Override
+                        public void onRegisterFail(int error) {
+                            Toast.makeText(getContext(), "Sign Up faild, code: "+ error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    newUser.register();
+                } else {
+                    Log.e("newuser", "new user is null");
+                }
+            }
+        });
     }
+
+    /**
+     * TODO: get user info from UI
+     */
+    private User getUserFromUI() {
+        // TODO: get user infor from UI here
+        String Gender;
+        if(rdBtnMale.isChecked())
+            Gender = "male";
+        else {
+            Gender = "female";
+        }
+
+        User user = new User();
+        user.setName(txtName.getText().toString());
+        user.setGender(Gender);
+        user.setMail(txtEmail.getText().toString());
+        user.setAge(Integer.parseInt(txtAge.getText().toString()));
+        try {
+            user.setPassword(txtPass.getText().toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+        return user;
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -122,16 +187,6 @@ public class SignUpFragment extends Fragment implements User.OnRegisterCallBack 
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onRegisterSuccess(SignupService.Message message) {
-        Log.d("messs", message.getMessage());
-    }
-
-    @Override
-    public void onRegisterFail(int error) {
-        Log.d("erorr", "fad" + error);
     }
 
     /**

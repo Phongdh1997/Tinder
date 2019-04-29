@@ -10,10 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.common.OnBackPressEvent;
+import com.example.model.User;
+import com.example.rest.service.SigninService;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 
@@ -25,7 +37,7 @@ import androidx.navigation.fragment.NavHostFragment;
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements OnBackPressEvent {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,7 +49,12 @@ public class LoginFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private UserAuth userAuth;
+
     private TextView txtSignUp;
+    private EditText txtEmail;
+    private EditText txtPassword;
+    private Button btnLogin;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -92,10 +109,43 @@ public class LoginFragment extends Fragment {
                 NavHostFragment.findNavController(LoginFragment.this).navigate(R.id.action_loginFragment_to_signUpFragment);
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userAuth.authenticate(txtEmail.getText().toString(), txtPassword.getText().toString());
+            }
+        });
     }
 
     private void addControls(View view) {
+        userAuth = UserAuth.getInstance();
+
         txtSignUp = view.findViewById(R.id.txtSignUp);
+        txtEmail = view.findViewById(R.id.txtEmail);
+        txtPassword = view.findViewById(R.id.txtPassword);
+        btnLogin = view.findViewById(R.id.btnLogin);
+
+        final NavController navController = Navigation.findNavController(view);
+        userAuth.addStateObserver(new UserAuth.StateObserver() {
+            @Override
+            public void onStateChange(int state, int messageCode) {
+                switch (state) {
+                    case UserAuth.AUTHENTICATED:
+                        navController.popBackStack();
+                        break;
+                    case UserAuth.INVALID_AUTHEN:
+                        handleAuthenFails();
+                        default:
+                            break;
+                }
+            }
+        });
+    }
+
+    private void handleAuthenFails() {
+        Log.d("error", "handleAuthenFails: ");
+        Toast.makeText(this.getContext(), "login fail", Toast.LENGTH_LONG).show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -120,6 +170,15 @@ public class LoginFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onBackPress() {
+        Log.d("child", "onBackPress: login");
+        if (mListener != null) {
+            mListener.onFragmentInteraction(Uri.parse("ExitApp"));
+        }
+        return false;
     }
 
     /**

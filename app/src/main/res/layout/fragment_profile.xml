@@ -44,23 +44,32 @@
             android:textColor="@android:color/background_dark"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/btnToUserInfo"
-            app:layout_constraintStart_toStartOf="@+id/btnToUserInfo"
-            app:layout_constraintTop_toBottomOf="@+id/btnToUserInfo" />
+            app:layout_constraintEnd_toEndOf="@+id/imvToUserInfo"
+            app:layout_constraintStart_toStartOf="@+id/imvToUserInfo"
+            app:layout_constraintTop_toBottomOf="@+id/imvToUserInfo" />
 
-        <ImageButton
-            android:id="@+id/btnToUserInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imvToUserInfo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:focusable="true"
             android:background="@drawable/avatar_bg"
             android:src="@drawable/ic_person_black_70dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_color="#333333"
+            app:riv_border_width="0dp"
+            app:riv_corner_radius="60dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
 
         <TextView
             android:id="@+id/textView2"

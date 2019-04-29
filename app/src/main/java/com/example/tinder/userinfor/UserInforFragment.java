@@ -20,10 +20,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.example.model.User;
 import com.example.tinder.R;
+import com.example.tinder.search_friend.SearchFriendFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,8 @@ public class UserInforFragment extends Fragment {
     ViewPager viewPager;
     ImageViewAdapter imageViewAdapter;
 
+    private TextView txtNameAge;
+    private Bundle userBundle;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -97,18 +102,34 @@ public class UserInforFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        addControls(view);
+        addEvents(view);
+    }
+
+    private void addControls(View view) {
+        txtNameAge = view.findViewById(R.id.txtNameAge);
+
+        userBundle = getArguments();
+        if (userBundle != null) {
+            updateUI();
+        }
+
         fab =(FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, null));
-
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
-
         imageViewAdapter = new ImageViewAdapter(getContext(), arrayImage);
         viewPager.setAdapter(imageViewAdapter);
+    }
 
+    private void updateUI() {
+        String nameAge = userBundle.getString("name") + ", " + userBundle.getInt("age");
+        txtNameAge.setText(nameAge);
+    }
+
+    private void addEvents(View view) {
+        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, userBundle));
     }
 
     private static Bitmap decodeResource(Resources res, int id) {
