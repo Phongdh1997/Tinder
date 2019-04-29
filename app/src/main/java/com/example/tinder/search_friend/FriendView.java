@@ -105,10 +105,10 @@ public class FriendView extends ConstraintLayout {
         JSONObject data = new JSONObject();
         try {
             // current user_id
-            data.put("liker_user_id", currUserId);
+            data.put("liker_id", currUserId);
 
             // liked user_id
-            data.put("liked_user_id", friendId);
+            data.put("liked_id", friendId);
         } catch (JSONException e) {
             Log.e("JSON exception", e.toString());
         }
