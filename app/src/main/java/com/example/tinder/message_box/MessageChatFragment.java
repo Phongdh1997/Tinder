@@ -64,7 +64,7 @@ public class MessageChatFragment extends Fragment {
         super.onCreate(savedInstanceState);
         String authenToken = UserAuth.getInstance().getUser().getAuthen_token();
         // init socket
-        mSocket = new SocketIO("http://167.99.69.92:8888", authenToken);
+        mSocket = new SocketIO("http://167.99.69.92:8889", authenToken);
         mSocket.establish_connection();
 
         // listen new message
