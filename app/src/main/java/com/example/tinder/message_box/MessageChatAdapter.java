@@ -8,14 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.model.User;
 import com.example.tinder.R;
 import com.example.model.Message;
+import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
 
 public class MessageChatAdapter extends RecyclerView.Adapter {
 
-    private static final int VIEW_TYPE_MESSAGE_SENT = 1;
+    private static final int VIEW_TYPE_MESSAGE_SENT = UserAuth.getInstance().getUser().getId();
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
     private Context mContext;
@@ -33,14 +35,12 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int viewType) {
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = null;
         RecyclerView.ViewHolder viewHolder = null;
-        Message messages = mMessageList.get(i-1);
-        int user_id = messages.getSender_id();
-        if (user_id == VIEW_TYPE_MESSAGE_SENT) {
+        if (viewType == VIEW_TYPE_MESSAGE_SENT) {
             v = inflater.inflate(R.layout.item_message_sent, viewGroup, false);
             return new SentMessageHolder(v);
         }
@@ -55,15 +55,12 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         Message message = mMessageList.get(i);
         int user_id = message.getSender_id();
-        switch (user_id) {
-            case VIEW_TYPE_MESSAGE_SENT:
-                ((SentMessageHolder) viewHolder).bind(message.getMessage());
-                break;
-            default:
-                ((ReceivedMessageHolder) viewHolder).bind(message.getMessage());
-                break;
+        if (user_id == VIEW_TYPE_MESSAGE_SENT) {
+            ((SentMessageHolder) viewHolder).bind(message.getMessage());
         }
-
+        else {
+            ((ReceivedMessageHolder) viewHolder).bind(message.getMessage());
+        }
     }
 
     public void addMessage(Message message) {

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.model.Conversation;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
 
@@ -70,7 +71,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             view = itemView;
             lasted_msg = itemView.findViewById(R.id.lasted_msg_txtView);
             user_name = itemView.findViewById(R.id.user_name_txtView);
-            setLastedMessage("Lasted message");
+            int CURRENT_USER_ID = UserAuth.getInstance().getUser().getId();
+            setLastedMessage("Lasted message" + Integer.toString(CURRENT_USER_ID));
         }
 
         public void setLastedMessage(String message) {
