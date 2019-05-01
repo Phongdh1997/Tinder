@@ -265,7 +265,7 @@ public class EditInforFragment extends Fragment {
     }
 
     private void saveImageToSever(String picturePath) {
-            postImageService.upImage(new PostImageService.UpImageBody(user.getAuthen_token(),1)).enqueue(new Callback<PostImageService.ResponseMessage>() {
+            postImageService.upImage(new PostImageService.UpImageBody(picturePath,1)).enqueue(new Callback<PostImageService.ResponseMessage>() {
                 @Override
                 public void onResponse(Call<PostImageService.ResponseMessage> call, Response<PostImageService.ResponseMessage> response) {
                     Toast.makeText(getContext(),"up success", Toast.LENGTH_LONG).show();
