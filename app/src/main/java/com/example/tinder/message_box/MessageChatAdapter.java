@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.model.User;
@@ -14,11 +15,16 @@ import com.example.model.Message;
 import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 public class MessageChatAdapter extends RecyclerView.Adapter {
 
     private static final int VIEW_TYPE_MESSAGE_SENT = UserAuth.getInstance().getUser().getId();
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
+
+    private static final DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     private Context mContext;
 
@@ -56,10 +62,10 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
         Message message = mMessageList.get(i);
         int user_id = message.getSender_id();
         if (user_id == VIEW_TYPE_MESSAGE_SENT) {
-            ((SentMessageHolder) viewHolder).bind(message.getMessage());
+            ((SentMessageHolder) viewHolder).bind(message);
         }
         else {
-            ((ReceivedMessageHolder) viewHolder).bind(message.getMessage());
+            ((ReceivedMessageHolder) viewHolder).bind(message);
         }
     }
 
@@ -68,6 +74,13 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
         mMessageList.add(message);
 
         // notify Dataset changed
+        notifyDataSetChanged();
+    }
+
+    public void updateStatusMessage(int position, Boolean is_received) {
+        Message message = mMessageList.get(position);
+        message.setIs_received(is_received);
+
         notifyDataSetChanged();
     }
 
@@ -101,29 +114,42 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     private class SentMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText;
+        CheckBox messageResult;
+        TextView messageTime;
 
         SentMessageHolder(View itemView) {
             super(itemView);
 
             messageText = itemView.findViewById(R.id.text_message_body);
+            messageResult = itemView.findViewById(R.id.sent_message_result);
+            messageTime  = itemView.findViewById(R.id.sent_message_time);
         }
 
-        void bind(String message) {
-            messageText.setText(message);
+        void bind(Message message) {
+
+            messageText.setText(message.getMessage());
+            messageResult.setChecked(message.getIs_received());
+            Date created_at = message.getCreated_at();
+            String created_at_str = sdf.format(created_at);
+            messageTime.setText(created_at_str);
         }
     }
 
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText;
+        TextView messageTime;
 
         ReceivedMessageHolder(View itemView) {
             super(itemView);
-
+            messageTime  = itemView.findViewById(R.id.received_message_time);
             messageText = itemView.findViewById(R.id.text_message_body);
         }
 
-        void bind(String message) {
-            messageText.setText(message);
+        void bind(Message message) {
+            messageText.setText(message.getMessage());
+            Date created_at = message.getCreated_at();
+            String created_at_str = sdf.format(created_at);
+            messageTime.setText(created_at_str);
         }
     }
 

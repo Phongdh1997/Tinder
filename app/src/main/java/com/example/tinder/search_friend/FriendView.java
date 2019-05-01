@@ -43,10 +43,7 @@ public class FriendView extends ConstraintLayout {
         initView();
 
         // init SocketIO
-        String authenToken = UserAuth.getInstance().getUser().getAuthen_token();
-        // init socket
-        mSocket = new SocketIO("http://167.99.69.92:8889", authenToken);
-        mSocket.establish_connection();
+        mSocket = UserAuth.getInstance().getSocketIO();
     }
 
     private void initView() {

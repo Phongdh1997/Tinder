@@ -111,9 +111,12 @@ public class User {
         user.setPhone(sharedPreferences.getString(PHONE, ""));
         user.setDecription(sharedPreferences.getString(DESCRIPTION, ""));
         user.setAuthen_token(sharedPreferences.getString(AUTHEN_TOKEN, ""));
+<<<<<<< master
         user.setIs_active(sharedPreferences.getBoolean(IS_ACTIVE, false));
         user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
 
+=======
+>>>>>>> - fix bug invalid token - add like event - modify message item
         return user;
     }
 
@@ -127,11 +130,13 @@ public class User {
         editor.putString(PHONE, this.phone);
         editor.putString(DESCRIPTION, this.decription);
         editor.putString(AUTHEN_TOKEN, this.authen_token);
+<<<<<<< master
         editor.putBoolean(IS_ACTIVE, this.is_active);
         editor.putBoolean(IS_BANNED, this.is_banned);
 
+=======
+>>>>>>> - fix bug invalid token - add like event - modify message item
         editor.apply();
-        Log.d("save", "saveAthenToken: ");
     }
 
     public void register() {

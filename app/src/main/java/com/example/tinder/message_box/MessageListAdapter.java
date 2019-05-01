@@ -56,6 +56,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     }
 
 
+
+    @Override
+    public long getItemId(int position) {
+        return this.conversations.get(position).getId();
+    }
+
     public static class MessageHolder extends RecyclerView.ViewHolder {
 
         private View view;
@@ -71,8 +77,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             view = itemView;
             lasted_msg = itemView.findViewById(R.id.lasted_msg_txtView);
             user_name = itemView.findViewById(R.id.user_name_txtView);
-            int CURRENT_USER_ID = UserAuth.getInstance().getUser().getId();
-            setLastedMessage("Lasted message" + Integer.toString(CURRENT_USER_ID));
         }
 
         public void setLastedMessage(String message) {
@@ -93,10 +97,21 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         void onClick(View v, int position);
     }
 
-    public void updateConversation(int position, String message) {
-        Conversation conversation = this.conversations.get(position);
+    public void updateConversation(int conversation_id, String message) {
+        Conversation conversation = getConversationByID(conversation_id);
         conversation.setLasted_message(message);
         notifyDataSetChanged();
+    }
+
+    public Conversation getConversationByID(int conversation_id) {
+        Conversation result = null;
+        for (int i = 0; i < getItemCount(); i++) {
+            if (conversations.get(i).getId() == conversation_id) {
+                result = conversations.get(i);
+                break;
+            }
+        }
+        return result;
     }
 
 }

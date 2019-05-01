@@ -34,6 +34,9 @@ import com.github.nkzawa.emitter.Emitter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import androidx.navigation.NavType;
 
 /**
@@ -53,27 +56,38 @@ public class MessageChatFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private String CHANNEL_ID = "notification_recevied_message";
     private static SocketIO mSocket;
+    private Bundle mBundle;
+    private int conversation_id;
 
     public MessageChatFragment() {
         // Required empty public constructor
     }
 
+    public MessageChatFragment(Bundle saved_bundle) {
+        this.mBundle = saved_bundle;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String authenToken = UserAuth.getInstance().getUser().getAuthen_token();
+
         // init socket
-        mSocket = new SocketIO("http://167.99.69.92:8889", authenToken);
-        mSocket.establish_connection();
+        mSocket = UserAuth.getInstance().getSocketIO();
 
         // listen new message
-        mSocket.getInstance().on("chat_message", onNewMessage);
+        mSocket.getInstance().on("chat_message", onNewMessage).on("chat_message_result", onSentMessageSuccess);
+
+        // listen the status of sent message
+//        mSocket.getInstance().on("chat_message_result", onSentMessageSuccess);
+
+        // get data from the previous fragment
+        mBundle = getArguments();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message_chat, container, false);
     }
@@ -92,33 +106,41 @@ public class MessageChatFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
-        if (messageChatAdapter == null) {
-            messageChatAdapter = new MessageChatAdapter();
-        }
+
+        ArrayList<Message> hitorical_messages = loadMessages();
+        messageChatAdapter = new MessageChatAdapter(hitorical_messages);
+
         recyclerView.setAdapter(messageChatAdapter);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = messageText.getText().toString();
-                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                String msg = messageText.getText().toString().trim();
                 int USER_ID = UserAuth.getInstance().getUser().getId();
-                int conversation_id = 5;
-                addMessage(USER_ID, conversation_id, msg);
-                messageText.setText("");
+                conversation_id = (int) mBundle.getSerializable("conversation_id");
+                Log.i("conversation_id", Integer.toString(conversation_id));
+                if (msg.length() > 0) {
+                    addMessage(USER_ID, conversation_id, msg);
+                    // create data object
+                    JSONObject message = new JSONObject();
+                    try {
 
-                // create data object
-                JSONObject message = new JSONObject();
-                try {
+                        message.put("sender_id", USER_ID);
+                        message.put("conversation_id", conversation_id);
+                        message.put("message", msg);
+                    } catch (JSONException e) {
+                        Log.e("JSOn exception", e.toString());
+                    }
 
-                    message.put("sender_id", USER_ID);
-                    message.put("conversation_id", conversation_id);
-                    message.put("message", msg);
-                } catch (JSONException e) {
-                    Log.e("JSOn exception", e.toString());
+                    mSocket.push_data(message, "chat_message");
                 }
+                messageText.getText().clear();
 
-                mSocket.push_data(message, "chat_message");
+                // set the focus on the last element
+                int last_position = messageChatAdapter.getItemCount()-1;
+                if (last_position > 0) {
+                    recyclerView.smoothScrollToPosition(last_position);
+                }
             }
         });
     }
@@ -178,6 +200,59 @@ public class MessageChatFragment extends Fragment {
         }
     };
 
+    // update the status of sent message
+    private Emitter.Listener onSentMessageSuccess = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("Sent message result", "Sent message result");
+                        // get information from received message
+                        Integer message_id;
+                        Integer conversation_id;
+                        Boolean is_received;
+                        try {
+                            JSONObject data = new JSONObject(args[0].toString());
+                            message_id = data.getInt("message_id");
+                            conversation_id = data.getInt("conversation_id");
+                            is_received = data.getBoolean("is_received");
+                        } catch (JSONException e) {
+                            return;
+                        }
+
+                        Log.d("is_received", is_received.toString());
+                        // update the status of sent message
+                        if (is_received) {
+                            Log.d("Result message", "Sent message success");
+                        }
+                    }
+                });
+            }
+
+        }
+    };
+
+
+    public ArrayList<Message> loadMessages() {
+        int USER_ID = UserAuth.getInstance().getUser().getId();
+        ArrayList<Message> all_messages = new ArrayList<>();
+        // TODO: implement a scoket to the server to get historical message from conversation_id
+        Message message;
+        for(int i = 1; i < 10; i ++) {
+            if (i % 2 == 0) {
+                message = new Message(USER_ID, conversation_id, "Message " + Integer.toString(i));
+            }
+            else {
+                // generate new message sent by other user to current user
+                message = new Message(USER_ID + 1, conversation_id, "Message " + Integer.toString(i));
+            }
+            all_messages.add(message);
+        }
+
+        return all_messages;
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
