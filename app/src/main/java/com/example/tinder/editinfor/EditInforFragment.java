@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.model.User;
 import com.example.rest.RetrofitClient;
 import com.example.rest.service.PostImageService;
 import com.example.tinder.R;
@@ -61,6 +62,7 @@ public class EditInforFragment extends Fragment {
     private int RESULT_LOAD_IMG = 1234;
     private int RC_REQUEST_PERMISSION = 999;
     private PostImageService postImageService;
+    private User user;
 
     private OnFragmentInteractionListener mListener;
 
@@ -108,6 +110,7 @@ public class EditInforFragment extends Fragment {
 
         addControls(view);
         addEvent(view);
+        user = UserAuth.getInstance().getUser();
 
 
 
@@ -115,26 +118,7 @@ public class EditInforFragment extends Fragment {
 
     private void addEvent(View view) {
         //click button
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(arrayImage.isEmpty()) {
-//                    Toast.makeText(getActivity(), "empty", Toast.LENGTH_SHORT).show();
-//                    return;
-//                } else {
-//                    arrayImage.remove(currSelect);
-//                    if(arrayImage.isEmpty()){
-//                        arrayImg.get(0).setImageResource(0);
-//                        arrayImg.get(5).setImageResource(0);
-//                        arrayButton.get(0).setVisibility(View.VISIBLE);
-//                    }else {
-//                        setImage();
-//                        currSelect=0;
-//                    }
-//
-//                }
-//            }
-//        });
+
         arrayButton.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,39 +211,7 @@ public class EditInforFragment extends Fragment {
             }
         });
 
-        //select ImageView
-//        arrayImg.get(0).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(0);
-//            }
-//        });
-//        arrayImg.get(1).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(1);
-//            }
-//        });
-//        arrayImg.get(2).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(2);
-//            }
-//        });
-//        arrayImg.get(3).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(3);
-//            }
-//        });
-//        arrayImg.get(4).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(4);
-//            }
-//        });
 
-        // end Select View
     }
 
     private void addControls(View view) {
@@ -313,14 +265,14 @@ public class EditInforFragment extends Fragment {
     }
 
     private void saveImageToSever(String picturePath) {
-            postImageService.upImage(picturePath,1,UserAuth.getInstance().getUser().getAuthen_token()).enqueue(new Callback<PostImageService.ResponseMessage>() {
+            postImageService.upImage(new PostImageService.UpImageBody(user.getAuthen_token(),1)).enqueue(new Callback<PostImageService.ResponseMessage>() {
                 @Override
                 public void onResponse(Call<PostImageService.ResponseMessage> call, Response<PostImageService.ResponseMessage> response) {
                     Toast.makeText(getContext(),"up success", Toast.LENGTH_LONG).show();
                     if(response.isSuccessful()){
                         Toast.makeText(getContext(),response.body().getMessage(),Toast.LENGTH_LONG).show();
                     }else {
-                        Toast.makeText(getContext(),response.code(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),response.code()+"",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -387,15 +339,6 @@ public class EditInforFragment extends Fragment {
             }
         }
     }
-
-//    private void viewImage(int index){
-//        if(arrayImg.get(index).getDrawable() == null)
-//            Toast.makeText(getActivity(),"image empty", Toast.LENGTH_SHORT).show();
-//        else {
-//            arrayImg.get(5).setImageBitmap(arrayImage.get(index));
-//            currSelect = index;
-//        }
-//    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
