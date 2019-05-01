@@ -109,6 +109,7 @@ public class User {
         user.setGender(sharedPreferences.getString(GENDER, ""));
         user.setPhone(sharedPreferences.getString(PHONE, ""));
         user.setDecription(sharedPreferences.getString(DESCRIPTION, ""));
+        user.setAuthen_token(sharedPreferences.getString(AUTHEN_TOKEN, ""));
         return user;
     }
 
@@ -119,8 +120,8 @@ public class User {
         editor.putInt(ID, this.id);
         editor.putString(PHONE, this.phone);
         editor.putString(DESCRIPTION, this.decription);
+        editor.putString(AUTHEN_TOKEN, this.authen_token);
         editor.apply();
-        Log.d("save", "saveAthenToken: ");
     }
 
     public void register() {

@@ -22,8 +22,14 @@ public class SocketIO {
             IO.Options opts = new IO.Options();
             opts.query = "token=" + authenToken;
             _socket = IO.socket(URL, opts);
+            Boolean is_connected = establish_connection();
+            if (!is_connected)
+                throw new ArithmeticException("Error when create a socket with the server.");
         }
         catch (URISyntaxException e) {
+            Log.e("Exception in SocketIO", e.toString());
+        }
+        catch (ArithmeticException e) {
             Log.e("Exception in SocketIO", e.toString());
         }
         catch (Exception e) {

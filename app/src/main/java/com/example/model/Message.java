@@ -1,11 +1,16 @@
 package com.example.model;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
 
 public class Message {
     private int conversation_id;
     private int sender_id;
     private String message;
-    private long created_at;
+    private Date created_at;
+    private boolean is_received;
+    private int message_id;
 
     public Message(){
 
@@ -14,8 +19,9 @@ public class Message {
     public Message(Integer user_id, Integer conversation_id, String body) {
         sender_id = user_id;
         message = body;
-        created_at = 0;
+        created_at = new Date();
         this.conversation_id = conversation_id;
+        this.is_received = false;
     }
 
     public String getMessage() {
@@ -30,11 +36,11 @@ public class Message {
         this.message = message;
     }
 
-    public long getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(long created_at) {
+    public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
 
@@ -48,5 +54,21 @@ public class Message {
 
     public void setConversation_id(int conversation_id) {
         this.conversation_id = conversation_id;
+    }
+
+    public void setIs_received(boolean is_received) {
+        this.is_received = is_received;
+    }
+
+    public boolean getIs_received() {
+        return this.is_received;
+    }
+
+    public void setMessage_id(int message_id) {
+        this.message_id = message_id;
+    }
+
+    public int getMessage_id() {
+        return message_id;
     }
 }

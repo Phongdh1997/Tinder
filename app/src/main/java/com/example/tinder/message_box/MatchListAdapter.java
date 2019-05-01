@@ -56,10 +56,4 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
         notifyDataSetChanged();
     }
 
-    public void updateLastedMessage(int position, String message) {
-        Conversation conversation = this.conversations.get(position);
-        conversation.setLasted_message(message);
-        notifyDataSetChanged();
-    }
-
 }
