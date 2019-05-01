@@ -110,16 +110,26 @@ public class User {
         user.setGender(sharedPreferences.getString(GENDER, ""));
         user.setPhone(sharedPreferences.getString(PHONE, ""));
         user.setDecription(sharedPreferences.getString(DESCRIPTION, ""));
+        user.setAuthen_token(sharedPreferences.getString(AUTHEN_TOKEN, ""));
+        user.setIs_active(sharedPreferences.getBoolean(IS_ACTIVE, false));
+        user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
+
         return user;
     }
 
     public void storeToLocal(SharedPreferences.Editor editor) {
+        editor.putInt(ID, this.id);
         editor.putString(MAIL, this.mail);
         editor.putString(PASSWORD, this.password);
+        editor.putString(NAME, this.name);
         editor.putInt(AGE, this.age);
-        editor.putInt(ID, this.id);
+        editor.putString(GENDER, this.gender);
         editor.putString(PHONE, this.phone);
         editor.putString(DESCRIPTION, this.decription);
+        editor.putString(AUTHEN_TOKEN, this.authen_token);
+        editor.putBoolean(IS_ACTIVE, this.is_active);
+        editor.putBoolean(IS_BANNED, this.is_banned);
+
         editor.apply();
         Log.d("save", "saveAthenToken: ");
     }
