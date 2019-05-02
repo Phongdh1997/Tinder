@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Activities that contain this fragment must implement the
  * {@link MessageChatFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MessageChatFragment#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 public class MessageChatFragment extends Fragment {
