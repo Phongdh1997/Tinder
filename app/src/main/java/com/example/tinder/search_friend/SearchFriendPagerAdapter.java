@@ -78,7 +78,7 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
         for (int i = 0; i < 20; i++) {
             dataBuff.add(new User(r.nextInt(), r.nextInt() + "@gmail.com", "fds", "user " + r.nextInt(), r.nextInt(), "male"));
             Log.d("item", "new item");
-        }
+
 
         String jsonFriendURL = "https://api.myjson.com/bins/r9pkg";
         SearchFriendFragment.DownloadJsonTask jsontask = new SearchFriendFragment.DownloadJsonTask(dataBuff);
