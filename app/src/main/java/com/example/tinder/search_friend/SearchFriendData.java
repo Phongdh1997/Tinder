@@ -3,23 +3,29 @@ package com.example.tinder.search_friend;
 import android.util.Log;
 
 import com.example.model.User;
+import com.example.rest.RetrofitClient;
+import com.example.rest.service.SearchFriendService;
+import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchFriendData {
 
     private static SearchFriendData searchFriendData;
 
-    private ArrayList<User> dataBuff;
+    private List<SearchFriendService.User> dataBuff;
     private boolean isLoading;
 
     private SearchFriendData() {
         dataBuff = new ArrayList<>();
-        for (int i = 1; i < 30; i++) {
-            dataBuff.add(new User(i,i + "@gmail.com", "fds", "user " + i, i, "male"));
-        }
         isLoading = false;
+        getUsersFromServer();
     }
 
     public static SearchFriendData getInstance() {
@@ -29,23 +35,44 @@ public class SearchFriendData {
         return searchFriendData;
     }
 
+    private void getUsersFromServer() {
+        Log.d("token", UserAuth.getInstance().getUser().getAuthen_token());
+        RetrofitClient.getSearchFriendService().getUsers("Barer " + UserAuth.getInstance().getUser().getAuthen_token())
+                .enqueue(new Callback<List<SearchFriendService.User>>() {
+            @Override
+            public void onResponse(Call<List<SearchFriendService.User>> call, Response<List<SearchFriendService.User>> response) {
+                if (response.body() != null) {
+                    SearchFriendData.this.dataBuff = response.body();
+                }
+                SearchFriendData.this.isLoading = false;
+                Log.d("get Search Friend", "code: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<List<SearchFriendService.User>> call, Throwable t) {
+                t.printStackTrace();
+                SearchFriendData.this.isLoading = false;
+            }
+        });
+    }
+
     /**
      *
      * @return: user item
      */
     public User getUserData () {
-        User currUser = new User();
+        User newUser = null;
 
         // set first item to view and remove it from buffer
         if (!this.isBufferEmpty()) {
-            currUser = this.dataBuff.get(0);
-            Log.d("id", "id" + currUser.getId());
+            newUser = new User(this.dataBuff.get(0));
+            Log.d("id", "id" + newUser.getId());
             this.dataBuff.remove(0);
         }
         if (this.isExhaustedBuff()) {
             this.loadData();
         }
-        return currUser;
+        return newUser;
     }
 
     public boolean isBufferEmpty() {
@@ -57,30 +84,13 @@ public class SearchFriendData {
             return;
         }
         this.isLoading = true;
-        Log.d("Load", "new item");
-
-        // load new data from server
-        Random r = new Random();
-        String item = "";
-        for (int i = 0; i < 20; i++) {
-            dataBuff.add(new User(r.nextInt(), r.nextInt() + "@gmail.com", "fds", "user " + r.nextInt(), r.nextInt(), "male"));
-            Log.d("item", "new item");
+        if (isExhaustedBuff()){
+            getUsersFromServer();
         }
-
-        // update isLoading = false when load data success
-        this.isLoading = false;
     }
 
     public boolean isExhaustedBuff() {
-        return this.dataBuff.size() < 20;
-    }
-
-    public ArrayList<User> getDataBuff() {
-        return dataBuff;
-    }
-
-    public boolean isLoading() {
-        return isLoading;
+        return this.dataBuff.size() < 5;
     }
 
 }

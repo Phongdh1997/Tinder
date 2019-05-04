@@ -5,12 +5,11 @@ import android.util.Log;
 
 import com.example.rest.RetrofitClient;
 import com.example.rest.model.UserPojo;
+import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -115,6 +114,16 @@ public class User {
         this.gender = user.getGender();
     }
 
+    public User(SearchFriendService.User user) {
+        this.name = user.getName();
+        this.mail = user.getEmail();
+        this.age = user.getAge();
+        this.id = user.getId();
+        this.phone = user.getPhone();
+        this.decription = user.getDescription();
+        this.gender = user.getGender();
+    }
+
     public static User getLocalUser(SharedPreferences sharedPreferences) {
         User user = new User();
         int id = sharedPreferences.getInt(ID, INT_NULL);
@@ -182,6 +191,7 @@ public class User {
     }
 
     private void performRegister(String nonce) {
+        Log.d("password", password);
         UserPojo userPojo = new UserPojo(name, mail, password, gender, age, nonce);
         SignupService signupService = RetrofitClient.getSignupService();
         signupService.register(userPojo).enqueue(new Callback<SignupService.Message>() {
@@ -297,11 +307,15 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        byte[] bytesOfMessage = password.getBytes("UTF-8");
+    public void setPassword(String password) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] hashPass = md.digest(bytesOfMessage);
-        this.password = new String(hashPass);
+        md.update(password.getBytes());
+        byte[] digest = md.digest();
+        StringBuilder sb = new StringBuilder();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b & 0xff));
+        }
+        this.password = sb.toString();
     }
 
     public void setHashedPassword(String password) {

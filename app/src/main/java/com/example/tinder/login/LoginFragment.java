@@ -113,7 +113,12 @@ public class LoginFragment extends Fragment implements OnBackPressEvent {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userAuth.authenticate(txtEmail.getText().toString(), txtPassword.getText().toString());
+                try {
+                    userAuth.authenticate(txtEmail.getText().toString(), txtPassword.getText().toString());
+                } catch (Exception e) {
+                    Log.d("hash pass error", "error");
+                    e.printStackTrace();
+                }
             }
         });
     }
