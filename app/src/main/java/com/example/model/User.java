@@ -66,7 +66,26 @@ public class User {
     }
 
     public User() {
-
+        id = -1;
+        authen_token = "No Data";
+        phone = "No Data";
+        mail = "No Data";
+        password = "No Data";
+        name = "No Data";
+        decription = "No Data";
+        age = 0;
+        gender = "No Data";
+        longtitude = -1;
+        latitude = -1;
+        max_distance = -1;
+        min_age = -1;
+        max_age = -1;
+        is_active = false;
+        is_banned = false;
+        ban_reason = "No Data";
+        exprired_ban = "No Data";
+        created_at = "No Data";
+        updated_at = "No Data";
     }
 
     public User(String mail, String password, String name, int age, String gender) {
