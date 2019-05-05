@@ -21,8 +21,8 @@ import retrofit2.http.Query;
 
 public interface MessageService {
 
-    @GET("/api/messages/{}")
-    Call<String> getHistoricalMessage(@Query("conversation_id") Integer conversation_id);
+    @GET("/api/messages")
+    Call<MessageResponse> getHistoricalMessage(@Query("conversation_id") Integer conversation_id);
 
     class MessageResponse {
         @SerializedName("conversation_id")
@@ -31,7 +31,7 @@ public interface MessageService {
 
         @SerializedName("messages")
         @Expose
-        private ArrayList<MessageItem> messages;
+        private List<MessageItem> messages = null;
 
         public MessageResponse(String response) {
             try {
@@ -64,11 +64,15 @@ public interface MessageService {
 
         }
 
+        public void setConversation_id(String conversation_id) {
+            this.conversation_id = conversation_id;
+        }
+
         public String getConversation_id() {
             return this.conversation_id;
         }
 
-        public ArrayList<Message> getAllMessages() {
+        public List<Message> getAllMessages() {
             ArrayList<Message> results = new ArrayList<>();
             int num_item = messages.size();
 

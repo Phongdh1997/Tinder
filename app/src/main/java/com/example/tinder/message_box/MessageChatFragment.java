@@ -255,9 +255,9 @@ public class MessageChatFragment extends Fragment {
         MessageService messageService = RetrofitClient.getMessageService();
 
         messageService.getHistoricalMessage(conversation_id).enqueue(
-                new Callback<String>() {
+                new Callback<MessageService.MessageResponse>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
+                    public void onResponse(Call<MessageService.MessageResponse> call, Response<MessageService.MessageResponse> response) {
                         if (response.isSuccessful()) {
                             if (response.body() != null) {
                                 Log.i("Request body", response.body().toString());
@@ -269,13 +269,13 @@ public class MessageChatFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                    public void onFailure(Call<MessageService.MessageResponse> call, Throwable t) {
                         t.printStackTrace();
                     }
                 }
         );
 
-        // TODO: implement a scoket to the server to get historical message from conversation_id
+        // TODO: implement a socket to the server to get historical message from conversation_id
         ArrayList<Message> all_messages = new ArrayList<>();
         Message message;
         for (int i = 1; i < 10; i++) {

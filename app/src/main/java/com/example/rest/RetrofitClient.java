@@ -15,7 +15,7 @@ public class RetrofitClient {
     public static final String BASE_URL = "http://167.99.69.92";
 
     private static Retrofit getNewInstance(String baseUrl) {
-        if (retrofit==null) {
+        if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -32,14 +32,11 @@ public class RetrofitClient {
         return getNewInstance(BASE_URL).create(SigninService.class);
     }
 
-<<<<<<< HEAD
     public static MessageService getMessageService() {
         return getNewInstance(BASE_URL).create(MessageService.class);
     }
 
-=======
     public static SearchFriendService getSearchFriendService() {
         return getNewInstance(BASE_URL).create(SearchFriendService.class);
     }
->>>>>>> master
 }
