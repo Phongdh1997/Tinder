@@ -98,20 +98,20 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     }
 
     public void updateConversation(int conversation_id, String message) {
-        Conversation conversation = getConversationByID(conversation_id);
-        conversation.setLasted_message(message);
+        int position = getPositionByConversationID(conversation_id);
+        this.conversations.get(position).setLasted_message(message);
         notifyDataSetChanged();
     }
 
-    public Conversation getConversationByID(int conversation_id) {
-        Conversation result = null;
+    public int getPositionByConversationID(int conversation_id) {
+        int position = -1;
         for (int i = 0; i < getItemCount(); i++) {
             if (conversations.get(i).getId() == conversation_id) {
-                result = conversations.get(i);
+                position = i;
                 break;
             }
         }
-        return result;
+        return position;
     }
 
 }

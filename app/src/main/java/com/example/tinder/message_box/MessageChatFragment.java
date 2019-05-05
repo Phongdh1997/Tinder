@@ -26,18 +26,26 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.model.Message;
+import com.example.rest.RetrofitClient;
+import com.example.rest.service.MessageService;
 import com.example.tinder.R;
 import com.example.internet_connection.SocketIO;
 import com.example.tinder.authentication.UserAuth;
 import com.github.nkzawa.emitter.Emitter;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.navigation.NavType;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -137,7 +145,7 @@ public class MessageChatFragment extends Fragment {
                 messageText.getText().clear();
 
                 // set the focus on the last element
-                int last_position = messageChatAdapter.getItemCount()-1;
+                int last_position = messageChatAdapter.getItemCount() - 1;
                 if (last_position > 0) {
                     recyclerView.smoothScrollToPosition(last_position);
                 }
@@ -193,6 +201,12 @@ public class MessageChatFragment extends Fragment {
 
                         // add message to view
                         addMessage(sender_id, conversation_id, message);
+
+                        // set the focus on the last element
+                        int last_position = messageChatAdapter.getItemCount() - 1;
+                        if (last_position > 0) {
+                            recyclerView.smoothScrollToPosition(last_position);
+                        }
                     }
                 });
             }
@@ -237,14 +251,37 @@ public class MessageChatFragment extends Fragment {
 
     public ArrayList<Message> loadMessages() {
         int USER_ID = UserAuth.getInstance().getUser().getId();
-        ArrayList<Message> all_messages = new ArrayList<>();
+
+        MessageService messageService = RetrofitClient.getMessageService();
+
+        messageService.getHistoricalMessage(conversation_id).enqueue(
+                new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body() != null) {
+                                Log.i("Request body", response.body().toString());
+                                MessageService.MessageResponse messageResponse = new MessageService.MessageResponse(response.body().toString());
+                                Log.i("conversation_id", messageResponse.getConversation_id());
+                                Log.i("messages", messageResponse.getAllMessages().toString());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                }
+        );
+
         // TODO: implement a scoket to the server to get historical message from conversation_id
+        ArrayList<Message> all_messages = new ArrayList<>();
         Message message;
-        for(int i = 1; i < 10; i ++) {
+        for (int i = 1; i < 10; i++) {
             if (i % 2 == 0) {
                 message = new Message(USER_ID, conversation_id, "Message " + Integer.toString(i));
-            }
-            else {
+            } else {
                 // generate new message sent by other user to current user
                 message = new Message(USER_ID + 1, conversation_id, "Message " + Integer.toString(i));
             }

@@ -176,9 +176,10 @@ public class MessageBoxFragment extends Fragment {
                         } catch (JSONException e) {
                             return;
                         }
-
+                        Log.i("Message box fragment", message);
                         // update UI
                         messageListAdapter.updateConversation(conversation_id, message);
+                        messageListAdapter.notifyDataSetChanged();
                     }
                 });
             }
