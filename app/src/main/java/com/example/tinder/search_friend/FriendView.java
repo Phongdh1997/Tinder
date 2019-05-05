@@ -62,17 +62,9 @@ public class FriendView extends ConstraintLayout {
 
     private void addEvents() {
         // add event
-        Bundle user = new Bundle();
+        Bundle user = null;
         if (friend != null) {
-            user.putInt("id", friend.getId());
-            user.putString("authen_token", friend.getAuthen_token());
-            user.putString("phone", friend.getPhone());
-            user.putString("mail", friend.getMail());
-            user.putString("password", friend.getPassword());
-            user.putString("name", friend.getName());
-            user.putString("decription", friend.getDecription());
-            user.putString("gender", friend.getGender());
-            user.putInt("age", friend.getAge());
+            user = friend.toBundle();
         }
         btnDetailInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, user));
     }
