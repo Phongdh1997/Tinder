@@ -69,20 +69,12 @@ public class UserAuth implements User.OnLoginCallBack {
         return false;
     }
 
-    public void authenticate(String email, String password) {
+    public void authenticate(String email, String password) throws Exception {
         User user = new User();
         user.setMail(email);
-        try {
-            user.setPassword(password);
-            user.setOnLoginCallBack(this);
-            user.login();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            setState(INVALID_AUTHEN, NONE);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            setState(INVALID_AUTHEN, NONE);
-        }
+        user.setPassword(password);
+        user.setOnLoginCallBack(this);
+        user.login();
     }
 
     public void authencationWithToken(String token) {
