@@ -113,7 +113,12 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                User newUser = getUserFromUI();
+                User newUser = null;
+                try {
+                    newUser = getUserFromUI();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (newUser != null) {
                     newUser.setRegisterCallBack(new User.OnRegisterCallBack() {
                         @Override
@@ -137,7 +142,7 @@ public class SignUpFragment extends Fragment {
     /**
      * TODO: get user info from UI
      */
-    private User getUserFromUI() {
+    private User getUserFromUI() throws Exception {
         // TODO: get user infor from UI here
         String Gender;
         if(rdBtnMale.isChecked())
@@ -151,16 +156,8 @@ public class SignUpFragment extends Fragment {
         user.setGender(Gender);
         user.setMail(txtEmail.getText().toString());
         user.setAge(Integer.parseInt(txtAge.getText().toString()));
-        try {
-            user.setPassword(txtPass.getText().toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-        
+        user.setPassword(txtPass.getText().toString());
+
         return user;
     }
 

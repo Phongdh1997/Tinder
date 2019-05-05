@@ -1,6 +1,8 @@
 package com.example.rest;
 
+
 import com.example.rest.service.MessageService;
+import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 
@@ -30,8 +32,14 @@ public class RetrofitClient {
         return getNewInstance(BASE_URL).create(SigninService.class);
     }
 
+<<<<<<< HEAD
     public static MessageService getMessageService() {
         return getNewInstance(BASE_URL).create(MessageService.class);
     }
 
+=======
+    public static SearchFriendService getSearchFriendService() {
+        return getNewInstance(BASE_URL).create(SearchFriendService.class);
+    }
+>>>>>>> master
 }

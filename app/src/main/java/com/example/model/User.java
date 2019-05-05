@@ -5,12 +5,11 @@ import android.util.Log;
 
 import com.example.rest.RetrofitClient;
 import com.example.rest.model.UserPojo;
+import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +65,26 @@ public class User {
     }
 
     public User() {
-
+        id = -1;
+        authen_token = "No Data";
+        phone = "No Data";
+        mail = "No Data";
+        password = "No Data";
+        name = "No Data";
+        decription = "No Data";
+        age = 0;
+        gender = "No Data";
+        longtitude = -1;
+        latitude = -1;
+        max_distance = -1;
+        min_age = -1;
+        max_age = -1;
+        is_active = false;
+        is_banned = false;
+        ban_reason = "No Data";
+        exprired_ban = "No Data";
+        created_at = "No Data";
+        updated_at = "No Data";
     }
 
     public User(String mail, String password, String name, int age, String gender) {
@@ -93,6 +111,17 @@ public class User {
         this.id = user.getId();
         this.phone = user.getPhone();
         this.decription = user.getDescription();
+        this.gender = user.getGender();
+    }
+
+    public User(SearchFriendService.User user) {
+        this.name = user.getName();
+        this.mail = user.getEmail();
+        this.age = user.getAge();
+        this.id = user.getId();
+        this.phone = user.getPhone();
+        this.decription = user.getDescription();
+        this.gender = user.getGender();
     }
 
     public static User getLocalUser(SharedPreferences sharedPreferences) {
@@ -110,17 +139,23 @@ public class User {
         user.setPhone(sharedPreferences.getString(PHONE, ""));
         user.setDecription(sharedPreferences.getString(DESCRIPTION, ""));
         user.setAuthen_token(sharedPreferences.getString(AUTHEN_TOKEN, ""));
+        user.setIs_active(sharedPreferences.getBoolean(IS_ACTIVE, false));
+        user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
         return user;
     }
 
     public void storeToLocal(SharedPreferences.Editor editor) {
+        editor.putInt(ID, this.id);
         editor.putString(MAIL, this.mail);
         editor.putString(PASSWORD, this.password);
+        editor.putString(NAME, this.name);
         editor.putInt(AGE, this.age);
-        editor.putInt(ID, this.id);
+        editor.putString(GENDER, this.gender);
         editor.putString(PHONE, this.phone);
         editor.putString(DESCRIPTION, this.decription);
         editor.putString(AUTHEN_TOKEN, this.authen_token);
+        editor.putBoolean(IS_ACTIVE, this.is_active);
+        editor.putBoolean(IS_BANNED, this.is_banned);
         editor.apply();
     }
 
@@ -153,6 +188,7 @@ public class User {
     }
 
     private void performRegister(String nonce) {
+        Log.d("password", password);
         UserPojo userPojo = new UserPojo(name, mail, password, gender, age, nonce);
         SignupService signupService = RetrofitClient.getSignupService();
         signupService.register(userPojo).enqueue(new Callback<SignupService.Message>() {
@@ -268,11 +304,15 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        byte[] bytesOfMessage = password.getBytes("UTF-8");
+    public void setPassword(String password) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] hashPass = md.digest(bytesOfMessage);
-        this.password = new String(hashPass);
+        md.update(password.getBytes());
+        byte[] digest = md.digest();
+        StringBuilder sb = new StringBuilder();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b & 0xff));
+        }
+        this.password = sb.toString();
     }
 
     public void setHashedPassword(String password) {
