@@ -28,9 +28,13 @@ import com.example.rest.service.PostImageService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -265,7 +269,15 @@ public class EditInforFragment extends Fragment {
     }
 
     private void saveImageToSever(String picturePath) {
-            postImageService.upImage(new PostImageService.UpImageBody(picturePath,1)).enqueue(new Callback<PostImageService.ResponseMessage>() {
+        File file = new File(picturePath);
+        RequestBody num = RequestBody.create(MediaType.parse("text/plain"),"1");
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+            // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+            postImageService.upImage(user.getAuthen_token(),body,num).enqueue(new Callback<PostImageService.ResponseMessage>() {
                 @Override
                 public void onResponse(Call<PostImageService.ResponseMessage> call, Response<PostImageService.ResponseMessage> response) {
                     Toast.makeText(getContext(),"up success", Toast.LENGTH_LONG).show();
