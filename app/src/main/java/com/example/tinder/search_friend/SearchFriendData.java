@@ -9,7 +9,6 @@ import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,10 +20,12 @@ public class SearchFriendData {
 
     private List<SearchFriendService.User> dataBuff;
     private boolean isLoading;
+    private boolean isOutOfData;
 
     private SearchFriendData() {
         dataBuff = new ArrayList<>();
         isLoading = false;
+        isOutOfData = false;
         getUsersFromServer();
     }
 
@@ -43,6 +44,10 @@ public class SearchFriendData {
             public void onResponse(Call<List<SearchFriendService.User>> call, Response<List<SearchFriendService.User>> response) {
                 if (response.body() != null) {
                     SearchFriendData.this.dataBuff = response.body();
+                    Log.d("lise size", " = " + response.body().size());
+                    if (response.body().size() < 6) {
+                        SearchFriendData.this.isOutOfData = true;
+                    }
                 }
                 SearchFriendData.this.isLoading = false;
                 Log.d("get Search Friend", "code: " + response.code());
@@ -68,6 +73,8 @@ public class SearchFriendData {
             newUser = new User(this.dataBuff.get(0));
             Log.d("id", "id" + newUser.getId());
             this.dataBuff.remove(0);
+        } else {
+            newUser = new User();
         }
         if (this.isExhaustedBuff()) {
             this.loadData();
@@ -80,7 +87,7 @@ public class SearchFriendData {
     }
 
     public void loadData() {
-        if (this.isLoading) {
+        if (this.isLoading || this.isOutOfData) {
             return;
         }
         this.isLoading = true;
