@@ -1,12 +1,17 @@
 package com.example.tinder;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,6 +53,9 @@ public class MainActivity extends AppCompatActivity
 
     private UserAuth userAuth;
 
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +69,45 @@ public class MainActivity extends AppCompatActivity
         addControls();
         addEvents();
         checkLogin();
+
+        getLocationUser();
+    }
+
+    private void getLocationUser() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    Toast.makeText(getBaseContext(), "onChangeLocation: " + location, Toast.LENGTH_LONG).show();
+                    if (userAuth.getState() != UserAuth.AUTHENTICATED) {
+                        Double longitude = location.getLongitude();
+                        Double latitude = location.getLatitude();
+                        PostCurrLocation(longitude.toString(), latitude.toString());
+                    }
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+            return;
+        }
+    }
+
+    private void PostCurrLocation(String longitude, String latitude) {
+        // to do
     }
 
     private void checkLogin() {
