@@ -3,6 +3,7 @@ package com.example.tinder.authentication;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.internet_connection.SocketIO;
 import com.example.model.User;
 import com.example.rest.service.SigninService;
 
@@ -22,8 +23,18 @@ public class UserAuth implements User.OnLoginCallBack {
 
     private int state;
     private User user;
+    private SocketIO socketIO;
 
     private static UserAuth userAuth;
+
+    public SocketIO getSocketIO() {
+        return socketIO;
+    }
+
+    public void setSocketIO(SocketIO socketIO) {
+        this.socketIO = socketIO;
+
+    }
 
     public int getState() {
         return state;
@@ -92,6 +103,8 @@ public class UserAuth implements User.OnLoginCallBack {
         this.user = new User(response.getUser());
         this.user.setAuthen_token(response.getAuthToken());
         this.onFirstAuthenListener.onAuthenSuccess(response.getAuthToken());
+        // when login success, init SocketIO for using latter in chat, like, ...
+        this.setSocketIO(new SocketIO("http://167.99.69.92:8889", user.getAuthen_token()));
         setState(AUTHENTICATED, NONE);
     }
 

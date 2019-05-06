@@ -8,7 +8,16 @@ public class Conversation {
     private String updated_at;
     private String deleted_at;
 
+    // add lasted message to update UI in MatchListApdapter
+    private String lasted_message;
+
     public Conversation(int creator_id, int member_id) {
+        this.creator_id = creator_id;
+        this.member_id = member_id;
+    }
+
+    public Conversation(int id, int creator_id, int member_id) {
+        this.id = id;
         this.creator_id = creator_id;
         this.member_id = member_id;
     }
@@ -59,5 +68,13 @@ public class Conversation {
 
     public void setDeleted_at(String deleted_at) {
         this.deleted_at = deleted_at;
+    }
+
+    public void setLasted_message(String lasted_message) {
+        this.lasted_message = lasted_message;
+    }
+
+    public String getLasted_message() {
+        return lasted_message;
     }
 }

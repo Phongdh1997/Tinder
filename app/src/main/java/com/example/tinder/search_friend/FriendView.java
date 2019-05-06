@@ -8,11 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.navigation.Navigation;
 
+import com.example.internet_connection.SocketIO;
 import com.example.model.User;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class FriendView extends ConstraintLayout {
 
@@ -20,6 +26,7 @@ public class FriendView extends ConstraintLayout {
 
     private TextView txtName;
     private ImageButton btnDetailInfo;
+    private SocketIO mSocket;
 
     public User getFriend() {
         return friend;
@@ -34,6 +41,9 @@ public class FriendView extends ConstraintLayout {
         super(context);
         this.friend = friend;
         initView();
+
+        // init SocketIO
+        mSocket = UserAuth.getInstance().getSocketIO();
     }
 
     private void initView() {
@@ -87,8 +97,21 @@ public class FriendView extends ConstraintLayout {
         }
         int friendId = friend.getId();
         Log.d("friend", "id = " + friendId);
+        Toast.makeText(getContext(), "Like event", Toast.LENGTH_SHORT).show();
 
-        // TODO: call API like friend
+        JSONObject data = new JSONObject();
+        try {
+            // current user_id
+            data.put("liker_id", currUserId);
+
+            // liked user_id
+            data.put("liked_id", friendId);
+        } catch (JSONException e) {
+            Log.e("JSON exception", e.toString());
+        }
+
+
+        mSocket.push_data(data, "like");
     }
 
 }

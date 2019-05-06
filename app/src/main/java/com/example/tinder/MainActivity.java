@@ -19,6 +19,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.common.OnBackPressEvent;
+import com.example.internet_connection.SocketIO;
 import com.example.model.User;
 import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.editinfor.EditInforFragment;
@@ -113,12 +114,16 @@ public class MainActivity extends AppCompatActivity
     private void checkLogin() {
         // check login
         User user = User.getLocalUser(getPreferences(MODE_PRIVATE));
+        // first time login
         if (user == null) {
             userAuth.setState(UserAuth.UN_AUTHENTICATED, UserAuth.NONE);
             Log.d("authen", "continue");
         } else {
+            // get information from c
             userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
             userAuth.setUser(user);
+            String authenToken = user.getAuthen_token();
+            userAuth.setSocketIO(new SocketIO("http://167.99.69.92:8889", authenToken));
         }
 
 

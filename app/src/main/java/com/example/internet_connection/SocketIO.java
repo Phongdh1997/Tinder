@@ -17,11 +17,19 @@ public class SocketIO {
         // empty constructor
     }
 
-    public SocketIO(String URL) {
+    public SocketIO(String URL, String authenToken) {
         try {
-            _socket = IO.socket(URL);
+            IO.Options opts = new IO.Options();
+            opts.query = "token=" + authenToken;
+            _socket = IO.socket(URL, opts);
+            Boolean is_connected = establish_connection();
+            if (!is_connected)
+                throw new ArithmeticException("Error when create a socket with the server.");
         }
         catch (URISyntaxException e) {
+            Log.e("Exception in SocketIO", e.toString());
+        }
+        catch (ArithmeticException e) {
             Log.e("Exception in SocketIO", e.toString());
         }
         catch (Exception e) {
@@ -44,9 +52,9 @@ public class SocketIO {
         }
     }
 
-    public boolean push_data(JSONObject message, String event_name) {
+    public boolean push_data(JSONObject data, String event_name) {
         try {
-            _socket.emit(event_name, message);
+            _socket.emit(event_name, data);
             return true;
         } catch (Exception e) {
             Log.e("Exception in SocketIO", e.toString());
