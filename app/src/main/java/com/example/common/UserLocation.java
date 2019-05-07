@@ -58,6 +58,7 @@ public class UserLocation implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d("message", "location changed");
         if (location != null) {
             this.lastLocation = location;
             if (onLastPositionChanged != null) {

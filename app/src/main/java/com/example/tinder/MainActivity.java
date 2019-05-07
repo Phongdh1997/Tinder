@@ -16,6 +16,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.common.OnBackPressEvent;
@@ -48,26 +51,19 @@ public class MainActivity extends AppCompatActivity
         MessageChatFragment.OnFragmentInteractionListener,
         SignUpFragment.OnFragmentInteractionListener {
 
-    public static final int RC_REQUEST_PERMISSION = 999;
-    private final String USER_TOKEN = "USER_TOKEN";
-    private final String USER_TOKEN_DEFAULT = "NULL";
-
-    private UserAuth userAuth;
     private UserLocation userLocation;
+
+    private Button btnGet;
+    private TextView txtLatitude;
+    private TextView txtLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1
-                && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, RC_REQUEST_PERMISSION);
-        }
-
         addControls();
         addEvents();
-        checkLogin();
     }
 
     private void checkLocationPermission () {
@@ -81,85 +77,30 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getUserLocation() {
-        Log.d("Location", "init location");
-
-        userLocation = new UserLocation((LocationManager) getSystemService(Context.LOCATION_SERVICE));
-        userLocation.listenLocationUpdate(LocationManager.GPS_PROVIDER);
         Location location = userLocation.getLastLocation(LocationManager.GPS_PROVIDER);
         if (location!= null) {
-            Log.d("latitude", String.valueOf(location.getLatitude()));
-            Log.d("longitude", String.valueOf(location.getLongitude()));
+            txtLatitude.setText(String.valueOf(location.getLatitude()));
+            txtLongitude.setText(String.valueOf(location.getLongitude()));
         } else {
-            Log.d("location", "not found");
+            txtLatitude.setText("not found");
+            txtLongitude.setText("not found");
         }
-    }
-
-    private void checkLogin() {
-        // check login
-        User user = User.getLocalUser(getPreferences(MODE_PRIVATE));
-        if (user == null) {
-            userAuth.setState(UserAuth.UN_AUTHENTICATED, UserAuth.NONE);
-            Log.d("authen", "continue");
-        } else {
-            userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
-            userAuth.setUser(user);
-        }
-
-
     }
 
     private void addEvents() {
-
-    }
-
-    private void updateUI() {
-
+        btnGet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkLocationPermission();
+            }
+        });
     }
 
     private void addControls() {
-        userAuth = UserAuth.getInstance();
-
-        // add controls
-
-
-        // listen authen state changed
-        userAuth.addStateObserver(new UserAuth.StateObserver() {
-            @Override
-            public void onStateChange(int state, int messageCode) {
-                switch (state){
-                    case UserAuth.AUTHENTICATED:
-                        checkLocationPermission();
-                        updateUI();
-                        break;
-                    case UserAuth.UN_AUTHENTICATED:
-                        Navigation.findNavController(MainActivity.this, R.id.profileNavHostFragment).navigate(R.id.action_homeFragment_to_loginFragment);
-                    default:
-                        break;
-                }
-            }
-        });
-        userAuth.setOnFirstAuthenListener(new UserAuth.OnFirstAuthenListener() {
-            @Override
-            public void onAuthenSuccess(String authenToken) {
-                saveAthenToken(authenToken);
-            }
-        });
-    }
-
-    private void saveAthenToken(String authenToken) {
-        User user = UserAuth.getInstance().getUser();
-        user.storeToLocal(getPreferences(MODE_PRIVATE).edit());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_REQUEST_PERMISSION) {
-            if (resultCode != RESULT_OK) {
-                Toast.makeText(this, "App can't run without READ EXTERNAL STORAGE permission", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }
+        userLocation = new UserLocation((LocationManager) getSystemService(Context.LOCATION_SERVICE));
+        txtLatitude = findViewById(R.id.txtLatitude);
+        txtLongitude = findViewById(R.id.txtLongitude);
+        btnGet = findViewById(R.id.btnGet);
     }
 
     @Override
@@ -182,22 +123,5 @@ public class MainActivity extends AppCompatActivity
             System.exit(0);
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        if (fragments.size() > 0) {
-            NavHostFragment navHostFragment = (NavHostFragment) fragments.get(0);
-            Fragment currFragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
-            if (currFragment instanceof OnBackPressEvent) {
-                Log.d("child call", "back");
-                if (!((OnBackPressEvent) currFragment).onBackPress()) {
-                    return;
-                }
-            }
-        }
-        Log.d("parent", "press");
-        super.onBackPressed();
     }
 }
