@@ -7,6 +7,16 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.model.User;
+import com.example.rest.RetrofitClient;
+import com.example.rest.model.MessageError;
+import com.example.rest.service.LocationService;
+import com.example.tinder.authentication.UserAuth;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class UserLocation implements LocationListener {
 
     public static final int LOCATION_PERMISSION_REQUEST = 100;
@@ -56,9 +66,30 @@ public class UserLocation implements LocationListener {
         return location;
     }
 
+    public static void updateLocationToServer(Location location) {
+        if (location == null || UserAuth.getInstance().getUser() == null) {
+            return;
+        }
+        Log.d("update location", "latitude: " + location.getLatitude() + "longitude: " + location.getLongitude());
+        RetrofitClient.getLocationService()
+                .updateLocation(new LocationService.LocationRequestBody(location.getLatitude(), location.getLongitude()), UserAuth.getInstance().getUser().getHeaderAuthenToken())
+                .enqueue(new Callback<MessageError>() {
+                    @Override
+                    public void onResponse(Call<MessageError> call, Response<MessageError> response) {
+                        Log.d("location update", "code " + response.code());
+                    }
+
+                    @Override
+                    public void onFailure(Call<MessageError> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
+            updateLocationToServer(location);
             this.lastLocation = location;
             if (onLastPositionChanged != null) {
                 onLastPositionChanged.onPositionChanged(location);

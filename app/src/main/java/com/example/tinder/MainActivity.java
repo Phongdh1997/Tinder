@@ -76,19 +76,18 @@ public class MainActivity extends AppCompatActivity
                     new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
                     UserLocation.LOCATION_PERMISSION_REQUEST);
         } else {
-            getUserLocation();
+            initLocation();
         }
     }
 
-    private void getUserLocation() {
+    private void initLocation() {
         Log.d("Location", "init location");
 
         userLocation = new UserLocation((LocationManager) getSystemService(Context.LOCATION_SERVICE));
         userLocation.listenLocationUpdate(LocationManager.GPS_PROVIDER);
         Location location = userLocation.getLastLocation(LocationManager.GPS_PROVIDER);
         if (location!= null) {
-            Log.d("latitude", String.valueOf(location.getLatitude()));
-            Log.d("longitude", String.valueOf(location.getLongitude()));
+            UserLocation.updateLocationToServer(location);
         } else {
             Log.d("location", "not found");
         }
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == UserLocation.LOCATION_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getUserLocation();
+                initLocation();
             }
         } else {
             Log.e("Location", "Location Listener permission denied");
