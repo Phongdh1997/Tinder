@@ -86,11 +86,7 @@ public class MainActivity extends AppCompatActivity
         userLocation = new UserLocation((LocationManager) getSystemService(Context.LOCATION_SERVICE));
         userLocation.listenLocationUpdate(LocationManager.GPS_PROVIDER);
         Location location = userLocation.getLastLocation(LocationManager.GPS_PROVIDER);
-        if (location!= null) {
-            UserLocation.updateLocationToServer(location);
-        } else {
-            Log.d("location", "not found");
-        }
+        UserLocation.updateLocationToServer(location);
     }
 
     private void checkLogin() {

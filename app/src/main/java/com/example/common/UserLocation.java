@@ -59,6 +59,9 @@ public class UserLocation implements LocationListener {
         if (locationManager != null) {
             try {
                 location = locationManager.getLastKnownLocation(providerType);
+                if (lastLocation == null) {
+                    lastLocation = location;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
