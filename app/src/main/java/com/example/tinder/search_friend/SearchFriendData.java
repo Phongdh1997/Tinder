@@ -19,6 +19,7 @@ public class SearchFriendData {
     private static SearchFriendData searchFriendData;
 
     private List<SearchFriendService.User> dataBuff;
+    private int index;
     private boolean isLoading;
     private boolean isOutOfData;
 
@@ -33,11 +34,20 @@ public class SearchFriendData {
         return listeners.remove(listener);
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void back(int step) {
+        index -= step;
+    }
+
     private SearchFriendData() {
         dataBuff = new ArrayList<>();
         isLoading = false;
         isOutOfData = false;
         listeners = new ArrayList<>();
+        index = 0;
     }
 
     public static SearchFriendData getInstance() {
@@ -63,6 +73,7 @@ public class SearchFriendData {
                 if (response.body() != null) {
                     SearchFriendData.this.dataBuff = response.body();
                     SearchFriendData.this.isLoading = false;
+                    SearchFriendData.this.index = 0;
                     Log.d("lise size", " = " + response.body().size());
                     if (response.body().size() < 6) {
                         SearchFriendData.this.isOutOfData = true;
@@ -89,9 +100,9 @@ public class SearchFriendData {
 
         // set first item to view and remove it from buffer
         if (!this.isBufferEmpty()) {
-            newUser = new User(this.dataBuff.get(0));
-            Log.d("get User data", "id" + newUser.getId());
-            this.dataBuff.remove(0);
+            newUser = new User(this.dataBuff.get(index));
+            Log.d("get User data", "id" + newUser.getId() + "; index = " + index);
+            index++;
         }
         if (this.isExhaustedBuff()) {
             this.loadData();
@@ -100,7 +111,7 @@ public class SearchFriendData {
     }
 
     public boolean isBufferEmpty() {
-        return this.dataBuff.size() < 1;
+        return index >= this.dataBuff.size();
     }
 
     public void loadData() {
@@ -112,7 +123,7 @@ public class SearchFriendData {
     }
 
     public boolean isExhaustedBuff() {
-        return this.dataBuff.size() < 5;
+        return this.dataBuff.size() - index < 5;
     }
 
     interface OnDataLoadDoneListener {

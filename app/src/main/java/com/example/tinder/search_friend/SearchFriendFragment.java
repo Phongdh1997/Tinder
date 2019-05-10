@@ -37,9 +37,8 @@ public class SearchFriendFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
     private ViewPager pgSearchFriend;
-
+    private boolean isFirst;
     private ImageButton btnLike;
 
     public SearchFriendFragment() {
@@ -67,6 +66,7 @@ public class SearchFriendFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isFirst = true;
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -89,7 +89,10 @@ public class SearchFriendFragment extends Fragment {
     }
 
     private void addControls(View view) {
-        Log.d("init view", "search friend");
+        if (!isFirst) {
+            SearchFriendData.getInstance().back(5);
+        }
+        isFirst = false;
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
