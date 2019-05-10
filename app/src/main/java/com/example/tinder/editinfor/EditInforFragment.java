@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -19,7 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.model.User;
@@ -29,12 +32,18 @@ import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,15 +67,16 @@ public class EditInforFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private List<String> arrayImage = new ArrayList<>();
-    private List<ImageView> arrayImg = new ArrayList<>();
-    private List<Button> arrayButton = new ArrayList<>();
+    private static List<ImageView> arrayImg = new ArrayList<>();
+    private static List<Button> arrayButton = new ArrayList<>();
     private int currSelect = 0;
-    private Button btnDelete;
     private Toolbar toolbar;
     private int RESULT_LOAD_IMG = 1234;
-    private int RC_REQUEST_PERMISSION = 999;
     private PostImageService postImageService;
-    private User user;
+    private User user = UserAuth.getInstance().getUser();
+    private EditText edtPhone, edtDcription;
+    private RadioButton rdbMale,rdbFemale;
+    private String decription, phone, gender;
 
     private OnFragmentInteractionListener mListener;
 
@@ -114,7 +124,6 @@ public class EditInforFragment extends Fragment {
 
         addControls(view);
         addEvent(view);
-        user = UserAuth.getInstance().getUser();
 
 
 
@@ -126,6 +135,7 @@ public class EditInforFragment extends Fragment {
         arrayButton.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currSelect = 0;
                 if(arrayImg.get(0).getDrawable() == null){
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                     photoPickerIntent.setType("image/*");
@@ -145,6 +155,7 @@ public class EditInforFragment extends Fragment {
         arrayButton.get(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currSelect =1;
                 if(arrayImg.get(1).getDrawable() == null){
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                     photoPickerIntent.setType("image/*");
@@ -158,6 +169,7 @@ public class EditInforFragment extends Fragment {
         arrayButton.get(2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currSelect=2;
                 if(arrayImg.get(2).getDrawable() == null){
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                     photoPickerIntent.setType("image/*");
@@ -171,6 +183,7 @@ public class EditInforFragment extends Fragment {
         arrayButton.get(3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currSelect=3;
                 if(arrayImg.get(3).getDrawable() == null){
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                     photoPickerIntent.setType("image/*");
@@ -184,6 +197,7 @@ public class EditInforFragment extends Fragment {
         arrayButton.get(4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currSelect=4;
                 if(arrayImg.get(4).getDrawable() == null){
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                     photoPickerIntent.setType("image/*");
@@ -197,6 +211,7 @@ public class EditInforFragment extends Fragment {
         arrayButton.get(5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currSelect=5;
                 if(arrayImg.get(5).getDrawable() == null){
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                     photoPickerIntent.setType("image/*");
@@ -234,15 +249,32 @@ public class EditInforFragment extends Fragment {
         arrayButton.add((Button) view.findViewById(R.id.buttonAdd4));
         arrayButton.add((Button) view.findViewById(R.id.buttonAdd5));
 
+        edtDcription = view.findViewById(R.id.editTextDecription);
+        edtPhone = view.findViewById(R.id.editTextSDT);
+        rdbFemale = view.findViewById(R.id.radioButtonFemale);
+        rdbMale = view.findViewById(R.id.radioButtonMale);
+
 
         toolbar =  view.findViewById(R.id.toolbar3);
+        getDataToUI();
 
-//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
-//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
-//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
-//        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
-        setImage();
+        new LoadImageFromSever(0).execute("http://167.99.69.92/upload/"+user.getId()+"_image1.jpg");
+        new LoadImageFromSever(1).execute("http://167.99.69.92/upload/"+user.getId()+"_image2.jpg");
+        new LoadImageFromSever(2).execute("http://167.99.69.92/upload/"+user.getId()+"_image3.jpg");
+        new LoadImageFromSever(3).execute("http://167.99.69.92/upload/"+user.getId()+"_image4.jpg");
+        new LoadImageFromSever(4).execute("http://167.99.69.92/upload/"+user.getId()+"_image5.jpg");
+        new LoadImageFromSever(5).execute("http://167.99.69.92/upload/"+user.getId()+"_image6.jpg");
         postImageService = RetrofitClient.getPostImageService();
+    }
+
+    private void getDataToUI() {
+        if(user.getPhone() != "")
+            edtPhone.setText(user.getPhone());
+        if(user.getDecription() != "")
+            edtDcription.setText(user.getDecription());
+        if(user.getGender() == "male")
+            rdbMale.setChecked(true);
+        else rdbFemale.setChecked(true);
     }
 
     @Override
@@ -262,38 +294,33 @@ public class EditInforFragment extends Fragment {
 
             arrayImage.add(picturePath);
             saveImageToSever(picturePath);
-            setImage();
-//            Toast.makeText(getActivity(),arrayImage.size()+" ",Toast.LENGTH_SHORT).show();
 
         }
     }
 
-    private void saveImageToSever(String picturePath) {
+    private void saveImageToSever(final String picturePath) {
         File file = new File(picturePath);
-        RequestBody num = RequestBody.create(MediaType.parse("text/plain"),"1");
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        int seclect = currSelect+1;
+        RequestBody num = RequestBody.create(MediaType.parse("text/plain"),String.valueOf(seclect));
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
 
-            // MultipartBody.Part is used to send also the actual file name
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
-            postImageService.upImage(user.getAuthen_token(),body,num).enqueue(new Callback<PostImageService.ResponseMessage>() {
-                @Override
-                public void onResponse(Call<PostImageService.ResponseMessage> call, Response<PostImageService.ResponseMessage> response) {
-                    Toast.makeText(getContext(),"up success", Toast.LENGTH_LONG).show();
-                    if(response.isSuccessful()){
-                        Toast.makeText(getContext(),response.body().getMessage(),Toast.LENGTH_LONG).show();
-                    }else {
-                        Toast.makeText(getContext(),response.code()+"",Toast.LENGTH_LONG).show();
-                    }
+        postImageService.upImage("Barer " + user.getAuthen_token(),num,body).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Up Success", Toast.LENGTH_LONG).show();
+                    arrayImg.get(currSelect).setImageURI(Uri.parse(picturePath));
                 }
+                else
+                    Toast.makeText(getContext(),"Up Fail",Toast.LENGTH_LONG).show();
+            }
 
-                @Override
-                public void onFailure(Call<PostImageService.ResponseMessage> call, Throwable t) {
-                    t.printStackTrace();
-                    Toast.makeText(getContext(),"fail",Toast.LENGTH_LONG).show();
-                }
-            });
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(),"Internet error",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private static Bitmap decodeResource(Resources res, int id) {
@@ -348,6 +375,43 @@ public class EditInforFragment extends Fragment {
             for (int i = arrayImage.size(); i < 6; i++){
                 arrayImg.get(i).setImageDrawable(null);
                 arrayButton.get(i).setBackgroundResource(R.drawable.add_image);
+            }
+
+        }
+    }
+
+    private static class LoadImageFromSever extends AsyncTask<String,Void,Bitmap>{
+        Bitmap bitmap = null;
+        Integer num = null;
+
+        public LoadImageFromSever(int num) {
+            this.num = num;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            try {
+                URL url = new URL(strings[0]);
+                InputStream inputStream = url.openConnection().getInputStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            if(bitmap != null) {
+                arrayImg.get(num).setImageBitmap(bitmap);
+                arrayButton.get(num).setBackgroundResource(R.drawable.delete_image);
             }
         }
     }

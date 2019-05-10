@@ -1,6 +1,7 @@
 package com.example.rest;
 
 import com.example.rest.service.PostImageService;
+import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 
@@ -30,7 +31,11 @@ public class RetrofitClient {
         return getNewInstance(BASE_URL).create(SigninService.class);
     }
 
-    public static PostImageService getPostImageService(){
+    public static PostImageService getPostImageService() {
         return getNewInstance(BASE_URL).create(PostImageService.class);
+    }
+
+    public static SearchFriendService getSearchFriendService() {
+        return getNewInstance(BASE_URL).create(SearchFriendService.class);
     }
 }

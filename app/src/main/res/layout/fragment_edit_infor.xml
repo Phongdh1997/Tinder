@@ -231,21 +231,21 @@
                 app:riv_tile_mode="clamp" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/textViewSDT"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="30dp"
                 android:background="#F5F5E4"
                 android:gravity="center_vertical"
-                android:text="Nơi Làm Việc"
                 android:paddingLeft="8dp"
+                android:text="Số Điện Thoại"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/editTextSDT"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="8dp"
@@ -253,73 +253,45 @@
                 android:background="@null"
                 android:ems="10"
                 android:gravity="center_vertical"
-                android:hint="Nơi làm việc"
+                android:hint="Số điện thoại..."
                 android:inputType="textPersonName"
                 android:text="Trường Đại Học Bách Khoa TPHCM"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewSDT" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/textViewGender"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:background="#F5F5E4"
                 android:gravity="center_vertical"
-                android:text="Thành Phố"
-                android:textStyle="bold"
                 android:paddingLeft="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:hint="Thành phố..."
-                android:inputType="textPersonName"
-                android:text="Sài Gòn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:background="#F5F5E4"
-                android:gravity="center_vertical"
                 android:text="Giới tính"
-                android:paddingLeft="8dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText3" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextSDT" />
 
             <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" >
+                app:layout_constraintTop_toBottomOf="@+id/textViewGender">
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/radioButtonMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Nam" />
 
                 <RadioButton
-                    android:id="@+id/radioButton"
+                    android:id="@+id/radioButtonFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -338,6 +310,19 @@
                 <!--app:layout_constraintStart_toStartOf="@+id/guideline13"-->
                 <!--app:layout_constraintTop_toTopOf="@+id/guideline10"-->
                 <!--/>-->
+
+            <TextView
+                android:id="@+id/textViewDecription"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="#F5F5E4"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:textStyle="bold"
+                android:text="Giới Thiệu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
             <Button
                 android:id="@+id/buttonAdd1"
@@ -395,6 +380,27 @@
                 android:background="@drawable/add_image"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
                 app:layout_constraintTop_toTopOf="@+id/guideline10" />
+
+            <EditText
+                android:id="@+id/editTextDecription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="top|left"
+                android:hint="Giới thiệu..."
+                android:inputType="textMultiLine"
+                android:lines="6"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDecription" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
