@@ -393,6 +393,10 @@ public class User {
         return authen_token;
     }
 
+    public String getHeaderAuthenToken() {
+        return "Barer " + this.authen_token;
+    }
+
     public void setAuthen_token(String authen_token) {
         this.authen_token = authen_token;
     }
