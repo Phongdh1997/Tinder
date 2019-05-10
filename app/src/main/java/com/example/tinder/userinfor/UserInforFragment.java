@@ -53,7 +53,9 @@ public class UserInforFragment extends Fragment {
     ImageViewAdapter imageViewAdapter;
 
     private TextView txtNameAge;
-    private Bundle userBundle;
+    private User userData;
+    private TextView txtDescription;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -108,9 +110,10 @@ public class UserInforFragment extends Fragment {
 
     private void addControls(View view) {
         txtNameAge = view.findViewById(R.id.txtNameAge);
+        txtDescription = view.findViewById(R.id.txtDescription);
 
-        userBundle = getArguments();
-        if (userBundle != null) {
+        userData = User.getUserFromBundle(getArguments());
+        if (userData != null) {
             updateUI();
         }
 
@@ -124,12 +127,13 @@ public class UserInforFragment extends Fragment {
     }
 
     private void updateUI() {
-        String nameAge = userBundle.getString("name") + ", " + userBundle.getInt("age");
+        String nameAge = userData.getName() + ", " + userData.getAge();
         txtNameAge.setText(nameAge);
+        txtDescription.setText(userData.getDecription());
     }
 
     private void addEvents(View view) {
-        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, userBundle));
+        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, getArguments()));
     }
 
     private static Bitmap decodeResource(Resources res, int id) {

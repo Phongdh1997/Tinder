@@ -1,6 +1,7 @@
 package com.example.model;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.example.rest.RetrofitClient;
@@ -103,6 +104,17 @@ public class User {
         this.age = age;
         this.gender = gender;
         this.id = id;
+    }
+
+    public User(int id, String mail, String password, String name, int age, String gender, String phone, String decription) {
+        this.mail = mail;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.id = id;
+        this.phone = phone;
+        this.decription = decription;
     }
 
     public User(SigninService.User user) {
@@ -278,7 +290,36 @@ public class User {
         void onLoginFail(int error);
     }
 
-    // getter / setter
+    public Bundle toBundle() {
+        Bundle user = new Bundle();
+        user.putInt("id", id);
+        user.putString("authen_token", authen_token);
+        user.putString("phone", phone);
+        user.putString("mail", mail);
+        user.putString("password", password);
+        user.putString("name", name);
+        user.putString("decription", decription);
+        user.putString("gender", gender);
+        user.putInt("age", age);
+        return user;
+    }
+
+    public static User getUserFromBundle(Bundle bundle) {
+        if (bundle == null) {
+            return null;
+        }
+        User user = new User(
+                bundle.getInt("id"),
+                bundle.getString("mail"),
+                bundle.getString("password"),
+                bundle.getString("name"),
+                bundle.getInt("age"),
+                bundle.getString("gender"),
+                bundle.getString("phone"),
+                bundle.getString("decription"));
+        user.setAuthen_token(bundle.getString("authen_token"));
+        return user;
+    }
 
     public int getId() {
         return id;

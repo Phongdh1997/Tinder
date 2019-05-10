@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.model.User;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
 import androidx.navigation.Navigation;
 import it.xabaras.android.viewpagerindicator.widget.ViewPagerIndicator;
@@ -89,7 +91,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-        imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
+        User currUser = UserAuth.getInstance().getUser();
+        if (currUser == null) {
+            currUser = new User();
+        }
+        imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, currUser.toBundle()));
     }
 
     private void addControls(View view) {
