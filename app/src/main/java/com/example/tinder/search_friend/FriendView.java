@@ -1,5 +1,6 @@
 package com.example.tinder.search_friend;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -14,7 +15,8 @@ import androidx.navigation.Navigation;
 import com.example.model.User;
 import com.example.tinder.R;
 
-public class FriendView extends ConstraintLayout {
+@SuppressLint("ViewConstructor")
+public class FriendView extends ConstraintLayout implements SearchFriendData.OnDataLoadDoneListener {
 
     private User friend;
 
@@ -83,4 +85,13 @@ public class FriendView extends ConstraintLayout {
         // TODO: call API like friend
     }
 
+    @Override
+    public void onLoadDone() {
+        Log.d("friend", " is update");
+        if (friend != null) {
+            return;
+        }
+        friend = SearchFriendData.getInstance().getUserData();
+        updateUI();
+    }
 }

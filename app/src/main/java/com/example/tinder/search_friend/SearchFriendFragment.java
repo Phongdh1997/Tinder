@@ -89,9 +89,11 @@ public class SearchFriendFragment extends Fragment {
     }
 
     private void addControls(View view) {
+        Log.d("init view", "search friend");
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
+        pgSearchFriend.setOffscreenPageLimit(1);
         pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
 
         btnLike = view.findViewById(R.id.btnLike);

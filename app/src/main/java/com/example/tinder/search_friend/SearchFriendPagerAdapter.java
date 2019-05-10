@@ -39,6 +39,7 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         User currUser = searchFriendData.getUserData();
         FriendView view = new FriendView(this.context, currUser);
+        searchFriendData.addOnDataLoadDoneListener(view);
 
         // add view to container
         view.setTag(position);
@@ -59,6 +60,9 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup collection, int position, @NonNull Object view) {
         Log.d("remove", "item removed");
+        if (view instanceof SearchFriendData.OnDataLoadDoneListener) {
+            searchFriendData.removeDataLoadDondListener((SearchFriendData.OnDataLoadDoneListener) view);
+        }
         collection.removeView((View) view);
     }
 }
