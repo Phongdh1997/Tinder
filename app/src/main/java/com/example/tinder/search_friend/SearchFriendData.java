@@ -8,6 +8,7 @@ import com.example.rest.service.SearchFriendService;
 import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,6 +22,11 @@ public class SearchFriendData {
     private List<SearchFriendService.User> dataBuff;
     private boolean isLoading;
     private boolean isOutOfData;
+    private int index;
+
+    public int getIndex() {
+        return index;
+    }
 
     private List<OnDataLoadDoneListener> listeners;
 
@@ -38,6 +44,7 @@ public class SearchFriendData {
         isLoading = false;
         isOutOfData = false;
         listeners = new ArrayList<>();
+        index = 0;
     }
 
     public static SearchFriendData getInstance() {
@@ -51,6 +58,18 @@ public class SearchFriendData {
         for (OnDataLoadDoneListener listener : listeners) {
             listener.onLoadDone();
         }
+    }
+
+    public boolean removeDataItem(int id) {
+        Iterator<SearchFriendService.User> iterator = dataBuff.listIterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getId() == id) {
+                iterator.remove();
+                Log.d("data buff", "size = " + dataBuff.size());
+                return true;
+            }
+        }
+        return false;
     }
 
     private void getUsersFromServer() {
@@ -89,14 +108,23 @@ public class SearchFriendData {
 
         // set first item to view and remove it from buffer
         if (!this.isBufferEmpty()) {
-            newUser = new User(this.dataBuff.get(0));
-            Log.d("get User data", "id" + newUser.getId());
-            this.dataBuff.remove(0);
+            increaseIndex();
+            if (index < dataBuff.size()) {
+                newUser = new User(dataBuff.get(index));
+                Log.d("get User data", "id" + newUser.getId() + " - index: " + index);
+            }
         }
         if (this.isExhaustedBuff()) {
             this.loadData();
         }
         return newUser;
+    }
+
+    private void increaseIndex() {
+        index++;
+        if (index >= dataBuff.size()) {
+            index = 0;
+        }
     }
 
     public boolean isBufferEmpty() {

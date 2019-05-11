@@ -13,7 +13,9 @@ import android.widget.TextView;
 import androidx.navigation.Navigation;
 
 import com.example.model.User;
+import com.example.rest.service.SearchFriendService;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
 @SuppressLint("ViewConstructor")
 public class FriendView extends ConstraintLayout implements SearchFriendData.OnDataLoadDoneListener {
@@ -85,13 +87,33 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         // TODO: call API like friend
     }
 
+    public void clearData() {
+        Log.d("clear", "start");
+        if (friend == null) {
+            return;
+        }
+        int friendId = friend.getId();
+        if (SearchFriendData.getInstance().removeDataItem(friendId)) {
+            Log.d("data item", "have cleared");
+            if (UserAuth.getInstance().getUser() != null) {
+                UserAuth.getInstance().getUser().dislikeFriend(friendId);
+            }
+            friend = null;
+        } else {
+            Log.d("data item", "haven't cleared");
+        }
+        updateUI();
+    }
+
     @Override
     public void onLoadDone() {
-        Log.d("friend", " is update");
         if (friend != null) {
             return;
         }
         friend = SearchFriendData.getInstance().getUserData();
+        if (friend != null) {
+            Log.d("friend", " is update, id " + friend.getId());
+        }
         updateUI();
     }
 }
