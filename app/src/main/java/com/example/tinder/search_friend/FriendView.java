@@ -74,7 +74,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     }
 
     /**
-     * Description: current user perform like this friend. Invoked when user click like this user
+     * Description: current user perform like this friend. Invoked when user click like this user.
      * @param currUserId: id of current user who like this friend
      */
     public void likeFriend(int currUserId) {
@@ -87,15 +87,22 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         // TODO: call API like friend
     }
 
+    /**
+     * Description: current user perform dislike this friend.
+     */
+    public void dislikeFriend() {
+        if (friend != null && UserAuth.getInstance().getUser() != null) {
+            UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
+        }
+    }
+
     public void clearData() {
         if (friend == null) {
             return;
         }
         int friendId = friend.getId();
         if (SearchFriendData.getInstance().removeDataItem(friendId)) {
-            if (UserAuth.getInstance().getUser() != null) {
-                UserAuth.getInstance().getUser().dislikeFriend(friendId);
-            }
+            dislikeFriend();
             friend = null;
         }
         updateUI();

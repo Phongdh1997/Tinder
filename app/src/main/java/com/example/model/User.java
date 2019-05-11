@@ -329,6 +329,14 @@ public class User {
         //TODO: call API dislike friend here
     }
 
+    /**
+     * Description: perform like a friend with friendId
+     * @param friendId: id of friend is liked
+     */
+    public void likeFriend(int friendId) {
+        //TODO: call API like friend here
+    }
+
     public int getId() {
         return id;
     }

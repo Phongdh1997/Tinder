@@ -16,13 +16,13 @@
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
         android:background="#B3B8BA"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton"
+        app:layout_constraintBottom_toTopOf="@+id/btnDislike"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btnDislike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -42,11 +42,11 @@
         android:background="@drawable/white_cicle_bg"
         android:src="@drawable/ic_green_heart"
         android:elevation="1dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDislike"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+        app:layout_constraintStart_toEndOf="@+id/btnDislike"
+        app:layout_constraintTop_toTopOf="@+id/btnDislike" />
 
 
 </android.support.constraint.ConstraintLayout>
