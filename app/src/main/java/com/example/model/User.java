@@ -326,6 +326,7 @@ public class User {
      * @param friendId: id of friend is disliked
      */
     public void dislikeFriend(int friendId) {
+        Log.d("dislike friend", "id = " + friendId);
         //TODO: call API dislike friend here
     }
 
@@ -334,6 +335,7 @@ public class User {
      * @param friendId: id of friend is liked
      */
     public void likeFriend(int friendId) {
+        Log.d("like friend", "id = " + friendId);
         //TODO: call API like friend here
     }
 

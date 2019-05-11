@@ -87,25 +87,31 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         // TODO: call API like friend
     }
 
+    public void likeFriend() {
+        if (friend != null && UserAuth.getInstance().getUser() != null) {
+            if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
+                UserAuth.getInstance().getUser().likeFriend(friend.getId());
+
+                // set data = null, call notifyDataSetChange() to update this page
+                friend = null;
+                SearchFriendData.getInstance().notifyDataSetChange();
+            }
+        }
+    }
+
     /**
      * Description: current user perform dislike this friend.
      */
     public void dislikeFriend() {
         if (friend != null && UserAuth.getInstance().getUser() != null) {
-            UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
-        }
-    }
+            if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
+                UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
 
-    public void clearData() {
-        if (friend == null) {
-            return;
+                // set data = null, call notifyDataSetChange() to update this page
+                friend = null;
+                SearchFriendData.getInstance().notifyDataSetChange();
+            }
         }
-        int friendId = friend.getId();
-        if (SearchFriendData.getInstance().removeDataItem(friendId)) {
-            dislikeFriend();
-            friend = null;
-        }
-        updateUI();
     }
 
     @Override

@@ -107,6 +107,7 @@ public class SearchFriendFragment extends Fragment {
             public void onClick(View v) {
                 if (currPage != null) {
                     currPage.likeFriend(UserAuth.getInstance().getUser().getId());
+                    // reminded use: currPage.likeFriend();
                 }
             }
         });
@@ -116,8 +117,6 @@ public class SearchFriendFragment extends Fragment {
             public void onClick(View v) {
                 if (currPage != null) {
                     currPage.dislikeFriend();
-                    currPage.clearData();
-                    SearchFriendData.getInstance().notifyDataSetChange();
                 }
             }
         });
@@ -131,9 +130,8 @@ public class SearchFriendFragment extends Fragment {
             @Override
             public void onPageSelected(int i) {
                 if (currPage != null) {
-                    currPage.clearData();
+                    currPage.dislikeFriend();
                 }
-                SearchFriendData.getInstance().notifyDataSetChange();
                 currPage = pgSearchFriend.findViewWithTag(i);
             }
 
