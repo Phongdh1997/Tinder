@@ -321,6 +321,14 @@ public class User {
         return user;
     }
 
+    /**
+     * Description: perform dislike a friend with friendId
+     * @param friendId: id of friend is disliked
+     */
+    public void dislikeFriend(int friendId) {
+        //TODO: call API dislike friend here
+    }
+
     public int getId() {
         return id;
     }
