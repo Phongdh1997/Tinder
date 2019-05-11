@@ -41,6 +41,7 @@ public class SearchFriendFragment extends Fragment {
     private FriendView currPage;
 
     private ImageButton btnLike;
+    private ImageButton btnDislike;
 
     public SearchFriendFragment() {
         // Required empty public constructor
@@ -97,6 +98,7 @@ public class SearchFriendFragment extends Fragment {
         currPage = pgSearchFriend.findViewWithTag(pgSearchFriend.getCurrentItem());
 
         btnLike = view.findViewById(R.id.btnLike);
+        btnDislike = view.findViewById(R.id.btnDislike);
     }
 
     private void addEvents(final View view) {
@@ -105,6 +107,17 @@ public class SearchFriendFragment extends Fragment {
             public void onClick(View v) {
                 if (currPage != null) {
                     currPage.likeFriend(UserAuth.getInstance().getUser().getId());
+                }
+            }
+        });
+
+        btnDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currPage != null) {
+                    currPage.dislikeFriend();
+                    currPage.clearData();
+                    SearchFriendData.getInstance().notifyDataSetChange();
                 }
             }
         });
