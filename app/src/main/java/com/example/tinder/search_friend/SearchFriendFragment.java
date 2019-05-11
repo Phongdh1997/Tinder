@@ -89,7 +89,6 @@ public class SearchFriendFragment extends Fragment {
     }
 
     private void addControls(View view) {
-        Log.d("init view", "search friend");
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
@@ -104,7 +103,6 @@ public class SearchFriendFragment extends Fragment {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("like", "like");
                 if (currPage != null) {
                     currPage.likeFriend(UserAuth.getInstance().getUser().getId());
                 }
@@ -119,7 +117,6 @@ public class SearchFriendFragment extends Fragment {
 
             @Override
             public void onPageSelected(int i) {
-                Log.d("selected", "position " + i);
                 if (currPage != null) {
                     currPage.clearData();
                 }

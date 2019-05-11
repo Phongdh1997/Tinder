@@ -88,19 +88,15 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     }
 
     public void clearData() {
-        Log.d("clear", "start");
         if (friend == null) {
             return;
         }
         int friendId = friend.getId();
         if (SearchFriendData.getInstance().removeDataItem(friendId)) {
-            Log.d("data item", "have cleared");
             if (UserAuth.getInstance().getUser() != null) {
                 UserAuth.getInstance().getUser().dislikeFriend(friendId);
             }
             friend = null;
-        } else {
-            Log.d("data item", "haven't cleared");
         }
         updateUI();
     }
@@ -111,9 +107,6 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
             return;
         }
         friend = SearchFriendData.getInstance().getUserData();
-        if (friend != null) {
-            Log.d("friend", " is update, id " + friend.getId());
-        }
         updateUI();
     }
 }

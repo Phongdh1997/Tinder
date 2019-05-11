@@ -35,7 +35,6 @@ public class SearchFriendData {
     }
 
     public boolean removeDataLoadDondListener(OnDataLoadDoneListener listener) {
-        Log.d("listener size", "size: " + listeners.size());
         return listeners.remove(listener);
     }
 
@@ -65,7 +64,6 @@ public class SearchFriendData {
         while (iterator.hasNext()) {
             if (iterator.next().getId() == id) {
                 iterator.remove();
-                Log.d("data buff", "size = " + dataBuff.size());
                 return true;
             }
         }
@@ -73,22 +71,18 @@ public class SearchFriendData {
     }
 
     private void getUsersFromServer() {
-        Log.d("token", UserAuth.getInstance().getUser().getAuthen_token());
-        Log.d("loading", "load more swipe list");
         RetrofitClient.getSearchFriendService().getUsers(UserAuth.getInstance().getUser().getHeaderAuthenToken())
                 .enqueue(new Callback<List<SearchFriendService.User>>() {
             @Override
             public void onResponse(Call<List<SearchFriendService.User>> call, Response<List<SearchFriendService.User>> response) {
                 if (response.body() != null) {
                     SearchFriendData.this.dataBuff = response.body();
-                    SearchFriendData.this.isLoading = false;
-                    Log.d("lise size", " = " + response.body().size());
                     if (response.body().size() < 6) {
                         SearchFriendData.this.isOutOfData = true;
                     }
                     notifyDataSetChange();
                 }
-                Log.d("get Search Friend", "code: " + response.code());
+                SearchFriendData.this.isLoading = false;
             }
 
             @Override
@@ -111,7 +105,6 @@ public class SearchFriendData {
             increaseIndex();
             if (index < dataBuff.size()) {
                 newUser = new User(dataBuff.get(index));
-                Log.d("get User data", "id" + newUser.getId() + " - index: " + index);
             }
         }
         if (this.isExhaustedBuff()) {
