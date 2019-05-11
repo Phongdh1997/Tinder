@@ -91,11 +91,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
      * Description: current user perform dislike this friend.
      */
     public void dislikeFriend() {
-        if (friend == null) {
-            return;
-        }
-        Log.d("dislike friend", "id = " + friend.getId());
-        if (UserAuth.getInstance().getUser() != null) {
+        if (friend != null && UserAuth.getInstance().getUser() != null) {
             UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
         }
     }
