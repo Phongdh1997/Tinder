@@ -16,6 +16,7 @@ import com.example.model.User;
 import com.example.rest.service.SearchFriendService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 @SuppressLint("ViewConstructor")
 public class FriendView extends ConstraintLayout implements SearchFriendData.OnDataLoadDoneListener {
@@ -24,6 +25,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
 
     private TextView txtName;
     private ImageButton btnDetailInfo;
+    private ShimmerFrameLayout shimmerViewContainer;
 
     public User getFriend() {
         return friend;
@@ -53,15 +55,23 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         // add controls
         txtName = findViewById(R.id.txtName);
         btnDetailInfo = findViewById(R.id.btnDetailInfo);
+        shimmerViewContainer = findViewById(R.id.shimmer_view_container);
 
         updateUI();
     }
 
     private void updateUI() {
         if (friend == null) {
-            return;
+            shimmerViewContainer.startShimmerAnimation();
+            shimmerViewContainer.setVisibility(View.VISIBLE);
+        } else {
+            // update view
+            txtName.setText(friend.getName());
+
+            // hide loading view
+            shimmerViewContainer.stopShimmerAnimation();
+            shimmerViewContainer.setVisibility(View.GONE);
         }
-        txtName.setText(friend.getName());
     }
 
     private void addEvents() {
