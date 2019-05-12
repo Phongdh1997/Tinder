@@ -75,12 +75,14 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     }
 
     private void addEvents() {
-        // add event
-        Bundle user = null;
-        if (friend != null) {
-            user = friend.toBundle();
-        }
-        btnDetailInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, user));
+        btnDetailInfo.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (friend != null) {
+                    Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_userInforFragment, friend.toBundle());
+                }
+            }
+        });
     }
 
     /**
