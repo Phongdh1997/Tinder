@@ -42,4 +42,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 }
