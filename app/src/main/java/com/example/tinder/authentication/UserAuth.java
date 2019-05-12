@@ -65,8 +65,7 @@ public class UserAuth implements User.OnLoginCallBack {
     }
 
     public boolean isAuthencated() {
-
-        return false;
+        return state == AUTHENTICATED;
     }
 
     public void authenticate(String email, String password) throws Exception {

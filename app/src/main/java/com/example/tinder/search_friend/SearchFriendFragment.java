@@ -7,14 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.QuickContactBadge;
-
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 
@@ -39,8 +38,10 @@ public class SearchFriendFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ViewPager pgSearchFriend;
+    private FriendView currPage;
 
     private ImageButton btnLike;
+    private ImageButton btnDislike;
 
     public SearchFriendFragment() {
         // Required empty public constructor
@@ -92,18 +93,51 @@ public class SearchFriendFragment extends Fragment {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
         SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
         pgSearchFriend.setAdapter(adapter);
+        pgSearchFriend.setOffscreenPageLimit(1);
         pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
+        currPage = pgSearchFriend.findViewWithTag(pgSearchFriend.getCurrentItem());
 
         btnLike = view.findViewById(R.id.btnLike);
+        btnDislike = view.findViewById(R.id.btnDislike);
     }
 
     private void addEvents(final View view) {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("like", "like");
-                FriendView page = (FriendView) pgSearchFriend.findViewWithTag(pgSearchFriend.getCurrentItem());
-                page.likeFriend(UserAuth.getInstance().getUser().getId());
+                if (currPage != null) {
+                    currPage.likeFriend(UserAuth.getInstance().getUser().getId());
+                    // reminded use: currPage.likeFriend();
+                }
+            }
+        });
+
+        btnDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currPage != null) {
+                    currPage.dislikeFriend();
+                }
+            }
+        });
+
+        pgSearchFriend.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if (currPage != null) {
+                    currPage.dislikeFriend();
+                }
+                currPage = pgSearchFriend.findViewWithTag(i);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
             }
         });
     }

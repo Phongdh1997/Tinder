@@ -20,12 +20,14 @@ public interface DeleteImageService {
     Call<ResponseBody> deleteImage(@Header("Authorization") String authorization, @Body Num num);
 
     class Num {
+
         public Num(Integer num) {
             this.num = num;
         }
 
         @SerializedName("num")
         @Expose
+
         private Integer num;
 
         public Integer getNum() {
@@ -36,4 +38,5 @@ public interface DeleteImageService {
             this.num = num;
         }
     }
+
 }

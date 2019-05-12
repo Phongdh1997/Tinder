@@ -1,5 +1,6 @@
 package com.example.tinder.search_friend;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -12,9 +13,12 @@ import android.widget.TextView;
 import androidx.navigation.Navigation;
 
 import com.example.model.User;
+import com.example.rest.service.SearchFriendService;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
-public class FriendView extends ConstraintLayout {
+@SuppressLint("ViewConstructor")
+public class FriendView extends ConstraintLayout implements SearchFriendData.OnDataLoadDoneListener {
 
     private User friend;
 
@@ -62,23 +66,15 @@ public class FriendView extends ConstraintLayout {
 
     private void addEvents() {
         // add event
-        Bundle user = new Bundle();
+        Bundle user = null;
         if (friend != null) {
-            user.putInt("id", friend.getId());
-            user.putString("authen_token", friend.getAuthen_token());
-            user.putString("phone", friend.getPhone());
-            user.putString("mail", friend.getMail());
-            user.putString("password", friend.getPassword());
-            user.putString("name", friend.getName());
-            user.putString("decription", friend.getDecription());
-            user.putString("gender", friend.getGender());
-            user.putInt("age", friend.getAge());
+            user = friend.toBundle();
         }
         btnDetailInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, user));
     }
 
     /**
-     * Description: current user perform like this friend. Invoked when user click like this user
+     * Description: current user perform like this friend. Invoked when user click like this user.
      * @param currUserId: id of current user who like this friend
      */
     public void likeFriend(int currUserId) {
@@ -91,4 +87,39 @@ public class FriendView extends ConstraintLayout {
         // TODO: call API like friend
     }
 
+    public void likeFriend() {
+        if (friend != null && UserAuth.getInstance().getUser() != null) {
+            if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
+                UserAuth.getInstance().getUser().likeFriend(friend.getId());
+
+                // set data = null, call notifyDataSetChange() to update this page
+                friend = null;
+                SearchFriendData.getInstance().notifyDataSetChange();
+            }
+        }
+    }
+
+    /**
+     * Description: current user perform dislike this friend.
+     */
+    public void dislikeFriend() {
+        if (friend != null && UserAuth.getInstance().getUser() != null) {
+            if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
+                UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
+
+                // set data = null, call notifyDataSetChange() to update this page
+                friend = null;
+                SearchFriendData.getInstance().notifyDataSetChange();
+            }
+        }
+    }
+
+    @Override
+    public void onLoadDone() {
+        if (friend != null) {
+            return;
+        }
+        friend = SearchFriendData.getInstance().getUserData();
+        updateUI();
+    }
 }

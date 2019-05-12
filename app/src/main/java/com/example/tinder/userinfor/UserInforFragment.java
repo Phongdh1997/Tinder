@@ -26,7 +26,6 @@ import android.widget.ViewFlipper;
 
 import com.example.model.User;
 import com.example.tinder.R;
-import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.search_friend.SearchFriendFragment;
 
 import java.util.ArrayList;
@@ -52,9 +51,11 @@ public class UserInforFragment extends Fragment {
     List<Bitmap> arrayImage = new ArrayList<>();
     ViewPager viewPager;
     ImageViewAdapter imageViewAdapter;
-    TextView txtNameAge, txtDecription, txtLocation;
 
-    private Bundle userBundle;
+    private TextView txtNameAge;
+    private User userData;
+    private TextView txtDescription;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -102,42 +103,37 @@ public class UserInforFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        User user = UserAuth.getInstance().getUser();
-        txtNameAge = view.findViewById(R.id.textViewNameAge);
-        txtDecription = view.findViewById(R.id.textViewDecription);
-        txtLocation = view.findViewById(R.id.textViewLocation);
 
         addControls(view);
         addEvents(view);
     }
 
     private void addControls(View view) {
-        txtNameAge = view.findViewById(R.id.textViewNameAge);
-        userBundle = getArguments();
-        if (userBundle != null) {
+        txtNameAge = view.findViewById(R.id.txtNameAge);
+        txtDescription = view.findViewById(R.id.txtDescription);
+
+        userData = User.getUserFromBundle(getArguments());
+        if (userData != null) {
             updateUI();
         }
+
         fab =(FloatingActionButton) view.findViewById(R.id.fab);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
         arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
-//        txtNameAge.setText(user.getName() +" , " + user.getAge());
-//        if(user.getDecription() == null)
-//            txtDecription.setText("Add Decription...");
-//        else txtDecription.setText(user.getDecription());
-//        txtLocation.setText(user.getMail());
         imageViewAdapter = new ImageViewAdapter(getContext(), arrayImage);
         viewPager.setAdapter(imageViewAdapter);
     }
 
     private void updateUI() {
-        String nameAge = userBundle.getString("name") + ", " + userBundle.getInt("age");
+        String nameAge = userData.getName() + ", " + userData.getAge();
         txtNameAge.setText(nameAge);
+        txtDescription.setText(userData.getDecription());
     }
 
     private void addEvents(View view) {
-        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, userBundle));
+        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, getArguments()));
     }
 
     private static Bitmap decodeResource(Resources res, int id) {

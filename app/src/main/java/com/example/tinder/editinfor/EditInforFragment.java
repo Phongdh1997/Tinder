@@ -291,8 +291,7 @@ public class EditInforFragment extends Fragment {
 
     private void deleteImage(){
         int seclect = currSelect+1;
-        RequestBody num = RequestBody.create(MediaType.parse("text/plain"),"1");
-        deleteImageService.deleteImage("Barer " + user.getAuthen_token(), new DeleteImageService.Num(1)).enqueue(new Callback<ResponseBody>() {
+        deleteImageService.deleteImage("Barer " + user.getAuthen_token(),new DeleteImageService.Num(1)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
