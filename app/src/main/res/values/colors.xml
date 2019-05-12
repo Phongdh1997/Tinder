@@ -6,4 +6,6 @@
     <color name="colorPink">#E17786</color>
     <color name="white">#FFF</color>
     <color name="thinWhite">#f7f7f7</color>
+
+    <color name="background">#686666</color>
 </resources>

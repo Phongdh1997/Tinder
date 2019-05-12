@@ -83,7 +83,7 @@ public interface MessageService {
         }
 
         public int getLastBaseTime() {
-            return
+            return last_base_time;
         }
 
         public ArrayList<Message> getAllMessages() {
@@ -94,15 +94,13 @@ public interface MessageService {
                 MessageItem ith_message = messages.get(i);
                 Message new_msg = new Message(ith_message.getSender_id(),
                         Integer.valueOf(conversation_id), ith_message.getMessage());
-                new_msg.setCreated_at(messages.get(i).getCreated_at());
+                new_msg.setCreated_at(messages.get(i).getCreated_at_as_date());
                 results.add(new_msg);
                 if (i == 0) {
                     // last message
-
+                    last_base_time = ith_message.getCreated_at_as_int();
                 }
             }
-
-            if ()
 
             return results;
         }
@@ -144,8 +142,12 @@ public interface MessageService {
             this.message = message;
         }
 
-        public Date getCreated_at() {
+        public Date getCreated_at_as_date() {
             return new Date((long) created_at*1000);
+        }
+
+        public Integer getCreated_at_as_int() {
+            return created_at;
         }
 
         public void setCreated_at(Integer created_at) {

@@ -1,12 +1,17 @@
 package com.example.tinder;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.common.OnBackPressEvent;
 import com.example.internet_connection.SocketIO;
+import com.example.common.UserLocation;
 import com.example.model.User;
 import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.editinfor.EditInforFragment;
@@ -48,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private final String USER_TOKEN_DEFAULT = "NULL";
 
     private UserAuth userAuth;
+    private UserLocation userLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,25 @@ public class MainActivity extends AppCompatActivity
         addControls();
         addEvents();
         checkLogin();
+    }
+
+    private void checkLocationPermission () {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                    UserLocation.LOCATION_PERMISSION_REQUEST);
+        } else {
+            initLocation();
+        }
+    }
+
+    private void initLocation() {
+        Log.d("Location", "init location");
+
+        userLocation = new UserLocation((LocationManager) getSystemService(Context.LOCATION_SERVICE));
+        userLocation.listenLocationUpdate(LocationManager.GPS_PROVIDER);
+        Location location = userLocation.getLastLocation(LocationManager.GPS_PROVIDER);
+        UserLocation.updateLocationToServer(location);
     }
 
     private void checkLogin() {
@@ -102,6 +128,7 @@ public class MainActivity extends AppCompatActivity
             public void onStateChange(int state, int messageCode) {
                 switch (state){
                     case UserAuth.AUTHENTICATED:
+                        checkLocationPermission();
                         updateUI();
                         break;
                     case UserAuth.UN_AUTHENTICATED:
@@ -132,6 +159,18 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "App can't run without READ EXTERNAL STORAGE permission", Toast.LENGTH_LONG).show();
                 finish();
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == UserLocation.LOCATION_PERMISSION_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initLocation();
+            }
+        } else {
+            Log.e("Location", "Location Listener permission denied");
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

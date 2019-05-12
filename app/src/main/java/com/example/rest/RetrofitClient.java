@@ -4,6 +4,7 @@ package com.example.rest;
 import android.net.Uri;
 
 import com.example.rest.service.MessageService;
+import com.example.rest.service.LocationService;
 import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
@@ -40,5 +41,9 @@ public class RetrofitClient {
 
     public static SearchFriendService getSearchFriendService() {
         return getNewInstance(BASE_URL).create(SearchFriendService.class);
+    }
+
+    public static LocationService getLocationService () {
+        return getNewInstance(BASE_URL).create(LocationService.class);
     }
 }

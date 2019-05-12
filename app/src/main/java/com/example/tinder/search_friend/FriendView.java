@@ -1,5 +1,6 @@
 package com.example.tinder.search_friend;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -14,19 +15,23 @@ import androidx.navigation.Navigation;
 
 import com.example.internet_connection.SocketIO;
 import com.example.model.User;
+import com.example.rest.service.SearchFriendService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
-public class FriendView extends ConstraintLayout {
+@SuppressLint("ViewConstructor")
+public class FriendView extends ConstraintLayout implements SearchFriendData.OnDataLoadDoneListener {
 
     private User friend;
 
     private TextView txtName;
     private ImageButton btnDetailInfo;
     private SocketIO mSocket;
+    private ShimmerFrameLayout shimmerViewContainer;
 
     public User getFriend() {
         return friend;
@@ -59,36 +64,36 @@ public class FriendView extends ConstraintLayout {
         // add controls
         txtName = findViewById(R.id.txtName);
         btnDetailInfo = findViewById(R.id.btnDetailInfo);
+        shimmerViewContainer = findViewById(R.id.shimmer_view_container);
 
         updateUI();
     }
 
     private void updateUI() {
         if (friend == null) {
-            return;
+            shimmerViewContainer.startShimmerAnimation();
+            shimmerViewContainer.setVisibility(View.VISIBLE);
+        } else {
+            // update view
+            txtName.setText(friend.getName());
+
+            // hide loading view
+            shimmerViewContainer.stopShimmerAnimation();
+            shimmerViewContainer.setVisibility(View.GONE);
         }
-        txtName.setText(friend.getName());
     }
 
     private void addEvents() {
         // add event
-        Bundle user = new Bundle();
+        Bundle user = null;
         if (friend != null) {
-            user.putInt("id", friend.getId());
-            user.putString("authen_token", friend.getAuthen_token());
-            user.putString("phone", friend.getPhone());
-            user.putString("mail", friend.getMail());
-            user.putString("password", friend.getPassword());
-            user.putString("name", friend.getName());
-            user.putString("decription", friend.getDecription());
-            user.putString("gender", friend.getGender());
-            user.putInt("age", friend.getAge());
+            user = friend.toBundle();
         }
         btnDetailInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, user));
     }
 
     /**
-     * Description: current user perform like this friend. Invoked when user click like this user
+     * Description: current user perform like this friend. Invoked when user click like this user.
      * @param currUserId: id of current user who like this friend
      */
     public void likeFriend(int currUserId) {
@@ -114,4 +119,39 @@ public class FriendView extends ConstraintLayout {
         mSocket.push_data(data, "like");
     }
 
+    public void likeFriend() {
+        if (friend != null && UserAuth.getInstance().getUser() != null) {
+            if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
+                UserAuth.getInstance().getUser().likeFriend(friend.getId());
+
+                // set data = null, call notifyDataSetChange() to update this page
+                friend = null;
+                SearchFriendData.getInstance().notifyDataSetChange();
+            }
+        }
+    }
+
+    /**
+     * Description: current user perform dislike this friend.
+     */
+    public void dislikeFriend() {
+        if (friend != null && UserAuth.getInstance().getUser() != null) {
+            if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
+                UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
+
+                // set data = null, call notifyDataSetChange() to update this page
+                friend = null;
+                SearchFriendData.getInstance().notifyDataSetChange();
+            }
+        }
+    }
+
+    @Override
+    public void onLoadDone() {
+        if (friend != null) {
+            return;
+        }
+        friend = SearchFriendData.getInstance().getUserData();
+        updateUI();
+    }
 }
