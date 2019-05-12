@@ -1,5 +1,6 @@
 package com.example.tinder.message_box;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import java.util.ArrayList;
 
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import android.os.AsyncTask;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -109,6 +112,8 @@ public class MessageBoxFragment extends Fragment {
             }
         });
     }
+
+
 
     private void addControls(View view) {
         rvMatchList = view.findViewById(R.id.rvMatchList);

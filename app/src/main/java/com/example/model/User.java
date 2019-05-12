@@ -9,7 +9,8 @@ import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 
-import java.security.MessageDigest;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -141,6 +142,8 @@ public class User {
         user.setAuthen_token(sharedPreferences.getString(AUTHEN_TOKEN, ""));
         user.setIs_active(sharedPreferences.getBoolean(IS_ACTIVE, false));
         user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
+
+        Log.d("token", user.getAuthen_token());
         return user;
     }
 
@@ -305,14 +308,7 @@ public class User {
     }
 
     public void setPassword(String password) throws Exception {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(password.getBytes());
-        byte[] digest = md.digest();
-        StringBuilder sb = new StringBuilder();
-        for (byte b : digest) {
-            sb.append(String.format("%02x", b & 0xff));
-        }
-        this.password = sb.toString();
+        this.password = new String(Hex.encodeHex(DigestUtils.md5(password)));
     }
 
     public void setHashedPassword(String password) {

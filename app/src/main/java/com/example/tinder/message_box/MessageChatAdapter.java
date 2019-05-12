@@ -3,11 +3,13 @@ package com.example.tinder.message_box;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.model.User;
 import com.example.tinder.R;
@@ -37,6 +39,8 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     public MessageChatAdapter(ArrayList<Message> mMessageList) {
         this.mMessageList = mMessageList;
+
+        this.addMessageList(mMessageList);
     }
 
     @NonNull
@@ -59,6 +63,11 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+        if (i == 0) {
+            // onTopReached
+            Log.e("onTopReached", "Reach the last message in the view.");
+
+        }
         Message message = mMessageList.get(i);
         int user_id = message.getSender_id();
         if (user_id == VIEW_TYPE_MESSAGE_SENT) {
@@ -75,6 +84,12 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
         // notify Dataset changed
         notifyDataSetChanged();
+    }
+
+    public void addMessageList(ArrayList<Message> messageArrayList) {
+        for(int i = 0; i < messageArrayList.size(); i++) {
+            addMessage(messageArrayList.get(i));
+        }
     }
 
     public void updateStatusMessage(int position, Boolean is_received) {
@@ -96,7 +111,6 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         Message message = mMessageList.get(position);
         int user_id = message.getSender_id();
-
         if (user_id == VIEW_TYPE_MESSAGE_SENT) {
             // If the current user is the sender of the message
             return VIEW_TYPE_MESSAGE_SENT;
@@ -114,21 +128,21 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     private class SentMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText;
-        CheckBox messageResult;
+//        CheckBox messageResult;
         TextView messageTime;
 
         SentMessageHolder(View itemView) {
             super(itemView);
 
             messageText = itemView.findViewById(R.id.text_message_body);
-            messageResult = itemView.findViewById(R.id.sent_message_result);
+//            messageResult = itemView.findViewById(R.id.sent_message_result);
             messageTime  = itemView.findViewById(R.id.sent_message_time);
         }
 
         void bind(Message message) {
 
             messageText.setText(message.getMessage());
-            messageResult.setChecked(message.getIs_received());
+//            messageResult.setChecked(message.getIs_received());
             Date created_at = message.getCreated_at();
             String created_at_str = sdf.format(created_at);
             messageTime.setText(created_at_str);

@@ -1,5 +1,8 @@
 package com.example.rest.service;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.example.model.Message;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
@@ -10,19 +13,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public interface MessageService {
 
     @GET("/api/messages")
-    Call<MessageResponse> getHistoricalMessage(@Query("conversation_id") Integer conversation_id);
+    Call<MessageResponse> getHistoricalMessage(@Header("Authorization") String token, @Query("conversation_id") int conversation_id,
+                                               @Query("base_time")int base_time);
 
     class MessageResponse {
         @SerializedName("conversation_id")
@@ -32,6 +40,8 @@ public interface MessageService {
         @SerializedName("messages")
         @Expose
         private List<MessageItem> messages = null;
+
+        private int last_base_time;
 
         public MessageResponse(String response) {
             try {
@@ -72,17 +82,35 @@ public interface MessageService {
             return this.conversation_id;
         }
 
-        public List<Message> getAllMessages() {
+        public int getLastBaseTime() {
+            return
+        }
+
+        public ArrayList<Message> getAllMessages() {
             ArrayList<Message> results = new ArrayList<>();
             int num_item = messages.size();
 
-            for(int i = num_item - 1; i > 0; i--) {
+            for(int i = num_item - 1; i >= 0; i--) {
                 MessageItem ith_message = messages.get(i);
-                results.add(new Message(Integer.valueOf(conversation_id),
-                        ith_message.getSender_id(), ith_message.getMessage()));
+                Message new_msg = new Message(ith_message.getSender_id(),
+                        Integer.valueOf(conversation_id), ith_message.getMessage());
+                new_msg.setCreated_at(messages.get(i).getCreated_at());
+                results.add(new_msg);
+                if (i == 0) {
+                    // last message
+
+                }
             }
 
+            if ()
+
             return results;
+        }
+
+        public void printMessageString() {
+            for (int i = 0; i < messages.size(); i++) {
+                Log.i("message item", "sender_id: " + messages.get(i).getSender_id() + " message: " + messages.get(i).getMessage());
+            }
         }
     }
 

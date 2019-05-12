@@ -40,8 +40,8 @@ public class Message {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(Date created_date) {
+        this.created_at = created_date;
     }
 
     public int getSender_id() {

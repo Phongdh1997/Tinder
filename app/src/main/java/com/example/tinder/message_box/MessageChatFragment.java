@@ -3,9 +3,11 @@ package com.example.tinder.message_box;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.model.Message;
@@ -37,6 +40,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +70,8 @@ public class MessageChatFragment extends Fragment {
     private static SocketIO mSocket;
     private Bundle mBundle;
     private int conversation_id;
+    private ArrayList<Message> historical_messages;
+    private int last_base_time = -1;
 
     public MessageChatFragment() {
         // Required empty public constructor
@@ -86,11 +92,12 @@ public class MessageChatFragment extends Fragment {
         mSocket.getInstance().on("chat_message", onNewMessage).on("chat_message_result", onSentMessageSuccess);
 
         // listen the status of sent message
-//        mSocket.getInstance().on("chat_message_result", onSentMessageSuccess);
+        // mSocket.getInstance().on("chat_message_result", onSentMessageSuccess);
 
         // get data from the previous fragment
         mBundle = getArguments();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,9 +122,12 @@ public class MessageChatFragment extends Fragment {
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        ArrayList<Message> hitorical_messages = loadMessages();
-        messageChatAdapter = new MessageChatAdapter(hitorical_messages);
+        conversation_id = (int) mBundle.getSerializable("conversation_id");
 
+        // get historical message
+        historical_messages = loadMessages();
+
+        messageChatAdapter = new MessageChatAdapter(historical_messages);
         recyclerView.setAdapter(messageChatAdapter);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +135,6 @@ public class MessageChatFragment extends Fragment {
             public void onClick(View v) {
                 String msg = messageText.getText().toString().trim();
                 int USER_ID = UserAuth.getInstance().getUser().getId();
-                conversation_id = (int) mBundle.getSerializable("conversation_id");
                 Log.i("conversation_id", Integer.toString(conversation_id));
                 if (msg.length() > 0) {
                     addMessage(USER_ID, conversation_id, msg);
@@ -250,43 +259,42 @@ public class MessageChatFragment extends Fragment {
 
 
     public ArrayList<Message> loadMessages() {
+
         int USER_ID = UserAuth.getInstance().getUser().getId();
 
-        MessageService messageService = RetrofitClient.getMessageService();
+        final ArrayList<Message> all_messages = new ArrayList<>();
 
-        messageService.getHistoricalMessage(conversation_id).enqueue(
+        final MessageService messageService = RetrofitClient.getMessageService();
+
+        messageService.getHistoricalMessage("Barer " + UserAuth.getInstance().getUser().getAuthen_token(),
+                conversation_id, last_base_time).enqueue(
                 new Callback<MessageService.MessageResponse>() {
                     @Override
                     public void onResponse(Call<MessageService.MessageResponse> call, Response<MessageService.MessageResponse> response) {
+                        Log.i("onResponse", "Send request to get historical message with code: " + response.code());
                         if (response.isSuccessful()) {
                             if (response.body() != null) {
-                                Log.i("Request body", response.body().toString());
-                                MessageService.MessageResponse messageResponse = new MessageService.MessageResponse(response.body().toString());
-                                Log.i("conversation_id", messageResponse.getConversation_id());
-                                Log.i("messages", messageResponse.getAllMessages().toString());
+                                response.body().printMessageString();
+                                all_messages.addAll(response.body().getAllMessages());
+
+                                // update the last_base_time
+                                last_base_time = 12314534;
+
+                                messageChatAdapter.setMessageList(null);
+                                messageChatAdapter.setMessageList(response.body().getAllMessages());
+                                messageChatAdapter.notifyDataSetChanged();
+                                recyclerView.setAdapter(messageChatAdapter);
                             }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MessageService.MessageResponse> call, Throwable t) {
+                        Log.i("onFailure", "Send request to get historical message failed.");
                         t.printStackTrace();
                     }
                 }
         );
-
-        // TODO: implement a socket to the server to get historical message from conversation_id
-        ArrayList<Message> all_messages = new ArrayList<>();
-        Message message;
-        for (int i = 1; i < 10; i++) {
-            if (i % 2 == 0) {
-                message = new Message(USER_ID, conversation_id, "Message " + Integer.toString(i));
-            } else {
-                // generate new message sent by other user to current user
-                message = new Message(USER_ID + 1, conversation_id, "Message " + Integer.toString(i));
-            }
-            all_messages.add(message);
-        }
 
         return all_messages;
     }
