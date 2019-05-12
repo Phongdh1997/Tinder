@@ -255,7 +255,6 @@
                 android:gravity="center_vertical"
                 android:hint="Số điện thoại..."
                 android:inputType="textPersonName"
-                android:text="Trường Đại Học Bách Khoa TPHCM"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewSDT" />

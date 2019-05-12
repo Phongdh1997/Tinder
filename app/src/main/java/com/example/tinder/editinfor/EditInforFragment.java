@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.model.User;
 import com.example.rest.RetrofitClient;
+import com.example.rest.service.DeleteImageService;
 import com.example.rest.service.PostImageService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
@@ -67,12 +68,13 @@ public class EditInforFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private List<String> arrayImage = new ArrayList<>();
-    private static List<ImageView> arrayImg = new ArrayList<>();
-    private static List<Button> arrayButton = new ArrayList<>();
+    private List<ImageView> arrayImg = new ArrayList<>();
+    private List<Button> arrayButton = new ArrayList<>();
     private int currSelect = 0;
     private Toolbar toolbar;
     private int RESULT_LOAD_IMG = 1234;
     private PostImageService postImageService;
+    private DeleteImageService deleteImageService;
     private User user = UserAuth.getInstance().getUser();
     private EditText edtPhone, edtDcription;
     private RadioButton rdbMale,rdbFemale;
@@ -129,7 +131,7 @@ public class EditInforFragment extends Fragment {
 
     }
 
-    private void addEvent(View view) {
+    private void addEvent(final View view) {
         //click button
 
         arrayButton.get(0).setOnClickListener(new View.OnClickListener() {
@@ -141,13 +143,7 @@ public class EditInforFragment extends Fragment {
                     photoPickerIntent.setType("image/*");
                     startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
                 }else {
-                    arrayImage.remove(0);
-                    if(!arrayImage.isEmpty())
-                        setImage();
-                    else {
-                        arrayImg.get(0).setImageDrawable(null);
-                        v.setBackgroundResource(R.drawable.add_image);
-                    }
+                    deleteImage();
                 }
 
             }
@@ -161,8 +157,7 @@ public class EditInforFragment extends Fragment {
                     photoPickerIntent.setType("image/*");
                     startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
                 }else {
-                    arrayImage.remove(1);
-                    setImage();
+                    deleteImage();
                 }
             }
         });
@@ -175,8 +170,7 @@ public class EditInforFragment extends Fragment {
                     photoPickerIntent.setType("image/*");
                     startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
                 }else {
-                    arrayImage.remove(2);
-                    setImage();
+                    deleteImage();
                 }
             }
         });
@@ -189,8 +183,7 @@ public class EditInforFragment extends Fragment {
                     photoPickerIntent.setType("image/*");
                     startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
                 }else {
-                    arrayImage.remove(3);
-                    setImage();
+                    deleteImage();
                 }
             }
         });
@@ -203,8 +196,7 @@ public class EditInforFragment extends Fragment {
                     photoPickerIntent.setType("image/*");
                     startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
                 }else {
-                    arrayImage.remove(4);
-                    setImage();
+                    deleteImage();
                 }
             }
         });
@@ -217,8 +209,7 @@ public class EditInforFragment extends Fragment {
                     photoPickerIntent.setType("image/*");
                     startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
                 }else {
-                    arrayImage.remove(5);
-                    setImage();
+                    deleteImage();
                 }
             }
         });
@@ -257,7 +248,6 @@ public class EditInforFragment extends Fragment {
 
         toolbar =  view.findViewById(R.id.toolbar3);
         getDataToUI();
-
         new LoadImageFromSever(0).execute("http://167.99.69.92/upload/"+user.getId()+"_image1.jpg");
         new LoadImageFromSever(1).execute("http://167.99.69.92/upload/"+user.getId()+"_image2.jpg");
         new LoadImageFromSever(2).execute("http://167.99.69.92/upload/"+user.getId()+"_image3.jpg");
@@ -265,6 +255,7 @@ public class EditInforFragment extends Fragment {
         new LoadImageFromSever(4).execute("http://167.99.69.92/upload/"+user.getId()+"_image5.jpg");
         new LoadImageFromSever(5).execute("http://167.99.69.92/upload/"+user.getId()+"_image6.jpg");
         postImageService = RetrofitClient.getPostImageService();
+        deleteImageService = RetrofitClient.getDeleteImageService();
     }
 
     private void getDataToUI() {
@@ -298,6 +289,29 @@ public class EditInforFragment extends Fragment {
         }
     }
 
+    private void deleteImage(){
+        int seclect = currSelect+1;
+        RequestBody num = RequestBody.create(MediaType.parse("text/plain"),"1");
+        deleteImageService.deleteImage("Barer " + user.getAuthen_token(), new DeleteImageService.Num(1)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Delete Success", Toast.LENGTH_LONG).show();
+                    arrayImg.get(currSelect).setImageDrawable(null);
+                    arrayButton.get(currSelect).setBackgroundResource(R.drawable.add_image);
+                }
+                else
+                    Toast.makeText(getContext(),response.code()+"",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(),"Internet error",Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
+    }
+
     private void saveImageToSever(final String picturePath) {
         File file = new File(picturePath);
         int seclect = currSelect+1;
@@ -311,6 +325,7 @@ public class EditInforFragment extends Fragment {
                 if(response.isSuccessful()) {
                     Toast.makeText(getContext(), "Up Success", Toast.LENGTH_LONG).show();
                     arrayImg.get(currSelect).setImageURI(Uri.parse(picturePath));
+                    arrayButton.get(currSelect).setBackgroundResource(R.drawable.delete_image);
                 }
                 else
                     Toast.makeText(getContext(),"Up Fail",Toast.LENGTH_LONG).show();
@@ -380,7 +395,7 @@ public class EditInforFragment extends Fragment {
         }
     }
 
-    private static class LoadImageFromSever extends AsyncTask<String,Void,Bitmap>{
+    private class LoadImageFromSever extends AsyncTask<String,Void,Bitmap>{
         Bitmap bitmap = null;
         Integer num = null;
 

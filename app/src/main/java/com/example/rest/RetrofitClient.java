@@ -1,5 +1,6 @@
 package com.example.rest;
 
+import com.example.rest.service.DeleteImageService;
 import com.example.rest.service.PostImageService;
 import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
@@ -37,5 +38,8 @@ public class RetrofitClient {
 
     public static SearchFriendService getSearchFriendService() {
         return getNewInstance(BASE_URL).create(SearchFriendService.class);
+    }
+    public static DeleteImageService getDeleteImageService(){
+        return getNewInstance(BASE_URL).create(DeleteImageService.class);
     }
 }
