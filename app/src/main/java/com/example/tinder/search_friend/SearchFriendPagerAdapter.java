@@ -24,21 +24,54 @@ import androidx.navigation.Navigation;
 
 public class SearchFriendPagerAdapter extends PagerAdapter {
 
-    public static final int PAGE_NUM = 2000;
+    static final int PAGE_NUM = 2000;
+    static final int SCREEN_NUM = 1;
 
     private Context context;
     private SearchFriendData searchFriendData;
+    private boolean isFirst;
+    private FriendView currentPage;
+
+    private OnCurrentPageInit onCurrentPageInit;
+
+    public void setOnCurrentPageInit(OnCurrentPageInit onCurrentPageInit) {
+        this.onCurrentPageInit = onCurrentPageInit;
+    }
 
     public SearchFriendPagerAdapter(Context context) {
         this.context = context;
         searchFriendData = SearchFriendData.getInstance();
+        isFirst = true;
+    }
+
+    public SearchFriendPagerAdapter(Context context, FriendView currentPage) {
+        this.context = context;
+        searchFriendData = SearchFriendData.getInstance();
+        isFirst = true;
+        this.currentPage = currentPage;
+    }
+
+    public FriendView getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(FriendView currentPage) {
+        this.currentPage = currentPage;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        User currUser = searchFriendData.getUserData();
-        FriendView view = new FriendView(this.context, currUser);
+        FriendView view;
+        if (isFirst && currentPage != null) {
+            view = new FriendView(this.context, currentPage.getFriend());
+        } else {
+            view = new FriendView(this.context, searchFriendData.getUserData());
+        }
+        if (isFirst && onCurrentPageInit != null) {
+            onCurrentPageInit.inited(view);
+        }
+        isFirst = false;
         searchFriendData.addOnDataLoadDoneListener(view);
 
         // add view to container
@@ -63,5 +96,9 @@ public class SearchFriendPagerAdapter extends PagerAdapter {
             searchFriendData.removeDataLoadDondListener((SearchFriendData.OnDataLoadDoneListener) view);
         }
         collection.removeView((View) view);
+    }
+
+    interface OnCurrentPageInit {
+        void inited(FriendView page);
     }
 }
