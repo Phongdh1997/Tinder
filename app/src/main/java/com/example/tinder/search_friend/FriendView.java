@@ -2,6 +2,7 @@ package com.example.tinder.search_friend;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.navigation.Navigation;
 
-import com.example.internet_connection.FriendViewAvatarLoading;
+import com.example.internet_connection.AvatarLoading;
 import com.example.model.User;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
@@ -73,7 +74,12 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         } else {
             // update view
             txtName.setText(friend.getName());
-            new FriendViewAvatarLoading(this, friend.getId()).execute();
+            new AvatarLoading(friend.getId(), new AvatarLoading.OnImageLoadDoneListener() {
+                @Override
+                public void onImageLoadDone(Drawable image, int i) {
+                    imgSearchFriendAvatar.setImageDrawable(image);
+                }
+            }).execute();
 
             // hide loading view
             shimmerViewContainer.stopShimmerAnimation();
