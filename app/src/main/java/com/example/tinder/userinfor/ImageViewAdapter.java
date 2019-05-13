@@ -1,39 +1,39 @@
 package com.example.tinder.userinfor;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.example.tinder.R;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImageViewAdapter extends PagerAdapter {
 
     private Context mContext;
-    private ArrayList<Bitmap> arrayImage;
+    private List<View> views;
 
-    public ImageViewAdapter(Context mContext, List<Bitmap> arrayImage) {
+    public ImageViewAdapter(Context mContext, List<View> views) {
         this.mContext = mContext;
-        this.arrayImage = (ArrayList<Bitmap>) arrayImage;
+        this.views = views;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_view_image_user, container, false);
+        View view = views.get(position);
+        container.addView(view);
+        return view;
+    }
 
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.imageViewUser);
-        imageView.setImageBitmap(arrayImage.get(position));
-        container.addView(itemView);
-
-        return itemView;
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        for(int index = 0 ; index < getCount() ; index++){
+            if((View)object == views.get(index)) {
+                return index;
+            }
+        }
+        return POSITION_NONE;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ImageViewAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return arrayImage.size();
+        return views.size();
     }
 
     @Override

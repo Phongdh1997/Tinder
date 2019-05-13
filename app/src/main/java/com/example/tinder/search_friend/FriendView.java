@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.navigation.Navigation;
 
 import com.example.internet_connection.AvatarLoading;
+import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.model.User;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
@@ -74,10 +75,12 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         } else {
             // update view
             txtName.setText(friend.getName());
-            new AvatarLoading(friend.getId(), new AvatarLoading.OnImageLoadDoneListener() {
+            new AvatarLoading(friend.getId(), new OnImageLoadDoneListener() {
                 @Override
                 public void onImageLoadDone(Drawable image, int i) {
-                    imgSearchFriendAvatar.setImageDrawable(image);
+                    if (image != null) {
+                        imgSearchFriendAvatar.setImageDrawable(image);
+                    }
                 }
             }).execute();
 

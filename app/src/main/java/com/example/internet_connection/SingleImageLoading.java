@@ -10,28 +10,27 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AvatarLoading extends AsyncTask<Void, Void, Object[]> {
-
+public class SingleImageLoading extends AsyncTask<Void, Void, Object[]> {
     private int userId;
+    private int imageNumber;
     private OnImageLoadDoneListener onImageLoadDoneListener;
 
-    public AvatarLoading(int userId, OnImageLoadDoneListener onImageLoadDoneListener) {
+    public SingleImageLoading(int userId, int imageNumber, OnImageLoadDoneListener onImageLoadDoneListener) {
         this.userId = userId;
+        this.imageNumber = imageNumber;
         this.onImageLoadDoneListener = onImageLoadDoneListener;
     }
 
     @Override
     protected Object[] doInBackground(Void... voids) {
-        for (int i = 1; i < 6; i++) {
-            try {
-                InputStream is = (InputStream) new URL(User.getImageUrl(userId, i)).getContent();
-                Drawable d = Drawable.createFromStream(is, "avatar");
-                return new Object[]{d, i};
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            InputStream is = (InputStream) new URL(User.getImageUrl(userId, imageNumber)).getContent();
+            Drawable d = Drawable.createFromStream(is, "avatar");
+            return new Object[]{d, imageNumber};
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -41,5 +40,4 @@ public class AvatarLoading extends AsyncTask<Void, Void, Object[]> {
         super.onPostExecute(drawable);
         onImageLoadDoneListener.onImageLoadDone((Drawable) drawable[0], (int)drawable[1]);
     }
-
 }
