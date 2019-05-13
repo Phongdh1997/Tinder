@@ -91,11 +91,17 @@ public class SearchFriendFragment extends Fragment {
 
     private void addControls(View view) {
         pgSearchFriend = view.findViewById(R.id.pgSearchFriend);
-        SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext());
+        SearchFriendPagerAdapter adapter = new SearchFriendPagerAdapter(this.getContext(), currPage);
+        currPage = null;
+        adapter.setOnCurrentPageInit(new SearchFriendPagerAdapter.OnCurrentPageInit() {
+            @Override
+            public void inited(FriendView page) {
+                currPage = page;
+            }
+        });
         pgSearchFriend.setAdapter(adapter);
-        pgSearchFriend.setOffscreenPageLimit(1);
+        pgSearchFriend.setOffscreenPageLimit(SearchFriendPagerAdapter.SCREEN_NUM);
         pgSearchFriend.setCurrentItem(SearchFriendPagerAdapter.PAGE_NUM / 2, false);
-        currPage = pgSearchFriend.findViewWithTag(pgSearchFriend.getCurrentItem());
 
         btnLike = view.findViewById(R.id.btnLike);
         btnDislike = view.findViewById(R.id.btnDislike);
