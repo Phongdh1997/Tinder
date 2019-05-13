@@ -115,7 +115,7 @@ public class SearchFriendFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (currPage != null) {
-                    currPage.likeFriend(UserAuth.getInstance().getUser().getId());
+                    currPage.likeFriend();
                     // reminded use: currPage.likeFriend();
                 }
             }

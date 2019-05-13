@@ -265,7 +265,7 @@ public class MessageChatFragment extends Fragment {
         final ArrayList<Message> all_messages = new ArrayList<>();
 
         final MessageService messageService = RetrofitClient.getMessageService();
-
+        Log.d("authenToken", UserAuth.getInstance().getUser().getAuthen_token());
         messageService.getHistoricalMessage("Barer " + UserAuth.getInstance().getUser().getAuthen_token(),
                 conversation_id, last_base_time).enqueue(
                 new Callback<MessageService.MessageResponse>() {
@@ -278,7 +278,7 @@ public class MessageChatFragment extends Fragment {
                                 all_messages.addAll(response.body().getAllMessages());
 
                                 // update the last_base_time
-                                last_base_time = 12314534;
+                                last_base_time = response.body().getLastBaseTime();
 
                                 messageChatAdapter.setMessageList(null);
                                 messageChatAdapter.setMessageList(response.body().getAllMessages());

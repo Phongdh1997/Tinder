@@ -148,7 +148,8 @@ public class MessageBoxFragment extends Fragment {
     }
 
     public ArrayList<Conversation> loadConversations() {
-        // TODO: create socketIO to get all conversations of the current user
+        int USER_ID = UserAuth.getInstance().getUser().getId();
+
         ArrayList<Conversation> all_conversations = new ArrayList<>();
 
         Conversation conversation;

@@ -96,34 +96,37 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
      * Description: current user perform like this friend. Invoked when user click like this user.
      * @param currUserId: id of current user who like this friend
      */
-    public void likeFriend(int currUserId) {
-        if (friend == null) {
-            return;
-        }
-        int friendId = friend.getId();
-        Log.d("friend", "id = " + friendId);
-        Toast.makeText(getContext(), "Like event", Toast.LENGTH_SHORT).show();
-
-        JSONObject data = new JSONObject();
-        try {
-            // current user_id
-            data.put("liker_id", currUserId);
-
-            // liked user_id
-            data.put("liked_id", friendId);
-        } catch (JSONException e) {
-            Log.e("JSON exception", e.toString());
-        }
-
-
-        mSocket.push_data(data, "like");
-    }
+//    public void likeFriend(int currUserId) {
+//        if (friend == null) {
+//            return;
+//        }
+//        int friendId = friend.getId();
+//        Log.d("friend", "id = " + friendId);
+//        Toast.makeText(getContext(), "Like event", Toast.LENGTH_SHORT).show();
+//
+//        JSONObject data = new JSONObject();
+//        try {
+//            // current user_id
+//            data.put("liker_id", currUserId);
+//
+//            // liked user_id
+//            data.put("liked_id", friendId);
+//        } catch (JSONException e) {
+//            Log.e("JSON exception", e.toString());
+//        }
+//
+//
+//        mSocket.push_data(data, "like");
+//    }
 
     public void likeFriend() {
         if (friend != null && UserAuth.getInstance().getUser() != null) {
             if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
-                UserAuth.getInstance().getUser().likeFriend(friend.getId());
 
+                JSONObject data = UserAuth.getInstance().getUser().likeFriend(friend.getId());
+                // call socketIO to push data to the server
+                mSocket.push_data(data, "like");
+                Log.d("Like event", data.toString());
                 // set data = null, call notifyDataSetChange() to update this page
                 friend = null;
                 SearchFriendData.getInstance().notifyDataSetChange();
@@ -137,8 +140,11 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     public void dislikeFriend() {
         if (friend != null && UserAuth.getInstance().getUser() != null) {
             if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
-                UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
+                JSONObject data = UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
 
+                // call socketIO to push data to the server
+                mSocket.push_data(data, "pass");
+                Log.d("Dislike event", data.toString());
                 // set data = null, call notifyDataSetChange() to update this page
                 friend = null;
                 SearchFriendData.getInstance().notifyDataSetChange();

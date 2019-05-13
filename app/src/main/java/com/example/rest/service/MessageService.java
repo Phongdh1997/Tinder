@@ -41,7 +41,7 @@ public interface MessageService {
         @Expose
         private List<MessageItem> messages = null;
 
-        private int last_base_time;
+        private int last_base_time = -1;
 
         public MessageResponse(String response) {
             try {

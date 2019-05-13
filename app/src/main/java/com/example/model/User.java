@@ -12,6 +12,8 @@ import com.example.rest.service.SignupService;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -324,18 +326,43 @@ public class User {
      * Description: perform dislike a friend with friendId
      * @param friendId: id of friend is disliked
      */
-    public void dislikeFriend(int friendId) {
+    public JSONObject dislikeFriend(int friendId) {
         Log.d("dislike friend", "id = " + friendId);
-        //TODO: call API dislike friend here
+
+        JSONObject data = new JSONObject();
+        try {
+            // current user_id
+            data.put("passer_id", this.getId());
+
+            // passed user_id
+            data.put("passed_id", friendId);
+        } catch (JSONException e) {
+            Log.e("JSON exception", e.toString());
+        }
+
+        return data;
     }
 
     /**
      * Description: perform like a friend with friendId
      * @param friendId: id of friend is liked
      */
-    public void likeFriend(int friendId) {
+    public JSONObject likeFriend(int friendId) {
         Log.d("like friend", "id = " + friendId);
-        //TODO: call API like friend here
+
+        JSONObject data = new JSONObject();
+        try {
+            // current user_id
+            data.put("liker_id", this.getId());
+
+            // liked user_id
+            data.put("liked_id", friendId);
+        } catch (JSONException e) {
+            Log.e("JSON exception", e.toString());
+        }
+
+        return data;
+
     }
 
     public int getId() {
