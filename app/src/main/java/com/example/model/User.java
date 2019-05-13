@@ -1,6 +1,7 @@
 package com.example.model;
 
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +13,11 @@ import com.example.rest.service.SignupService;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -337,6 +343,15 @@ public class User {
     public void likeFriend(int friendId) {
         Log.d("like friend", "id = " + friendId);
         //TODO: call API like friend here
+    }
+
+    /**
+     *
+     * @param n: the number of image
+     * @return: url of n th image
+     */
+    public static String getImageUrl(int id, int n) {
+        return RetrofitClient.BASE_URL + "/upload/"+ id +"_image" + n + ".jpg";
     }
 
     public int getId() {
