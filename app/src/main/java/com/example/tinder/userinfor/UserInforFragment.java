@@ -124,10 +124,10 @@ public class UserInforFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         imageList = new ArrayList<>();
         imageViewAdapter = new ImageViewAdapter(getContext(), imageList);
+        viewPager.setAdapter(imageViewAdapter);
 
         // load images
         if (userData != null) {
-            updateUI();
             new ImagesLoading(userData.getId(), new OnImageLoadDoneListener() {
                 @Override
                 public void onImageLoadDone(Drawable image, int i) {
@@ -140,8 +140,9 @@ public class UserInforFragment extends Fragment {
                     imageViewAdapter.notifyDataSetChanged();
                 }
             }).execute();
+            updateUI();
         }
-        viewPager.setAdapter(imageViewAdapter);
+
     }
 
     private void updateUI() {
