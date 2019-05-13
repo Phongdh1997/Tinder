@@ -2,7 +2,7 @@ package com.example.tinder.search_friend;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 import androidx.navigation.Navigation;
 
+import com.example.internet_connection.AvatarLoading;
+import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.model.User;
-import com.example.rest.service.SearchFriendService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 @SuppressLint("ViewConstructor")
 public class FriendView extends ConstraintLayout implements SearchFriendData.OnDataLoadDoneListener {
@@ -26,6 +28,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     private TextView txtName;
     private ImageButton btnDetailInfo;
     private ShimmerFrameLayout shimmerViewContainer;
+    private RoundedImageView imgSearchFriendAvatar;
 
     public User getFriend() {
         return friend;
@@ -34,6 +37,10 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     public void setFriend(User friend) {
         this.friend = friend;
         updateUI();
+    }
+
+    public RoundedImageView getImgSearchFriendAvatar() {
+        return imgSearchFriendAvatar;
     }
 
     public FriendView(Context context, User friend) {
@@ -56,6 +63,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         txtName = findViewById(R.id.txtName);
         btnDetailInfo = findViewById(R.id.btnDetailInfo);
         shimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        imgSearchFriendAvatar = findViewById(R.id.imgSearchFriendAvatar);
 
         updateUI();
     }
@@ -67,6 +75,14 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         } else {
             // update view
             txtName.setText(friend.getName());
+            new AvatarLoading(friend.getId(), new OnImageLoadDoneListener() {
+                @Override
+                public void onImageLoadDone(Drawable image, int i) {
+                    if (image != null) {
+                        imgSearchFriendAvatar.setImageDrawable(image);
+                    }
+                }
+            }).execute();
 
             // hide loading view
             shimmerViewContainer.stopShimmerAnimation();
@@ -106,6 +122,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
 
                 // set data = null, call notifyDataSetChange() to update this page
                 friend = null;
+                updateUI();
                 SearchFriendData.getInstance().notifyDataSetChange();
             }
         }
@@ -121,6 +138,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
 
                 // set data = null, call notifyDataSetChange() to update this page
                 friend = null;
+                updateUI();
                 SearchFriendData.getInstance().notifyDataSetChange();
             }
         }
