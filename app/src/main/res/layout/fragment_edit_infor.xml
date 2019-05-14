@@ -233,11 +233,21 @@
                 android:background="#F5F5E4"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
-                android:textStyle="bold"
                 android:text="Giới Thiệu"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+            <Button
+                android:id="@+id/btnAvatar1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="240dp"
+                android:background="@drawable/add_image"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/guideline13"
+                app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
             <Button
                 android:id="@+id/btnAvatar2"
@@ -267,8 +277,8 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginEnd="8dp"
-                android:visibility="gone"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imgAvatar4" />
 
@@ -277,8 +287,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="100dp"
-                android:visibility="gone"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
                 app:layout_constraintTop_toTopOf="@+id/imgAvatar5" />
 
@@ -287,20 +297,88 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="100dp"
-                android:visibility="gone"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
                 app:layout_constraintTop_toTopOf="@+id/imgAvatar6" />
 
-            <Button
-                android:id="@+id/btnAvatar1"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="240dp"
-                android:visibility="gone"
-                android:background="@drawable/add_image"
-                app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toTopOf="@+id/guideline10" />
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading1"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar1"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar1"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar1"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar1" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading2"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar2"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar2"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar2"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar2" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading3"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar3"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar3"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar3"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar3" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading4"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar4"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar4"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar4"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar4" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading5"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar5"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar5"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar5"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar5" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading6"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar6"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar6"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar6"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar6" />
 
             <EditText
                 android:id="@+id/editTextDecription"
@@ -332,8 +410,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/actionBarTheme"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 
 
 </FrameLayout>

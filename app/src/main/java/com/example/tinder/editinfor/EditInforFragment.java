@@ -36,6 +36,7 @@ import com.example.rest.service.PostImageService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -76,9 +77,9 @@ public class EditInforFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private List<String> imagePathArray = new ArrayList<>();
-    private List<ImageView> arrayImg = new ArrayList<>();
-    private List<Button> arrayButton = new ArrayList<>();
+    private List<ImageView> arrayImg;
+    private List<Button> arrayButton;
+    private List<AVLoadingIndicatorView> imageLoadings;
     private int currSelect = 0;
     private Toolbar toolbar;
 
@@ -99,6 +100,7 @@ public class EditInforFragment extends Fragment {
     private ImageButton btnAvatar4;
     private ImageButton btnAvatar5;
     private ImageButton btnAvatar6;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -204,6 +206,7 @@ public class EditInforFragment extends Fragment {
             startActivityForResult(photoPickerIntent, index);
         } else {
             Log.d("delete", "delete image " + index);
+            // TODO: delete image
         }
     }
 
@@ -213,6 +216,20 @@ public class EditInforFragment extends Fragment {
             user = new User();
         }
         toolbar = view.findViewById(R.id.toolbar3);
+
+        imageLoadings = new ArrayList<>();
+        arrayImg = new ArrayList<>();
+        arrayButton = new ArrayList<>();
+
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading1));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading2));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading3));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading4));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading5));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading6));
+        for (int i = 0; i < 6; i++) {
+            imageLoadings.get(i).show();
+        }
 
         arrayImg.add((ImageView) view.findViewById(R.id.imgAvatar1));
         arrayImg.add((ImageView) view.findViewById(R.id.imgAvatar2));
@@ -265,6 +282,82 @@ public class EditInforFragment extends Fragment {
             arrayButton.get(index).setBackground(getResources().getDrawable(R.drawable.add_image));
         }
         arrayButton.get(index).setVisibility(View.VISIBLE);
+
+        // stop loading animation here
+        imageLoadings.get(index).hide();
+    }
+
+    /**
+     * Description: set image to ImageView with exist path.
+     * @param path: path of local image.
+     * @param index: index of imageview.
+     */
+    private void setImageFromPath(String path, int index) {
+        if (path != null) {
+            arrayImg.get(index).setImageURI(Uri.parse(path));
+            arrayButton.get(index).setBackgroundResource(R.drawable.delete_image);
+
+            // stop loading animation here
+            imageLoadings.get(index).hide();
+        }
+    }
+
+    private void deleteAvatarImage(int index) {
+        arrayImg.get(index).setImageDrawable(null);
+        arrayButton.get(index).setBackgroundResource(R.drawable.add_image);
+
+        // stop loading animation here
+        imageLoadings.get(index).hide();
+    }
+
+    private void saveImageToSever(final String picturePath, final int index) {
+        //start loading animation here
+        imageLoadings.get(index).setVisibility(View.VISIBLE);
+        imageLoadings.get(index).show();
+
+        File file = new File(picturePath);
+        RequestBody num = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(index + 1));
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
+        RetrofitClient.getPostImageService().upImage("Barer " + user.getAuthen_token(), num, body).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Up Success", Toast.LENGTH_LONG).show();
+                    setImageFromPath(picturePath, index);
+                } else {
+                    Toast.makeText(getContext(), "Up Fail", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(), "Internet error", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void deleteImage(final int index) {
+        //start loading animation here
+        imageLoadings.get(index).setVisibility(View.VISIBLE);
+        imageLoadings.get(index).show();
+
+        RetrofitClient.getDeleteImageService().deleteImage("Barer " + user.getAuthen_token(), new DeleteImageService.Num(1)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Delete Success", Toast.LENGTH_LONG).show();
+                    deleteAvatarImage(index);
+                } else
+                    Toast.makeText(getContext(), response.code() + "", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(), "Internet error", Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -281,56 +374,6 @@ public class EditInforFragment extends Fragment {
 
             saveImageToSever(picturePath, requestCode);
         }
-    }
-
-    private void deleteImage() {
-        RetrofitClient.getDeleteImageService().deleteImage("Barer " + user.getAuthen_token(), new DeleteImageService.Num(1)).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Delete Success", Toast.LENGTH_LONG).show();
-                    arrayImg.get(currSelect).setImageDrawable(null);
-                    arrayButton.get(currSelect).setBackgroundResource(R.drawable.add_image);
-                } else
-                    Toast.makeText(getContext(), response.code() + "", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getContext(), "Internet error", Toast.LENGTH_LONG).show();
-                t.printStackTrace();
-            }
-        });
-    }
-
-    private void saveImageToSever(final String picturePath, final int index) {
-        //start loading animation here
-
-        File file = new File(picturePath);
-        RequestBody num = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(index + 1));
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
-        RetrofitClient.getPostImageService().upImage("Barer " + user.getAuthen_token(), num, body).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Up Success", Toast.LENGTH_LONG).show();
-                    arrayImg.get(index).setImageURI(Uri.parse(picturePath));
-                    arrayButton.get(index).setBackgroundResource(R.drawable.delete_image);
-
-                    // stop loading animation here
-                } else {
-                    Toast.makeText(getContext(), "Up Fail", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getContext(), "Internet error", Toast.LENGTH_LONG).show();
-
-                // stop loading animation here
-            }
-        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
