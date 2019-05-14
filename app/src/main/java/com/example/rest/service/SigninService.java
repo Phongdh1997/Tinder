@@ -69,9 +69,31 @@ public interface SigninService {
         @SerializedName("age")
         @Expose
         private Integer age;
-        @SerializedName("Description")
+        @SerializedName("description")
         @Expose
         private String description;
+        @SerializedName("workplace")
+        @Expose
+        private String workplace;
+        @SerializedName("city")
+        @Expose
+        private String city;
+
+        public String getWorkplace() {
+            return workplace;
+        }
+
+        public void setWorkplace(String workplace) {
+            this.workplace = workplace;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
 
         public Integer getId() {
             return id;
