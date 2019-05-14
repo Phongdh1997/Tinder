@@ -131,13 +131,15 @@ public class UserInforFragment extends Fragment {
             new ImagesLoading(userData.getId(), new OnImageLoadDoneListener() {
                 @Override
                 public void onImageLoadDone(Drawable image, int i) {
-                    RoundedImageView imageView = new RoundedImageView(getContext());
-                    imageView.setImageDrawable(image);
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    imageView.setCornerRadius(25);
-                    imageView.setOval(false);
-                    imageList.add(imageView);
-                    imageViewAdapter.notifyDataSetChanged();
+                    if (image != null) {
+                        RoundedImageView imageView = new RoundedImageView(getContext());
+                        imageView.setImageDrawable(image);
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        imageView.setCornerRadius(25);
+                        imageView.setOval(false);
+                        imageList.add(imageView);
+                        imageViewAdapter.notifyDataSetChanged();
+                    }
                 }
             }).execute();
             updateUI();
