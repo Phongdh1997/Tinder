@@ -3,13 +3,9 @@ package com.example.tinder.editinfor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -22,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -32,21 +27,14 @@ import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.model.User;
 import com.example.rest.RetrofitClient;
 import com.example.rest.service.DeleteImageService;
-import com.example.rest.service.PostImageService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -71,8 +59,6 @@ public class EditInforFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private static final int RESULT_LOAD_IMG = 1234;
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -80,27 +66,11 @@ public class EditInforFragment extends Fragment {
     private List<ImageView> arrayImg;
     private List<Button> arrayButton;
     private List<AVLoadingIndicatorView> imageLoadings;
-    private int currSelect = 0;
     private Toolbar toolbar;
 
     private User user;
     private EditText edtPhone, edtDcription;
     private RadioButton rdbMale;
-
-    private RoundedImageView imgAvatar1;
-    private RoundedImageView imgAvatar2;
-    private RoundedImageView imgAvatar3;
-    private RoundedImageView imgAvatar4;
-    private RoundedImageView imgAvatar5;
-    private RoundedImageView imgAvatar6;
-
-    private ImageButton btnAvatar1;
-    private ImageButton btnAvatar2;
-    private ImageButton btnAvatar3;
-    private ImageButton btnAvatar4;
-    private ImageButton btnAvatar5;
-    private ImageButton btnAvatar6;
-
 
     private OnFragmentInteractionListener mListener;
 
@@ -198,7 +168,6 @@ public class EditInforFragment extends Fragment {
     }
 
     private void buttonClickHandle(int index) {
-        currSelect = index;
         if (arrayImg.get(index).getDrawable() == null) {
             Log.d("add", "add image " + index);
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -206,7 +175,7 @@ public class EditInforFragment extends Fragment {
             startActivityForResult(photoPickerIntent, index);
         } else {
             Log.d("delete", "delete image " + index);
-            // TODO: delete image
+            deleteImage(index);
         }
     }
 
@@ -342,7 +311,7 @@ public class EditInforFragment extends Fragment {
         imageLoadings.get(index).setVisibility(View.VISIBLE);
         imageLoadings.get(index).show();
 
-        RetrofitClient.getDeleteImageService().deleteImage("Barer " + user.getAuthen_token(), new DeleteImageService.Num(1)).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getDeleteImageService().deleteImage("Barer " + user.getAuthen_token(), index + 1).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
