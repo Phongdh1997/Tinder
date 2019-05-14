@@ -38,6 +38,10 @@ public class ImagesLoading extends AsyncTask<Void, Object[], Void> {
     @Override
     protected void onProgressUpdate(Object[]... drawable) {
         super.onProgressUpdate(drawable);
-        onImageLoadDoneListener.onImageLoadDone((Drawable) drawable[0][0], (int) drawable[0][1]);
+        try {
+            onImageLoadDoneListener.onImageLoadDone((Drawable) drawable[0][0], (int) drawable[0][1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
