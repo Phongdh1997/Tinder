@@ -381,7 +381,7 @@
                 app:layout_constraintTop_toTopOf="@+id/imgAvatar6" />
 
             <EditText
-                android:id="@+id/editTextDecription"
+                android:id="@+id/txtDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -421,7 +421,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="null"
+                android:background="@null"
                 android:ems="10"
                 android:hint="Địa chỉ..."
                 android:inputType="textPersonName"
@@ -449,7 +449,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="null"
+                android:background="@null"
                 android:ems="10"
                 android:hint="Nơi làm việc..."
                 android:inputType="textPersonName"
