@@ -58,7 +58,7 @@
             android:layout_marginEnd="8dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/avatar_bg"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_person_black_70dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

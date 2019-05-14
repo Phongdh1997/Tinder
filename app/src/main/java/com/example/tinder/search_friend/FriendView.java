@@ -75,7 +75,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         } else {
             // update view
             txtName.setText(friend.getName());
-            new AvatarLoading(friend.getId(), new OnImageLoadDoneListener() {
+            new AvatarLoading(friend.getId(), shimmerViewContainer, new OnImageLoadDoneListener() {
                 @Override
                 public void onImageLoadDone(Drawable image, int i) {
                     if (image != null) {
@@ -83,10 +83,6 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
                     }
                 }
             }).execute();
-
-            // hide loading view
-            shimmerViewContainer.stopShimmerAnimation();
-            shimmerViewContainer.setVisibility(View.GONE);
         }
     }
 

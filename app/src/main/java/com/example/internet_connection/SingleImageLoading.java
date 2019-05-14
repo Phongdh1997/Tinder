@@ -38,6 +38,10 @@ public class SingleImageLoading extends AsyncTask<Void, Void, Object[]> {
     @Override
     protected void onPostExecute(Object[] drawable) {
         super.onPostExecute(drawable);
-        onImageLoadDoneListener.onImageLoadDone((Drawable) drawable[0], (int)drawable[1]);
+        try {
+            onImageLoadDoneListener.onImageLoadDone((Drawable) drawable[0], (int) drawable[1]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
