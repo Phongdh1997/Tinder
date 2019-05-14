@@ -231,9 +231,9 @@
                 app:riv_tile_mode="clamp" />
 
             <TextView
-                android:id="@+id/textViewSDT"
+                android:id="@+id/fdafdsa"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="43dp"
                 android:layout_marginTop="30dp"
                 android:background="#F5F5E4"
                 android:gravity="center_vertical"
@@ -257,7 +257,7 @@
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSDT" />
+                app:layout_constraintTop_toBottomOf="@+id/fdafdsa" />
 
             <TextView
                 android:id="@+id/textViewGender"
