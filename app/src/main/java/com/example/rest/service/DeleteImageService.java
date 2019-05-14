@@ -14,29 +14,9 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface DeleteImageService {
     @POST("/upload/delete_image")
-    Call<ResponseBody> deleteImage(@Header("Authorization") String authorization, @Body Num num);
-
-    class Num {
-
-        public Num(Integer num) {
-            this.num = num;
-        }
-
-        @SerializedName("num")
-        @Expose
-
-        private Integer num;
-
-        public Integer getNum() {
-            return num;
-        }
-
-        public void setNum(Integer num) {
-            this.num = num;
-        }
-    }
-
+    Call<ResponseBody> deleteImage(@Header("Authorization") String authorization, @Query("num") int num);
 }
