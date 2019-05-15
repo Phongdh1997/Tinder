@@ -214,7 +214,7 @@ public class EditInforFragment extends Fragment {
         arrayButton.add((Button) view.findViewById(R.id.btnAvatar5));
         arrayButton.add((Button) view.findViewById(R.id.btnAvatar6));
 
-        edtDcription = view.findViewById(R.id.editTextDecription);
+        edtDcription = view.findViewById(R.id.txtDescription);
         edtPhone = view.findViewById(R.id.editTextSDT);
         rdbMale = view.findViewById(R.id.radioButtonMale);
 
