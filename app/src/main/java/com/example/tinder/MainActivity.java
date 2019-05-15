@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity
                 switch (state){
                     case UserAuth.AUTHENTICATED:
                         UserAuth.getInstance().getUser().setActivity(MainActivity.this);
+                        UserAuth.getInstance().getUser().updateUserInfo("name", "female", 55, "012345678", "con chim den thui", "Tra vinh", "khong biet");
+                        UserAuth.getInstance().getUser().updateUserSettings("male", 22, 27, 8000);
                         checkLocationPermission();
                         updateUI();
                         break;

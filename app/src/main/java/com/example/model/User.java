@@ -189,7 +189,6 @@ public class User {
         }
         user.setId(id);
         user.setMail(sharedPreferences.getString(MAIL, ""));
-        user.setHashedPassword(sharedPreferences.getString(PASSWORD, ""));
         user.setName(sharedPreferences.getString(NAME, ""));
         user.setAge(sharedPreferences.getInt(AGE, 0));
         user.setGender(sharedPreferences.getString(GENDER, ""));
@@ -200,6 +199,10 @@ public class User {
         user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
         user.setCity(sharedPreferences.getString(CITY, ""));
         user.setWorkplace(sharedPreferences.getString(WORK_PLACE, ""));
+        user.setSwipe_gender(sharedPreferences.getString(SWIPE_GENDER, SWIPE_GENDER_DEFAULT_VALUE));
+        user.setMin_age(sharedPreferences.getInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE));
+        user.setMax_age(sharedPreferences.getInt(MAX_AGE, MAX_AGE_DEFAULT_VALUE));
+        user.setMax_distance(sharedPreferences.getInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE));
 
         return user;
     }
@@ -209,7 +212,6 @@ public class User {
 
         editor.putInt(ID, this.id);
         editor.putString(MAIL, this.mail);
-        editor.putString(PASSWORD, this.password);
         editor.putString(NAME, this.name);
         editor.putInt(AGE, this.age);
         editor.putString(GENDER, this.gender);
@@ -229,7 +231,7 @@ public class User {
         Log.d("save", "saveAthenToken: ");
     }
 
-    public void updateInfoToLocal() {
+    private void updateInfoToLocal() {
         SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
         editor.putString(NAME, this.name);
         editor.putInt(AGE, this.age);
@@ -242,12 +244,12 @@ public class User {
         Log.d("save", "saveAthenToken: ");
     }
 
-    public void updateSettingToLocal () {
+    private void updateSettingToLocal () {
         SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
-        editor.putString(User.SWIPE_GENDER, swipe_gender);
-        editor.putInt(User.MIN_AGE, min_age);
-        editor.putInt(User.MAX_AGE, max_age);
-        editor.putInt(User.MAX_DISTANCE, max_distance);
+        editor.putString(SWIPE_GENDER, swipe_gender);
+        editor.putInt(MIN_AGE, min_age);
+        editor.putInt(MAX_AGE, max_age);
+        editor.putInt(MAX_DISTANCE, max_distance);
         editor.apply();
     }
 
@@ -454,8 +456,8 @@ public class User {
                 });
     }
 
-    public void updateUserInfo (final String name, final String gender, final int age, final String phone, final String description) {
-        RetrofitClient.getUpdateUserService().updateUserInfo(getHeaderAuthenToken(), name, gender, age, phone, description)
+    public void updateUserInfo (final String name, final String gender, final int age, final String phone, final String description, final String city, final String workplace) {
+        RetrofitClient.getUpdateUserService().updateUserInfo(getHeaderAuthenToken(), name, gender, age, phone, description, city, workplace)
                 .enqueue(new Callback<MessageError>() {
                     @Override
                     public void onResponse(Call<MessageError> call, Response<MessageError> response) {
@@ -466,9 +468,8 @@ public class User {
                             User.this.age = age;
                             User.this.phone = phone;
                             User.this.decription = description;
-
-                            //User.this.city = city;
-                            //User.this.workplace = workplace;
+                            User.this.city = city;
+                            User.this.workplace = workplace;
                             updateInfoToLocal();
                         } else {
                             Log.d("update", "update info fail");
