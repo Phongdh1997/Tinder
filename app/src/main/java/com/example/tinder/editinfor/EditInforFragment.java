@@ -69,7 +69,7 @@ public class EditInforFragment extends Fragment {
     private Toolbar toolbar;
 
     private User user;
-    private EditText edtPhone, edtDcription;
+    private EditText edtPhone, edtDcription,edtAddress,edtWorkPlace;
     private RadioButton rdbMale;
 
     private OnFragmentInteractionListener mListener;
@@ -214,6 +214,8 @@ public class EditInforFragment extends Fragment {
         arrayButton.add((Button) view.findViewById(R.id.btnAvatar5));
         arrayButton.add((Button) view.findViewById(R.id.btnAvatar6));
 
+        edtAddress = view.findViewById(R.id.editTextAddress);
+        edtWorkPlace = view.findViewById(R.id.editTextWordPlace);
         edtDcription = view.findViewById(R.id.txtDescription);
         edtPhone = view.findViewById(R.id.editTextSDT);
         rdbMale = view.findViewById(R.id.radioButtonMale);
@@ -222,6 +224,8 @@ public class EditInforFragment extends Fragment {
     }
 
     private void updateUI() {
+        edtAddress.setText(user.getCity());
+        edtWorkPlace.setText(user.getWorkplace());
         edtPhone.setText(user.getPhone());
         edtDcription.setText(user.getDecription());
         rdbMale.setChecked(user.getGender().equals("male"));

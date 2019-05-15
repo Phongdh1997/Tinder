@@ -58,7 +58,7 @@ public class UserInforFragment extends Fragment {
 
     private TextView txtNameAge;
     private User userData;
-    private TextView txtDescription;
+    private TextView txtDescription,txtAddress,txtWorkPlace,txtLocation;
 
     private List<View> imageList;
 
@@ -117,6 +117,9 @@ public class UserInforFragment extends Fragment {
     private void addControls(View view) {
         txtNameAge = view.findViewById(R.id.txtNameAge);
         txtDescription = view.findViewById(R.id.txtDescription);
+        txtAddress = view.findViewById(R.id.textViewAddress);
+        txtWorkPlace = view.findViewById(R.id.textViewWorkPlace);
+        txtLocation = view.findViewById(R.id.textViewLocation);
 
         userData = User.getUserFromBundle(getArguments());
 
@@ -150,6 +153,9 @@ public class UserInforFragment extends Fragment {
     private void updateUI() {
         String nameAge = userData.getName() + ", " + userData.getAge();
         txtNameAge.setText(nameAge);
+        txtAddress.setText(userData.getCity());
+        txtWorkPlace.setText(userData.getWorkplace());
+        txtLocation.setText("Cách chưa tới " + userData.getMax_distance() + " km");
         txtDescription.setText(userData.getDecription());
     }
 
