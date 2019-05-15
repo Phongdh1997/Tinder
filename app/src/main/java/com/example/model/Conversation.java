@@ -7,6 +7,8 @@ public class Conversation {
     private String created_at;
     private String updated_at;
     private String deleted_at;
+    // the name of member id
+    private String conversation_name;
 
     // add lasted message to update UI in MatchListApdapter
     private String lasted_message;
@@ -16,10 +18,11 @@ public class Conversation {
         this.member_id = member_id;
     }
 
-    public Conversation(int id, int creator_id, int member_id) {
+    public Conversation(int id, int creator_id, int member_id, String conversation_name) {
         this.id = id;
         this.creator_id = creator_id;
         this.member_id = member_id;
+        this.conversation_name = conversation_name;
     }
 
     public int getId() {
@@ -76,5 +79,13 @@ public class Conversation {
 
     public String getLasted_message() {
         return lasted_message;
+    }
+
+    public void setConversation_name(String conversation_name) {
+        this.conversation_name = conversation_name;
+    }
+
+    public String getConversation_name() {
+        return conversation_name;
     }
 }

@@ -15,6 +15,8 @@ import com.example.tinder.authentication.UserAuth;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MessageHolder> {
 
     private ArrayList<Conversation> conversations;
@@ -38,6 +40,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull final MessageHolder messageHolder, int i) {
+        Conversation curr_conversation = conversations.get(i);
+        messageHolder.bind(curr_conversation.getConversation_name());
 
         // add item click event
         messageHolder.view.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +66,16 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         return this.conversations.get(position).getId();
     }
 
+    public Conversation getItemByPosition(int position) {
+        return this.conversations.get(position);
+    }
+
     public static class MessageHolder extends RecyclerView.ViewHolder {
 
         private View view;
         private TextView lasted_msg;
         private TextView user_name;
+        private CircleImageView user_image;
 
         public View getView() {
             return view;
@@ -77,6 +86,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             view = itemView;
             lasted_msg = itemView.findViewById(R.id.lasted_msg_txtView);
             user_name = itemView.findViewById(R.id.user_name_txtView);
+            user_image = itemView.findViewById(R.id.user_circelImageView);
+        }
+
+        void bind(String name) {
+            user_name.setText(name);
         }
 
         public void setLastedMessage(String message) {
@@ -112,6 +126,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             }
         }
         return position;
+    }
+
+    public void setConversations(ArrayList<Conversation> new_conversations) {
+        this.conversations = new_conversations;
     }
 
 }

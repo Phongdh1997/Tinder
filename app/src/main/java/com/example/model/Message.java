@@ -11,6 +11,7 @@ public class Message {
     private Date created_at;
     private boolean is_received;
     private int message_id;
+    private String conversation_name;
 
     public Message(){
 
@@ -22,6 +23,16 @@ public class Message {
         created_at = new Date();
         this.conversation_id = conversation_id;
         this.is_received = false;
+        this.conversation_name = "";
+    }
+
+    public Message(Integer user_id, Integer conversation_id, String body, String conversation_name) {
+        sender_id = user_id;
+        message = body;
+        created_at = new Date();
+        this.conversation_id = conversation_id;
+        this.is_received = false;
+        this.conversation_name = conversation_name;
     }
 
     public String getMessage() {
@@ -70,5 +81,13 @@ public class Message {
 
     public int getMessage_id() {
         return message_id;
+    }
+
+    public String getConversation_name() {
+        return conversation_name;
+    }
+
+    public void setConversation_name(String conversation_name) {
+        this.conversation_name = conversation_name;
     }
 }

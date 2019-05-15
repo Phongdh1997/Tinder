@@ -86,14 +86,14 @@ public interface MessageService {
             return last_base_time;
         }
 
-        public ArrayList<Message> getAllMessages() {
+        public ArrayList<Message> getAllMessages(String conversation_name) {
             ArrayList<Message> results = new ArrayList<>();
             int num_item = messages.size();
 
             for(int i = num_item - 1; i >= 0; i--) {
                 MessageItem ith_message = messages.get(i);
                 Message new_msg = new Message(ith_message.getSender_id(),
-                        Integer.valueOf(conversation_id), ith_message.getMessage());
+                        Integer.valueOf(conversation_id), ith_message.getMessage(), conversation_name);
                 new_msg.setCreated_at(messages.get(i).getCreated_at_as_date());
                 results.add(new_msg);
                 if (i == 0) {

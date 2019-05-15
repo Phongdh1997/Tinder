@@ -70,6 +70,7 @@ public class MessageChatFragment extends Fragment {
     private static SocketIO mSocket;
     private Bundle mBundle;
     private int conversation_id;
+    private String conversation_name;
     private ArrayList<Message> historical_messages;
     private int last_base_time = -1;
 
@@ -123,6 +124,7 @@ public class MessageChatFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         conversation_id = (int) mBundle.getSerializable("conversation_id");
+        conversation_name = (String) mBundle.getSerializable("member_name");
 
         // get historical message
         historical_messages = loadMessages();
@@ -160,10 +162,11 @@ public class MessageChatFragment extends Fragment {
                 }
             }
         });
+
     }
 
     private void addMessage(Integer user_id, Integer conversation_id, String message) {
-        Message new_message = new Message(user_id, conversation_id, message);
+        Message new_message = new Message(user_id, conversation_id, message, conversation_name);
         messageChatAdapter.addMessage(new_message);
     }
 
@@ -266,6 +269,7 @@ public class MessageChatFragment extends Fragment {
 
         final MessageService messageService = RetrofitClient.getMessageService();
         Log.d("authenToken", UserAuth.getInstance().getUser().getAuthen_token());
+        Log.d("basetime", Integer.toString(last_base_time));
         messageService.getHistoricalMessage("Barer " + UserAuth.getInstance().getUser().getAuthen_token(),
                 conversation_id, last_base_time).enqueue(
                 new Callback<MessageService.MessageResponse>() {
@@ -274,14 +278,13 @@ public class MessageChatFragment extends Fragment {
                         Log.i("onResponse", "Send request to get historical message with code: " + response.code());
                         if (response.isSuccessful()) {
                             if (response.body() != null) {
-                                response.body().printMessageString();
-                                all_messages.addAll(response.body().getAllMessages());
+                                all_messages.addAll(response.body().getAllMessages(conversation_name));
 
                                 // update the last_base_time
                                 last_base_time = response.body().getLastBaseTime();
 
                                 messageChatAdapter.setMessageList(null);
-                                messageChatAdapter.setMessageList(response.body().getAllMessages());
+                                messageChatAdapter.setMessageList(response.body().getAllMessages(conversation_name));
                                 messageChatAdapter.notifyDataSetChanged();
                                 recyclerView.setAdapter(messageChatAdapter);
                             }
@@ -338,4 +341,5 @@ public class MessageChatFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

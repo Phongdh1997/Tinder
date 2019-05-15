@@ -8,7 +8,7 @@
     android:paddingBottom="6dp">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/fdafds"
+        android:id="@+id/user_circelImageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/girl_2"

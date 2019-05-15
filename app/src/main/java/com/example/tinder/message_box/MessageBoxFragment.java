@@ -20,9 +20,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.example.internet_connection.SocketIO;
 
 import com.example.model.Conversation;
+import com.example.rest.RetrofitClient;
+import com.example.rest.service.ConversationService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 import com.github.nkzawa.emitter.Emitter;
@@ -31,9 +34,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import android.os.AsyncTask;
 
 
@@ -101,18 +109,17 @@ public class MessageBoxFragment extends Fragment {
             public void onClick(View v, int position) {
                 Log.d("Navigate: ", "navigate " + position);
                 long conversation_id = messageListAdapter.getItemId(position);
-                Toast.makeText(getActivity(), "Onclick on conversation_id " + Long.toString(conversation_id),
-                        Toast.LENGTH_LONG).show();
 
                 // pass information to other fragment
+
                 Bundle bundle = new Bundle();
                 bundle.putInt("conversation_id", (int) conversation_id);
+                bundle.putString("member_name", messageListAdapter.getItemByPosition(position).getConversation_name());
 
                 NavHostFragment.findNavController(MessageBoxFragment.this).navigate(R.id.action_homeFragment_to_messageChatFragment, bundle);
             }
         });
     }
-
 
 
     private void addControls(View view) {
@@ -148,16 +155,42 @@ public class MessageBoxFragment extends Fragment {
     }
 
     public ArrayList<Conversation> loadConversations() {
-        int USER_ID = UserAuth.getInstance().getUser().getId();
+        final int USER_ID = UserAuth.getInstance().getUser().getId();
 
-        ArrayList<Conversation> all_conversations = new ArrayList<>();
+        final ArrayList<Conversation> all_conversations = new ArrayList<>();
 
-        Conversation conversation;
-        // just for development
-        for(int i = 1; i <= 3; i++) {
-            conversation = new Conversation(i, 1, i+1);
-            all_conversations.add(conversation);
-        }
+        final ConversationService conversationService = RetrofitClient.getConversationService();
+        Log.d("authenToken", UserAuth.getInstance().getUser().getAuthen_token());
+        conversationService.getAllConversations("Barer " + UserAuth.getInstance().getUser().getAuthen_token()).enqueue(
+                new Callback<List<ConversationService.ConversationRespone>>() {
+                    @Override
+                    public void onResponse(Call<List<ConversationService.ConversationRespone>> call, Response<List<ConversationService.ConversationRespone>> response) {
+                        Log.i("onResponse", "Send request to get all conversations with code: " + response.code());
+                        if (response.isSuccessful()) {
+                            if (response.body() != null) {
+                                for (int i = 0; i < response.body().size(); i++) {
+                                    ConversationService.ConversationRespone ith_item = response.body().get(i);
+                                    all_conversations.add(new Conversation(
+                                            ith_item.getConversationId(),
+                                            USER_ID,
+                                            ith_item.getFriend().getId(),
+                                            ith_item.getFriend().getName()));
+                                }
+                                messageListAdapter.setConversations(null);
+                                messageListAdapter.setConversations(all_conversations);
+                                messageListAdapter.notifyDataSetChanged();
+                                rvMessageList.setAdapter(messageListAdapter);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ConversationService.ConversationRespone>> call, Throwable t) {
+                        Log.i("onFailure", "Send request to get all conversations failed.");
+                        t.printStackTrace();
+                    }
+                }
+        );
 
         return all_conversations;
     }

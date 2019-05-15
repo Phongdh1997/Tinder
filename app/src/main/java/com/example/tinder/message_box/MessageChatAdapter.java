@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.model.User;
+import com.example.rest.RetrofitClient;
+import com.example.rest.service.MessageService;
 import com.example.tinder.R;
 import com.example.model.Message;
 import com.example.tinder.authentication.UserAuth;
@@ -20,6 +22,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MessageChatAdapter extends RecyclerView.Adapter {
 
@@ -66,7 +72,38 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
         if (i == 0) {
             // onTopReached
             Log.e("onTopReached", "Reach the last message in the view.");
-
+//            MessageService messageService = RetrofitClient.getMessageService();
+//            Log.d("authenToken", UserAuth.getInstance().getUser().getAuthen_token());
+//            Log.d("basetime", Integer.toString(last_base_time));
+//            messageService.getHistoricalMessage("Barer " + UserAuth.getInstance().getUser().getAuthen_token(),
+//                    conversation_id, last_base_time).enqueue(
+//                    new Callback<MessageService.MessageResponse>() {
+//                        @Override
+//                        public void onResponse(Call<MessageService.MessageResponse> call, Response<MessageService.MessageResponse> response) {
+//                            Log.i("onResponse", "Send request to get historical message with code: " + response.code());
+//                            if (response.isSuccessful()) {
+//                                if (response.body() != null) {
+//                                    response.body().printMessageString();
+//                                    mMessageList.addAll(response.body().getAllMessages(conversation_name));
+//
+//                                    // update the last_base_time
+//                                    last_base_time = response.body().getLastBaseTime();
+//
+//                                    messageChatAdapter.setMessageList(null);
+//                                    messageChatAdapter.setMessageList(response.body().getAllMessages(conversation_name));
+//                                    messageChatAdapter.notifyDataSetChanged();
+//                                    recyclerView.setAdapter(messageChatAdapter);
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<MessageService.MessageResponse> call, Throwable t) {
+//                            Log.i("onFailure", "Send request to get historical message failed.");
+//                            t.printStackTrace();
+//                        }
+//                    }
+//            );
         }
         Message message = mMessageList.get(i);
         int user_id = message.getSender_id();
@@ -87,9 +124,8 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
     }
 
     public void addMessageList(ArrayList<Message> messageArrayList) {
-        for(int i = 0; i < messageArrayList.size(); i++) {
-            addMessage(messageArrayList.get(i));
-        }
+        this.mMessageList.addAll(messageArrayList);
+        notifyDataSetChanged();
     }
 
     public void updateStatusMessage(int position, Boolean is_received) {
@@ -152,11 +188,13 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText;
         TextView messageTime;
+        TextView nameText;
 
         ReceivedMessageHolder(View itemView) {
             super(itemView);
             messageTime  = itemView.findViewById(R.id.received_message_time);
             messageText = itemView.findViewById(R.id.text_message_body);
+            nameText = itemView.findViewById(R.id.text_message_name);
         }
 
         void bind(Message message) {
@@ -164,6 +202,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
             Date created_at = message.getCreated_at();
             String created_at_str = sdf.format(created_at);
             messageTime.setText(created_at_str);
+            nameText.setText(message.getConversation_name());
         }
     }
 

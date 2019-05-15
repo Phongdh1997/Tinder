@@ -29,7 +29,7 @@ import retrofit2.http.Query;
 public interface ConversationService {
 
     @GET("/api/conversations")
-    Call<ConversationRespone> getAllConversations(@Header("Authorization") String token);
+    Call<List<ConversationRespone>> getAllConversations(@Header("Authorization") String token);
 
     class ConversationRespone {
         @SerializedName("conversation_id")
@@ -58,7 +58,7 @@ public interface ConversationService {
 
     }
 
-     class Friend {
+    class Friend {
 
         @SerializedName("id")
         @Expose
