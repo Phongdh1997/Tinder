@@ -3,10 +3,8 @@ package com.example.tinder.editinfor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,13 +17,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.internet_connection.ImagesLoading;
+import com.example.internet_connection.OnImageLoadDoneListener;
+import com.example.model.User;
+import com.example.rest.RetrofitClient;
+import com.example.rest.service.DeleteImageService;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
+import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -45,14 +62,15 @@ public class EditInforFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private List<Bitmap> arrayImage = new ArrayList<>();
-    private List<ImageView> arrayImg = new ArrayList<>();
-    private List<Button> arrayButton = new ArrayList<>();
-    private int currSelect = 0;
-    private Button btnDelete;
+
+    private List<ImageView> arrayImg;
+    private List<Button> arrayButton;
+    private List<AVLoadingIndicatorView> imageLoadings;
     private Toolbar toolbar;
-    private int RESULT_LOAD_IMG = 1234;
-    private int RC_REQUEST_PERMISSION = 999;
+
+    private User user;
+    private EditText edtPhone, edtDcription;
+    private RadioButton rdbMale;
 
     private OnFragmentInteractionListener mListener;
 
@@ -100,117 +118,46 @@ public class EditInforFragment extends Fragment {
 
         addControls(view);
         addEvent(view);
-
-
-
     }
 
-    private void addEvent(View view) {
-        //click button
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(arrayImage.isEmpty()) {
-//                    Toast.makeText(getActivity(), "empty", Toast.LENGTH_SHORT).show();
-//                    return;
-//                } else {
-//                    arrayImage.remove(currSelect);
-//                    if(arrayImage.isEmpty()){
-//                        arrayImg.get(0).setImageResource(0);
-//                        arrayImg.get(5).setImageResource(0);
-//                        arrayButton.get(0).setVisibility(View.VISIBLE);
-//                    }else {
-//                        setImage();
-//                        currSelect=0;
-//                    }
-//
-//                }
-//            }
-//        });
+    private void addEvent(final View view) {
         arrayButton.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(arrayImg.get(0).getDrawable() == null){
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
-                }else {
-                    arrayImage.remove(0);
-                    if(!arrayImage.isEmpty())
-                        setImage();
-                    else {
-                        arrayImg.get(0).setImageResource(0);
-                        v.setBackgroundResource(R.drawable.add_image);
-                    }
-                }
-
+                buttonClickHandle(0);
             }
         });
         arrayButton.get(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(arrayImg.get(1).getDrawable() == null){
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
-                }else {
-                    arrayImage.remove(1);
-                    setImage();
-                }
+                buttonClickHandle(1);
             }
         });
         arrayButton.get(2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(arrayImg.get(2).getDrawable() == null){
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
-                }else {
-                    arrayImage.remove(2);
-                    setImage();
-                }
+                buttonClickHandle(2);
             }
         });
         arrayButton.get(3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(arrayImg.get(3).getDrawable() == null){
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
-                }else {
-                    arrayImage.remove(3);
-                    setImage();
-                }
+                buttonClickHandle(3);
             }
         });
         arrayButton.get(4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(arrayImg.get(4).getDrawable() == null){
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
-                }else {
-                    arrayImage.remove(4);
-                    setImage();
-                }
+                buttonClickHandle(4);
             }
         });
         arrayButton.get(5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(arrayImg.get(5).getDrawable() == null){
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
-                }else {
-                    arrayImage.remove(5);
-                    setImage();
-                }
+                buttonClickHandle(5);
             }
         });
+
         //click Up back button
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,155 +165,185 @@ public class EditInforFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+    }
 
-        //select ImageView
-//        arrayImg.get(0).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(0);
-//            }
-//        });
-//        arrayImg.get(1).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(1);
-//            }
-//        });
-//        arrayImg.get(2).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(2);
-//            }
-//        });
-//        arrayImg.get(3).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(3);
-//            }
-//        });
-//        arrayImg.get(4).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewImage(4);
-//            }
-//        });
-
-        // end Select View
+    private void buttonClickHandle(int index) {
+        if (arrayImg.get(index).getDrawable() == null) {
+            Log.d("add", "add image " + index);
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, index);
+        } else {
+            Log.d("delete", "delete image " + index);
+            deleteImage(index);
+        }
     }
 
     private void addControls(View view) {
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView6));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView1));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView2));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView3));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView4));
-        arrayImg.add((ImageView) view.findViewById(R.id.imageView5));
+        user = UserAuth.getInstance().getUser();
+        if (user == null) {
+            user = new User();
+        }
+        toolbar = view.findViewById(R.id.toolbar3);
 
+        imageLoadings = new ArrayList<>();
+        arrayImg = new ArrayList<>();
+        arrayButton = new ArrayList<>();
 
-        arrayButton.add((Button) view.findViewById(R.id.buttonAdd6));
-        arrayButton.add((Button) view.findViewById(R.id.buttonAdd1));
-        arrayButton.add((Button) view.findViewById(R.id.buttonAdd2));
-        arrayButton.add((Button) view.findViewById(R.id.buttonAdd3));
-        arrayButton.add((Button) view.findViewById(R.id.buttonAdd4));
-        arrayButton.add((Button) view.findViewById(R.id.buttonAdd5));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading1));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading2));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading3));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading4));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading5));
+        imageLoadings.add((AVLoadingIndicatorView) view.findViewById(R.id.imageLoading6));
+        for (int i = 0; i < 6; i++) {
+            imageLoadings.get(i).show();
+        }
 
+        arrayImg.add((ImageView) view.findViewById(R.id.imgAvatar1));
+        arrayImg.add((ImageView) view.findViewById(R.id.imgAvatar2));
+        arrayImg.add((ImageView) view.findViewById(R.id.imgAvatar3));
+        arrayImg.add((ImageView) view.findViewById(R.id.imgAvatar4));
+        arrayImg.add((ImageView) view.findViewById(R.id.imgAvatar5));
+        arrayImg.add((ImageView) view.findViewById(R.id.imgAvatar6));
 
-        toolbar =  view.findViewById(R.id.toolbar3);
+        arrayButton.add((Button) view.findViewById(R.id.btnAvatar1));
+        arrayButton.add((Button) view.findViewById(R.id.btnAvatar2));
+        arrayButton.add((Button) view.findViewById(R.id.btnAvatar3));
+        arrayButton.add((Button) view.findViewById(R.id.btnAvatar4));
+        arrayButton.add((Button) view.findViewById(R.id.btnAvatar5));
+        arrayButton.add((Button) view.findViewById(R.id.btnAvatar6));
 
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
-        setImage();
+        edtDcription = view.findViewById(R.id.editTextDecription);
+        edtPhone = view.findViewById(R.id.editTextSDT);
+        rdbMale = view.findViewById(R.id.radioButtonMale);
+
+        updateUI();
+    }
+
+    private void updateUI() {
+        edtPhone.setText(user.getPhone());
+        edtDcription.setText(user.getDecription());
+        rdbMale.setChecked(user.getGender().equals("male"));
+
+        new ImagesLoading(user.getId(), new OnImageLoadDoneListener() {
+            @Override
+            public void onImageLoadDone(Drawable image, int i) {
+                setAvatarImage(image, i - 1);
+            }
+        }).execute();
+    }
+
+    /**
+     * Description: set image with index to layout
+     *
+     * @param image
+     * @param index
+     */
+    private void setAvatarImage(Drawable image, final int index) {
+        Log.d("index", "ind = " + index);
+        arrayImg.get(index).setImageDrawable(image);
+
+        // set image for button
+        if (image != null) {
+            arrayButton.get(index).setBackground(getResources().getDrawable(R.drawable.delete_image));
+        } else {
+            arrayButton.get(index).setBackground(getResources().getDrawable(R.drawable.add_image));
+        }
+        arrayButton.get(index).setVisibility(View.VISIBLE);
+
+        // stop loading animation here
+        imageLoadings.get(index).hide();
+    }
+
+    /**
+     * Description: set image to ImageView with exist path.
+     * @param path: path of local image.
+     * @param index: index of imageview.
+     */
+    private void setImageFromPath(String path, int index) {
+        if (path != null) {
+            arrayImg.get(index).setImageURI(Uri.parse(path));
+            arrayButton.get(index).setBackgroundResource(R.drawable.delete_image);
+
+            // stop loading animation here
+            imageLoadings.get(index).hide();
+        }
+    }
+
+    private void deleteAvatarImage(int index) {
+        arrayImg.get(index).setImageDrawable(null);
+        arrayButton.get(index).setBackgroundResource(R.drawable.add_image);
+
+        // stop loading animation here
+        imageLoadings.get(index).hide();
+    }
+
+    private void saveImageToSever(final String picturePath, final int index) {
+        //start loading animation here
+        imageLoadings.get(index).setVisibility(View.VISIBLE);
+        imageLoadings.get(index).show();
+
+        File file = new File(picturePath);
+        RequestBody num = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(index + 1));
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
+        RetrofitClient.getPostImageService().upImage("Barer " + user.getAuthen_token(), num, body).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Up Success", Toast.LENGTH_LONG).show();
+                    setImageFromPath(picturePath, index);
+                } else {
+                    Toast.makeText(getContext(), "Up Fail", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(), "Internet error", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void deleteImage(final int index) {
+        //start loading animation here
+        imageLoadings.get(index).setVisibility(View.VISIBLE);
+        imageLoadings.get(index).show();
+
+        RetrofitClient.getDeleteImageService().deleteImage("Barer " + user.getAuthen_token(), index + 1).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Delete Success", Toast.LENGTH_LONG).show();
+                    deleteAvatarImage(index);
+                } else
+                    Toast.makeText(getContext(), response.code() + "", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(), "Internet error", Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMG && resultCode == Activity.RESULT_OK && null != data) {
+        if (Arrays.asList(0, 1, 2, 3, 4, 5).contains(requestCode) && resultCode == Activity.RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContext().getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContext().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
-
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            arrayImage.add(decodeFile(picturePath));
-            setImage();
-            Toast.makeText(getActivity(),arrayImage.size()+" ",Toast.LENGTH_SHORT).show();
-
+            saveImageToSever(picturePath, requestCode);
         }
     }
-
-    private static Bitmap decodeResource(Resources res, int id) {
-        Bitmap bitmap = null;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        for (options.inSampleSize = 1; options.inSampleSize <= 32; options.inSampleSize++) {
-            try {
-                bitmap = BitmapFactory.decodeResource(res, id, options);
-                Log.d("log", "Decoded successfully for sampleSize" + options.inSampleSize);
-                break;
-            } catch (OutOfMemoryError outOfMemoryError) {
-        // If an OutOfMemoryError occurred, we continue with for loop and next inSampleSize value
-                Log.e("log", "outOfMemoryError while reading file for sampleSize" + options.inSampleSize
-                        + "retrying with higher value");
-            }
-        }
-        return Bitmap.createScaledBitmap(bitmap, 700, 875, true);
-    }
-
-    public static Bitmap decodeFile(String pathName) {
-        Bitmap bitmap = null;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-
-        // m chua request
-
-        for (options.inSampleSize = 1; options.inSampleSize <= 32; options.inSampleSize *= 2) {
-            try {
-                bitmap = BitmapFactory.decodeFile(pathName, options);
-               // Log.d("log", "Decoded successfully for sampleSize " + options.inSampleSize);
-                break;
-            } catch (OutOfMemoryError outOfMemoryError) {
-        // If an OutOfMemoryError occurred, we continue with for loop and next inSampleSize value
-                Log.e("log", "outOfMemoryError while reading file for sampleSize " + options.inSampleSize
-                        + " retrying with higher value");
-            }
-        }
-
-        // k phai,..
-        return Bitmap.createScaledBitmap(bitmap, 700, 875, true);
-    }
-
-    private  void setImage(){
-
-        if(arrayImage.isEmpty()) {
-            return;
-        }
-        else {
-            for(int i =0; i < arrayImage.size(); i++){
-                arrayImg.get(i).setImageBitmap(arrayImage.get(i));
-                arrayButton.get(i).setBackgroundResource(R.drawable.delete_image);
-            }
-            for (int i = arrayImage.size(); i < 6; i++){
-                arrayImg.get(i).setImageResource(0);
-                arrayButton.get(i).setBackgroundResource(R.drawable.add_image);
-            }
-        }
-    }
-
-    private void viewImage(int index){
-        if(arrayImg.get(index).getDrawable() == null)
-            Toast.makeText(getActivity(),"image empty", Toast.LENGTH_SHORT).show();
-        else {
-            arrayImg.get(5).setImageBitmap(arrayImage.get(index));
-            currSelect = index;
-        }
-    }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

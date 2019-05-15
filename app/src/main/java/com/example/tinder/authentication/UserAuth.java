@@ -101,7 +101,9 @@ public class UserAuth implements User.OnLoginCallBack {
         this.state = AUTHENTICATED;
         this.user = new User(response.getUser());
         this.user.setAuthen_token(response.getAuthToken());
-        this.onFirstAuthenListener.onAuthenSuccess(response.getAuthToken());
+        if (this.onFirstAuthenListener != null) {
+            this.onFirstAuthenListener.onAuthenSuccess(response.getAuthToken());
+        }
         // when login success, init SocketIO for using latter in chat, like, ...
         this.setSocketIO(new SocketIO("http://167.99.69.92:8889", user.getAuthen_token()));
         setState(AUTHENTICATED, NONE);

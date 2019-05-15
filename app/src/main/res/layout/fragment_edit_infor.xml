@@ -16,21 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="0dp"
-                android:layout_height="260dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/backround_image_edit_infor"
-                android:padding="6dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toTopOf="@+id/guideline10"
-                tools:src="@tools:sample/avatars" />
-
             <android.support.constraint.Guideline
                 android:id="@+id/guideline10"
                 android:layout_width="wrap_content"
@@ -60,85 +45,136 @@
                 app:layout_constraintGuide_percent="0.66" />
 
             <android.support.constraint.Guideline
-                android:id="@+id/guideline14"
+                android:id="@+id/glbtnAvatar3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="16dp" />
 
-            <ImageView
-                android:id="@+id/imageView2"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imgAvatar2"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
-                android:padding="6dp"
-                android:background="@drawable/backround_image_edit_infor"
+                android:background="@drawable/background_image_edit_infor_2"
                 android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/guideline14"
+                app:layout_constraintEnd_toStartOf="@+id/glbtnAvatar3"
                 app:layout_constraintStart_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toBottomOf="@+id/imageView1"
-                />
+                app:layout_constraintTop_toTopOf="@+id/guideline10"
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
-            <ImageView
-                android:id="@+id/imageView5"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imgAvatar3"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="8dp"
-                android:padding="6dp"
-                android:background="@drawable/backround_image_edit_infor"
+                android:background="@drawable/background_image_edit_infor_2"
                 android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/guideline12"
-                app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toBottomOf="@+id/imageView6"
-                />
+                app:layout_constraintEnd_toStartOf="@+id/glbtnAvatar3"
+                app:layout_constraintStart_toStartOf="@+id/guideline13"
+                app:layout_constraintTop_toBottomOf="@+id/imgAvatar2"
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
-            <ImageView
-                android:id="@+id/imageView4"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imgAvatar4"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_image_edit_infor_2"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toStartOf="@+id/glbtnAvatar3"
+                app:layout_constraintStart_toStartOf="@+id/guideline13"
+                app:layout_constraintTop_toBottomOf="@+id/imgAvatar3"
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imgAvatar5"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
-                android:padding="6dp"
-                android:background="@drawable/backround_image_edit_infor"
+                android:background="@drawable/background_image_edit_infor_2"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
                 app:layout_constraintStart_toStartOf="@+id/guideline12"
-                app:layout_constraintTop_toBottomOf="@+id/imageView6"
-                 />
+                app:layout_constraintTop_toBottomOf="@+id/imgAvatar1"
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
-            <ImageView
-                android:id="@+id/imageView3"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imgAvatar6"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
-                android:padding="6dp"
-                android:background="@drawable/backround_image_edit_infor"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_image_edit_infor_2"
                 android:scaleType="centerCrop"
-                app:layout_constraintEnd_toStartOf="@+id/guideline14"
-                app:layout_constraintStart_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2"
-                 />
+                app:layout_constraintEnd_toStartOf="@+id/guideline12"
+                app:layout_constraintStart_toStartOf="@+id/guideline11"
+                app:layout_constraintTop_toBottomOf="@+id/imgAvatar1"
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imgAvatar1"
+                android:layout_width="0dp"
+                android:layout_height="260dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_image_edit_infor_2"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toStartOf="@+id/guideline13"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline11"
+                app:layout_constraintTop_toTopOf="@+id/guideline10"
+                app:riv_border_color="#F33939"
+                app:riv_border_width="5dp"
+                app:riv_corner_radius="10dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/fdafdsa"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="43dp"
                 android:layout_marginTop="30dp"
                 android:background="#F5F5E4"
                 android:gravity="center_vertical"
-                android:text="Nơi Làm Việc"
                 android:paddingLeft="8dp"
+                android:text="Số Điện Thoại"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                app:layout_constraintTop_toBottomOf="@+id/imgAvatar5" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/editTextSDT"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="8dp"
@@ -146,211 +182,224 @@
                 android:background="@null"
                 android:ems="10"
                 android:gravity="center_vertical"
-                android:hint="Nơi làm việc"
+                android:hint="Số điện thoại..."
                 android:inputType="textPersonName"
-                android:text="Trường Đại Học Bách Khoa TPHCM"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/fdafdsa" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/textViewGender"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:background="#F5F5E4"
                 android:gravity="center_vertical"
-                android:text="Thành Phố"
-                android:textStyle="bold"
                 android:paddingLeft="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:hint="Thành phố..."
-                android:inputType="textPersonName"
-                android:text="Sài Gòn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:background="#F5F5E4"
-                android:gravity="center_vertical"
                 android:text="Giới tính"
-                android:paddingLeft="8dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText3" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextSDT" />
 
             <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" >
+                app:layout_constraintTop_toBottomOf="@+id/textViewGender">
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/radioButtonMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Nam" />
 
                 <RadioButton
-                    android:id="@+id/radioButton"
+                    android:id="@+id/radioButtonFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Nữ" />
             </RadioGroup>
 
-            <ImageView
-                android:id="@+id/imageView1"
+            <TextView
+                android:id="@+id/textViewDecription"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="8dp"
-                android:padding="6dp"
-                android:scaleType="centerCrop"
-                android:background="@drawable/backround_image_edit_infor"
-                app:layout_constraintEnd_toStartOf="@+id/guideline14"
-                app:layout_constraintStart_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toTopOf="@+id/guideline10"
-                />
-
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="0dp"
-                android:layout_height="260dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toTopOf="@+id/imageView6"
-                app:srcCompat="@android:color/transparent"
-                tools:src="@tools:sample/avatars" />
+                android:layout_height="40dp"
+                android:background="#F5F5E4"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="Giới Thiệu"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
             <Button
-                android:id="@+id/buttonAdd6"
+                android:id="@+id/btnAvatar1"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="240dp"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toTopOf="@+id/imageView6" />
-
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toStartOf="@+id/guideline14"
-                app:layout_constraintStart_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toTopOf="@+id/guideline10"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
             <Button
-                android:id="@+id/buttonAdd1"
+                android:id="@+id/btnAvatar2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView10" />
-
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar2" />
 
             <Button
-                android:id="@+id/buttonAdd2"
+                android:id="@+id/btnAvatar3"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView13" />
-
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toEndOf="@+id/imageView3"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar3" />
 
             <Button
-                android:id="@+id/buttonAdd3"
+                android:id="@+id/btnAvatar4"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView14" />
-
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
-                app:layout_constraintStart_toStartOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="@+id/imageView4"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar4" />
 
             <Button
-                android:id="@+id/buttonAdd4"
+                android:id="@+id/btnAvatar5"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintTop_toTopOf="@+id/imageView15" />
-
-            <ImageView
-                android:id="@+id/imageView16"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_boder"
-                app:layout_constraintEnd_toEndOf="@+id/imageView5"
-                app:layout_constraintStart_toStartOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/imageView5"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar5" />
 
             <Button
-                android:id="@+id/buttonAdd5"
+                android:id="@+id/btnAvatar6"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/add_image"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline12"
-                app:layout_constraintTop_toTopOf="@+id/imageView16" />
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar6" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading1"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar1"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar1"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar1"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar1" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading2"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar2"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar2"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar2"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar2" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading3"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar3"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar3"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar3"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar3" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading4"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar4"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar4"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar4"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar4" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading5"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar5"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar5"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar5"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar5" />
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/imageLoading6"
+                style="@style/AVLoadingIndicatorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:indicatorColor="@color/colorBlueIndicaior"
+                app:indicatorName="BallSpinFadeLoaderIndicator"
+                app:layout_constraintBottom_toBottomOf="@+id/imgAvatar6"
+                app:layout_constraintEnd_toEndOf="@+id/imgAvatar6"
+                app:layout_constraintStart_toStartOf="@+id/imgAvatar6"
+                app:layout_constraintTop_toTopOf="@+id/imgAvatar6" />
+
+            <EditText
+                android:id="@+id/editTextDecription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="top|left"
+                android:hint="Giới thiệu..."
+                android:inputType="textMultiLine"
+                android:lines="6"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDecription" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
@@ -361,8 +410,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/actionBarTheme"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 
 
 </FrameLayout>

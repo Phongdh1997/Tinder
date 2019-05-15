@@ -1,6 +1,7 @@
 package com.example.tinder.profile;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.internet_connection.AvatarLoading;
+import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.model.User;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import androidx.navigation.Navigation;
 import it.xabaras.android.viewpagerindicator.widget.ViewPagerIndicator;
@@ -43,6 +47,7 @@ public class ProfileFragment extends Fragment {
     private ImageView imvToUserInfo;
     private ViewPager pgIntroduceSlider;
     private ViewPagerIndicator introducePagerIndicator;
+    private User currUser;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -91,15 +96,23 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-        User currUser = UserAuth.getInstance().getUser();
-        if (currUser == null) {
-            currUser = new User();
-        }
         imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, currUser.toBundle()));
     }
 
     private void addControls(View view) {
+        currUser = UserAuth.getInstance().getUser();
+        if (currUser == null) {
+            currUser = new User();
+        }
         imvToUserInfo = view.findViewById(R.id.imvToUserInfo);
+        new AvatarLoading(currUser.getId(), null, new OnImageLoadDoneListener() {
+            @Override
+            public void onImageLoadDone(Drawable image, int i) {
+                if (image != null) {
+                    imvToUserInfo.setImageDrawable(image);
+                }
+            }
+        }).execute();
 
         pgIntroduceSlider = view.findViewById(R.id.pgIntroduceSlider);
         pgIntroduceSlider.setAdapter(new IntroducePagerAdapter(this.getContext()));

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.AnimatorRes;
@@ -24,9 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.example.internet_connection.ImagesLoading;
+import com.example.internet_connection.OnImageLoadDoneListener;
+import com.example.internet_connection.SingleImageLoading;
 import com.example.model.User;
 import com.example.tinder.R;
 import com.example.tinder.search_friend.SearchFriendFragment;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +53,14 @@ public class UserInforFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     FloatingActionButton fab;
-    List<Bitmap> arrayImage = new ArrayList<>();
     ViewPager viewPager;
     ImageViewAdapter imageViewAdapter;
 
     private TextView txtNameAge;
     private User userData;
     private TextView txtDescription;
+
+    private List<View> imageList;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -113,17 +119,32 @@ public class UserInforFragment extends Fragment {
         txtDescription = view.findViewById(R.id.txtDescription);
 
         userData = User.getUserFromBundle(getArguments());
-        if (userData != null) {
-            updateUI();
-        }
 
         fab =(FloatingActionButton) view.findViewById(R.id.fab);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_demo));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_2));
-        arrayImage.add(decodeResource(getResources(), R.drawable.girl_3));
-        imageViewAdapter = new ImageViewAdapter(getContext(), arrayImage);
+        imageList = new ArrayList<>();
+        imageViewAdapter = new ImageViewAdapter(getContext(), imageList);
         viewPager.setAdapter(imageViewAdapter);
+
+        // load images
+        if (userData != null) {
+            new ImagesLoading(userData.getId(), new OnImageLoadDoneListener() {
+                @Override
+                public void onImageLoadDone(Drawable image, int i) {
+                    if (image != null) {
+                        RoundedImageView imageView = new RoundedImageView(getContext());
+                        imageView.setImageDrawable(image);
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        imageView.setCornerRadius(25);
+                        imageView.setOval(false);
+                        imageList.add(imageView);
+                        imageViewAdapter.notifyDataSetChanged();
+                    }
+                }
+            }).execute();
+            updateUI();
+        }
+
     }
 
     private void updateUI() {

@@ -1,6 +1,7 @@
 package com.example.model;
 
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,6 +15,11 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +39,9 @@ public class User {
     public static final String GENDER = "gender";
     public static final String IS_ACTIVE = "is_active";
     public static final String IS_BANNED = "is_banned";
+    public static final String WORK_PLACE = "workplace";
+    public static final String CITY = "city";
+
     public static final int INT_NULL = -100;
 
     private int id;
@@ -55,6 +64,8 @@ public class User {
     private String exprired_ban;
     private String created_at;
     private String updated_at;
+    private String workplace;
+    private String city;
 
     // call back
     private OnRegisterCallBack registerCallBack;
@@ -119,6 +130,19 @@ public class User {
         this.decription = decription;
     }
 
+    public User(int id, String mail, String password, String name, int age, String gender, String phone, String decription, String city, String workplace) {
+        this.mail = mail;
+        this.password = password;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.id = id;
+        this.phone = phone;
+        this.decription = decription;
+        this.workplace = workplace;
+        this.city = city;
+    }
+
     public User(SigninService.User user) {
         this.name = user.getName();
         this.mail = user.getEmail();
@@ -127,6 +151,8 @@ public class User {
         this.phone = user.getPhone();
         this.decription = user.getDescription();
         this.gender = user.getGender();
+        this.workplace = user.getWorkplace();
+        this.city = user.getCity();
     }
 
     public User(SearchFriendService.User user) {
@@ -137,6 +163,8 @@ public class User {
         this.phone = user.getPhone();
         this.decription = user.getDescription();
         this.gender = user.getGender();
+        this.workplace = user.getWorkplace();
+        this.city = user.getCity();
     }
 
     public static User getLocalUser(SharedPreferences sharedPreferences) {
@@ -156,6 +184,8 @@ public class User {
         user.setAuthen_token(sharedPreferences.getString(AUTHEN_TOKEN, ""));
         user.setIs_active(sharedPreferences.getBoolean(IS_ACTIVE, false));
         user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
+        user.setCity(sharedPreferences.getString(CITY, ""));
+        user.setWorkplace(sharedPreferences.getString(WORK_PLACE, ""));
 
         Log.d("token", user.getAuthen_token());
         return user;
@@ -173,6 +203,9 @@ public class User {
         editor.putString(AUTHEN_TOKEN, this.authen_token);
         editor.putBoolean(IS_ACTIVE, this.is_active);
         editor.putBoolean(IS_BANNED, this.is_banned);
+        editor.putString(WORK_PLACE, this.workplace);
+        editor.putString(CITY, this.city);
+
         editor.apply();
     }
 
@@ -302,6 +335,9 @@ public class User {
         user.putString("decription", decription);
         user.putString("gender", gender);
         user.putInt("age", age);
+        user.putString("workplace", workplace);
+        user.putString("city", city);
+
         return user;
     }
 
@@ -317,7 +353,10 @@ public class User {
                 bundle.getInt("age"),
                 bundle.getString("gender"),
                 bundle.getString("phone"),
-                bundle.getString("decription"));
+                bundle.getString("decription"),
+                bundle.getString("city"),
+                bundle.getString("workplace"));
+
         user.setAuthen_token(bundle.getString("authen_token"));
         return user;
     }
@@ -363,6 +402,31 @@ public class User {
 
         return data;
 
+    }
+
+    /**
+     *
+     * @param n: the number of image
+     * @return: url of n th image
+     */
+    public static String getImageUrl(int id, int n) {
+        return RetrofitClient.BASE_URL + "/upload/"+ id +"_image" + n + ".jpg";
+    }
+
+    public String getWorkplace() {
+        return workplace;
+    }
+
+    public void setWorkplace(String workplace) {
+        this.workplace = workplace;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public int getId() {
