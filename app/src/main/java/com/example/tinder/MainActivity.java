@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.common.OnBackPressEvent;
 import com.example.common.UserLocation;
 import com.example.model.User;
+import com.example.rest.service.UpdateUserService;
 import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.editinfor.EditInforFragment;
 import com.example.tinder.home.HomeFragment;
@@ -116,13 +117,13 @@ public class MainActivity extends AppCompatActivity
 
         // add controls
 
-
         // listen authen state changed
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
             public void onStateChange(int state, int messageCode) {
                 switch (state){
                     case UserAuth.AUTHENTICATED:
+                        UserAuth.getInstance().getUser().setActivity(MainActivity.this);
                         checkLocationPermission();
                         updateUI();
                         break;
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity
 
     private void saveAthenToken(String authenToken) {
         User user = UserAuth.getInstance().getUser();
-        user.storeToLocal(getPreferences(MODE_PRIVATE).edit());
+        user.storeToLocal();
     }
 
     @Override

@@ -1,15 +1,19 @@
 package com.example.model;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.rest.RetrofitClient;
+import com.example.rest.model.MessageError;
 import com.example.rest.model.UserPojo;
 import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
+import com.example.rest.service.UpdateUserService;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -39,6 +43,15 @@ public class User {
     public static final String IS_BANNED = "is_banned";
     public static final String WORK_PLACE = "workplace";
     public static final String CITY = "city";
+    public static final String SWIPE_GENDER = "swipe_gender";
+    public static final String MIN_AGE = "min_age";
+    public static final String MAX_AGE = "max_age";
+    public static final String MAX_DISTANCE = "max_distance";
+
+    public static final String SWIPE_GENDER_DEFAULT_VALUE = null;
+    public static final int MIN_AGE_DEFAULT_VALUE = 18;
+    public static final int MAX_AGE_DEFAULT_VALUE = 30;
+    public static final int MAX_DISTANCE_DEFAULT_VALUE = 5000;
 
     public static final int INT_NULL = -100;
 
@@ -56,6 +69,7 @@ public class User {
     private int max_distance;
     private int min_age;
     private int max_age;
+    private String swipe_gender;
     private boolean is_active;
     private boolean is_banned;
     private String ban_reason;
@@ -68,6 +82,8 @@ public class User {
     // call back
     private OnRegisterCallBack registerCallBack;
     private OnLoginCallBack onLoginCallBack;
+
+    private Activity activity;
 
     public void setRegisterCallBack(OnRegisterCallBack registerCallBack) {
         this.registerCallBack = registerCallBack;
@@ -188,7 +204,9 @@ public class User {
         return user;
     }
 
-    public void storeToLocal(SharedPreferences.Editor editor) {
+    public void storeToLocal() {
+        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
+
         editor.putInt(ID, this.id);
         editor.putString(MAIL, this.mail);
         editor.putString(PASSWORD, this.password);
@@ -202,9 +220,35 @@ public class User {
         editor.putBoolean(IS_BANNED, this.is_banned);
         editor.putString(WORK_PLACE, this.workplace);
         editor.putString(CITY, this.city);
+        editor.putString(SWIPE_GENDER, SWIPE_GENDER_DEFAULT_VALUE);
+        editor.putInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE);
+        editor.putInt(MAX_AGE, 	MAX_AGE_DEFAULT_VALUE);
+        editor.putInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE);
 
         editor.apply();
         Log.d("save", "saveAthenToken: ");
+    }
+
+    public void updateInfoToLocal() {
+        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
+        editor.putString(NAME, this.name);
+        editor.putInt(AGE, this.age);
+        editor.putString(GENDER, this.gender);
+        editor.putString(PHONE, this.phone);
+        editor.putString(DESCRIPTION, this.decription);
+        editor.putString(WORK_PLACE, this.workplace);
+        editor.putString(CITY, this.city);
+        editor.apply();
+        Log.d("save", "saveAthenToken: ");
+    }
+
+    public void updateSettingToLocal () {
+        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
+        editor.putString(User.SWIPE_GENDER, swipe_gender);
+        editor.putInt(User.MIN_AGE, min_age);
+        editor.putInt(User.MAX_AGE, max_age);
+        editor.putInt(User.MAX_DISTANCE, max_distance);
+        editor.apply();
     }
 
     public void register() {
@@ -300,7 +344,7 @@ public class User {
         });
     }
 
-    public static interface OnRegisterCallBack {
+    public interface OnRegisterCallBack {
         int NONCE_NULL = -1;
         int SUCCESS = 200;
         int EMAIL_INVALID = 400;
@@ -384,6 +428,74 @@ public class User {
      */
     public static String getImageUrl(int id, int n) {
         return RetrofitClient.BASE_URL + "/upload/"+ id +"_image" + n + ".jpg";
+    }
+
+    public void updateUserSettings(final String swipe_gender, final int min_age, final int max_age, final int max_distance) {
+        RetrofitClient.getUpdateUserService().updateUserSettings(getHeaderAuthenToken(), swipe_gender, min_age, max_age, max_distance)
+                .enqueue(new Callback<MessageError>() {
+                    @Override
+                    public void onResponse(Call<MessageError> call, Response<MessageError> response) {
+                        if (response.code() == 200) {
+                            Log.d("update","update setting ok");
+                            User.this.swipe_gender = swipe_gender;
+                            User.this.min_age = min_age;
+                            User.this.max_age = max_age;
+                            User.this.max_distance = max_distance;
+                            updateSettingToLocal();
+                        } else {
+                            Log.d("update", "update setting fail");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MessageError> call, Throwable t) {
+                        Log.d("update setting", "connect error");
+                    }
+                });
+    }
+
+    public void updateUserInfo (final String name, final String gender, final int age, final String phone, final String description) {
+        RetrofitClient.getUpdateUserService().updateUserInfo(getHeaderAuthenToken(), name, gender, age, phone, description)
+                .enqueue(new Callback<MessageError>() {
+                    @Override
+                    public void onResponse(Call<MessageError> call, Response<MessageError> response) {
+                        if (response.code() == 200) {
+                            Log.d("update","update info ok");
+                            User.this.name = name;
+                            User.this.gender = gender;
+                            User.this.age = age;
+                            User.this.phone = phone;
+                            User.this.decription = description;
+
+                            //User.this.city = city;
+                            //User.this.workplace = workplace;
+                            updateInfoToLocal();
+                        } else {
+                            Log.d("update", "update info fail");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MessageError> call, Throwable t) {
+                        Log.d("update info", "connect error");
+                    }
+                });
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity context) {
+        this.activity = context;
+    }
+
+    public String getSwipe_gender() {
+        return swipe_gender;
+    }
+
+    public void setSwipe_gender(String swipe_gender) {
+        this.swipe_gender = swipe_gender;
     }
 
     public String getWorkplace() {
