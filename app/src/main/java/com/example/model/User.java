@@ -10,6 +10,7 @@ import com.example.rest.model.UserPojo;
 import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
+import com.example.tinder.authentication.UserAuth;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -365,7 +366,7 @@ public class User {
      * Description: perform dislike a friend with friendId
      * @param friendId: id of friend is disliked
      */
-    public JSONObject dislikeFriend(int friendId) {
+    public void dislikeFriend(int friendId) {
         Log.d("dislike friend", "id = " + friendId);
 
         JSONObject data = new JSONObject();
@@ -375,18 +376,19 @@ public class User {
 
             // passed user_id
             data.put("passed_id", friendId);
+
+            // call socketIO to push data to the server
+            UserAuth.getInstance().getSocketIO().push_data(data, "pass");
         } catch (JSONException e) {
             Log.e("JSON exception", e.toString());
         }
-
-        return data;
     }
 
     /**
      * Description: perform like a friend with friendId
      * @param friendId: id of friend is liked
      */
-    public JSONObject likeFriend(int friendId) {
+    public void likeFriend(int friendId) {
         Log.d("like friend", "id = " + friendId);
 
         JSONObject data = new JSONObject();
@@ -396,12 +398,12 @@ public class User {
 
             // liked user_id
             data.put("liked_id", friendId);
+
+            // call socketIO to push data to the server
+            UserAuth.getInstance().getSocketIO().push_data(data, "like");
         } catch (JSONException e) {
             Log.e("JSON exception", e.toString());
         }
-
-        return data;
-
     }
 
     /**

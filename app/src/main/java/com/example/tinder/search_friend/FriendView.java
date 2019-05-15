@@ -4,24 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.navigation.Navigation;
 
-import com.example.internet_connection.SocketIO;
 import com.example.internet_connection.AvatarLoading;
 import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.model.User;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -32,7 +27,6 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
 
     private TextView txtName;
     private ImageButton btnDetailInfo;
-    private SocketIO mSocket;
     private ShimmerFrameLayout shimmerViewContainer;
     private RoundedImageView imgSearchFriendAvatar;
 
@@ -53,9 +47,6 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
         super(context);
         this.friend = friend;
         initView();
-
-        // init SocketIO
-        mSocket = UserAuth.getInstance().getSocketIO();
     }
 
     private void initView() {
@@ -109,11 +100,8 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     public void likeFriend() {
         if (friend != null && UserAuth.getInstance().getUser() != null) {
             if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
+                UserAuth.getInstance().getUser().likeFriend(friend.getId());
 
-                JSONObject data = UserAuth.getInstance().getUser().likeFriend(friend.getId());
-                // call socketIO to push data to the server
-                mSocket.push_data(data, "like");
-                Log.d("Like event", data.toString());
                 // set data = null, call notifyDataSetChange() to update this page
                 friend = null;
                 updateUI();
@@ -128,11 +116,8 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     public void dislikeFriend() {
         if (friend != null && UserAuth.getInstance().getUser() != null) {
             if (SearchFriendData.getInstance().removeDataItem(friend.getId())) {
-                JSONObject data = UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
+                UserAuth.getInstance().getUser().dislikeFriend(friend.getId());
 
-                // call socketIO to push data to the server
-                mSocket.push_data(data, "pass");
-                Log.d("Dislike event", data.toString());
                 // set data = null, call notifyDataSetChange() to update this page
                 friend = null;
                 updateUI();
