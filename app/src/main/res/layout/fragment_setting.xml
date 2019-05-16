@@ -95,6 +95,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="15dp"
+                android:max="1000"
                 android:thumb="@drawable/seek_thumb_normal" />
         </RelativeLayout>
         <RelativeLayout
@@ -137,10 +138,22 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/buttonLogout"
+            android:id="@+id/buttonSaveSetting"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_below="@id/layoutAge"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ripple_effect"
+            android:text="Cập Nhật"
+            android:textColor="#FD0B0B"
+            />
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_below="@id/buttonSaveSetting"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
