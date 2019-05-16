@@ -29,6 +29,7 @@ import com.example.tinder.message_box.MessageChatFragment;
 import com.example.tinder.profile.ProfileFragment;
 import com.example.tinder.search_friend.SearchFriendFragment;
 import com.example.tinder.login.LoginFragment;
+import com.example.tinder.setting.SettingFragment;
 import com.example.tinder.signup.SignUpFragment;
 import com.example.tinder.userinfor.UserInforFragment;
 
@@ -46,7 +47,8 @@ public class MainActivity extends AppCompatActivity
         EditInforFragment.OnFragmentInteractionListener,
         HomeFragment.OnFragmentInteractionListener,
         MessageChatFragment.OnFragmentInteractionListener,
-        SignUpFragment.OnFragmentInteractionListener {
+        SignUpFragment.OnFragmentInteractionListener,
+        SettingFragment.OnFragmentInteractionListener {
 
     public static final int RC_REQUEST_PERMISSION = 999;
     private final String USER_TOKEN = "USER_TOKEN";

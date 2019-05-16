@@ -45,6 +45,7 @@ public class ProfileFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ImageView imvToUserInfo;
+    private ImageButton btnToSetting;
     private ViewPager pgIntroduceSlider;
     private ViewPagerIndicator introducePagerIndicator;
     private User currUser;
@@ -97,6 +98,7 @@ public class ProfileFragment extends Fragment {
 
     private void addEvents(View view) {
         imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, currUser.toBundle()));
+        btnToSetting.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_settingFragment, null));
     }
 
     private void addControls(View view) {
@@ -105,6 +107,7 @@ public class ProfileFragment extends Fragment {
             currUser = new User();
         }
         imvToUserInfo = view.findViewById(R.id.imvToUserInfo);
+        btnToSetting = view.findViewById(R.id.btnToSetting);
         new AvatarLoading(currUser.getId(), null, new OnImageLoadDoneListener() {
             @Override
             public void onImageLoadDone(Drawable image, int i) {

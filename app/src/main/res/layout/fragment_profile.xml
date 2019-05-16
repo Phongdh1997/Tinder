@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/btnToSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -32,8 +32,8 @@
             android:src="@drawable/ic_edit_gray_32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageButton3"
-            app:layout_constraintTop_toTopOf="@+id/imageButton3" />
+            app:layout_constraintStart_toEndOf="@+id/btnToSetting"
+            app:layout_constraintTop_toTopOf="@+id/btnToSetting" />
 
         <TextView
             android:id="@+id/textView"
@@ -78,9 +78,9 @@
             android:layout_marginTop="2dp"
             android:text="SETTING"
             android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageButton3"
-            app:layout_constraintStart_toStartOf="@+id/imageButton3"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
+            app:layout_constraintEnd_toEndOf="@+id/btnToSetting"
+            app:layout_constraintStart_toStartOf="@+id/btnToSetting"
+            app:layout_constraintTop_toBottomOf="@+id/btnToSetting" />
 
         <TextView
             android:id="@+id/textView3"
