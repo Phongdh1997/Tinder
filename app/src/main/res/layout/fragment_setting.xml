@@ -147,7 +147,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/ripple_effect"
             android:text="Cập Nhật"
-            android:textColor="#FD0B0B"
+            android:textColor="@color/white"
             />
         <Button
             android:id="@+id/buttonLogout"
@@ -159,7 +159,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/ripple_effect"
             android:text="Đăng xuất"
-            android:textColor="#FD0B0B" />
+            android:textColor="@color/white" />
 
     </RelativeLayout>
 
