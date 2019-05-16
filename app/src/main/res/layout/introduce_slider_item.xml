@@ -22,19 +22,19 @@
             android:src="@drawable/ic_message"/>
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/txtHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:paddingStart="10dp"
             android:paddingEnd="0dp"
             android:text="Cap nhat Ho s fd fda ban"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/txtDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
