@@ -1,12 +1,23 @@
-package com.example.tinder;
+package com.example.tinder.setting;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.tinder.R;
+
+import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 
 /**
@@ -26,6 +37,10 @@ public class SettingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RangeSeekBar<Integer> seekBar;
+    private TextView txtDistance,txtAge;
+    private SeekBar seekBarDistance;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,6 +80,54 @@ public class SettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        addControls(view);
+        addEvent(view);
+    }
+
+    private void addControls(View view) {
+        seekBar = new RangeSeekBar<>(getActivity());
+        seekBarDistance = view.findViewById(R.id.seekBarDistance);
+        txtAge = view.findViewById(R.id.textViewAge);
+        txtDistance = view.findViewById(R.id.textViewDistance);
+    }
+
+    private void addEvent(View view){
+        seekBarDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                txtDistance.setText(String.valueOf(progress)+"km.");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        Log.d("event","test1");
+        // Set the range
+        seekBar.setRangeValues(18, 90);
+        seekBar.setSelectedMaxValue(80);
+        seekBar.setTextAboveThumbsColor(R.drawable.text_thumb_color);
+        // Add to layout
+        FrameLayout layout = view.findViewById(R.id.seekbar_placeholder);
+        layout.addView(seekBar);
+        seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+                txtAge.setText(String.valueOf(minValue) + " - " + String.valueOf(maxValue));
+                Log.d("event","test1");
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
