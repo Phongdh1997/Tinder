@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
@@ -128,6 +129,19 @@ public class SettingFragment extends Fragment {
                 Log.d("event","test1");
             }
         });
+    }
+
+    /**
+     * TODO: get data from UI
+     */
+    private void updateSetting() {
+        // get data from UI and set value to these variables.
+        String swipe_gender = "";
+        int min_age = 0;
+        int max_age = 0;
+        int max_distance = 0;
+
+        UserAuth.getInstance().getUser().updateUserSettings(swipe_gender, min_age, max_age, max_distance);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
