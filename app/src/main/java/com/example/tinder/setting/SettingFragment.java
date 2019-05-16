@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.model.User;
 import com.example.tinder.R;
@@ -47,6 +48,7 @@ public class SettingFragment extends Fragment {
     private SeekBar seekBarDistance;
     private RadioButton rdbMale,rdbFemale;
     private Button btnLogout, btnSaveSetting;
+    private Toolbar toolbarSetting;
 
     private OnFragmentInteractionListener mListener;
 
@@ -110,6 +112,7 @@ public class SettingFragment extends Fragment {
         rdbFemale = view.findViewById(R.id.radioButtonFemale);
         btnSaveSetting = view.findViewById(R.id.buttonSaveSetting);
         btnLogout = view.findViewById(R.id.buttonLogout);
+        toolbarSetting = view.findViewById(R.id.toolbarSetting);
         updateUI();
     }
 
@@ -138,6 +141,27 @@ public class SettingFragment extends Fragment {
                 Log.d("event","test1");
             }
         });
+
+        btnSaveSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSetting();
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: logout
+            }
+        });
+
+        toolbarSetting.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     /**
@@ -145,10 +169,12 @@ public class SettingFragment extends Fragment {
      */
     private void updateSetting() {
         // get data from UI and set value to these variables.
-        String swipe_gender = "";
-        int min_age = 0;
-        int max_age = 0;
-        int max_distance = 0;
+        String swipe_gender = "female";
+        if(rdbMale.isChecked()) swipe_gender = "male";
+        int min_age = seekBar.getSelectedMinValue();
+        int max_age = seekBar.getSelectedMaxValue();
+        int max_distance = seekBarDistance.getProgress()*1000;
+        Log.d("update: ",min_age + " " + max_age + " " + max_distance + "" + swipe_gender);
 
         UserAuth.getInstance().getUser().updateUserSettings(swipe_gender, min_age, max_age, max_distance);
     }
@@ -163,7 +189,7 @@ public class SettingFragment extends Fragment {
         // TODO: set data to UI
         rdbMale.setChecked(swipe_gender.equals("male"));
         rdbFemale.setChecked(swipe_gender.equals("female"));
-        seekBarDistance.setProgress(max_distance);
+        seekBarDistance.setProgress(max_distance/1000);
         txtDistance.setText(String.valueOf(max_distance/1000) + "km.");
         txtAge.setText(min_age + " - " + max_age);
         seekBar.setSelectedMaxValue(max_age);
