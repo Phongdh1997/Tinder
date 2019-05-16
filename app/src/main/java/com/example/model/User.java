@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.rest.RetrofitClient;
 import com.example.rest.model.MessageError;
@@ -433,36 +434,41 @@ public class User {
     }
 
     public void updateUserSettings(final String swipe_gender, final int min_age, final int max_age, final int max_distance) {
-        RetrofitClient.getUpdateUserService().updateUserSettings(getHeaderAuthenToken(), swipe_gender, min_age, max_age, max_distance)
+        UpdateUserService.UpdateSettingBody body = new UpdateUserService.UpdateSettingBody(swipe_gender, min_age, max_age, max_distance);
+        RetrofitClient.getUpdateUserService().updateUserSettings(getHeaderAuthenToken(), body)
                 .enqueue(new Callback<MessageError>() {
                     @Override
                     public void onResponse(Call<MessageError> call, Response<MessageError> response) {
                         if (response.code() == 200) {
-                            Log.d("update","update setting ok");
+                            Toast.makeText(activity, "Updated", Toast.LENGTH_SHORT).show();
                             User.this.swipe_gender = swipe_gender;
                             User.this.min_age = min_age;
                             User.this.max_age = max_age;
                             User.this.max_distance = max_distance;
                             updateSettingToLocal();
+                        } else if (response.code() == 400){
+                            Toast.makeText(activity, "Information is invalid", Toast.LENGTH_SHORT).show();
                         } else {
-                            Log.d("update", "update setting fail");
+                            Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MessageError> call, Throwable t) {
-                        Log.d("update setting", "connect error");
+                        t.printStackTrace();
+                        Toast.makeText(activity, "Error Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     public void updateUserInfo (final String name, final String gender, final int age, final String phone, final String description, final String city, final String workplace) {
-        RetrofitClient.getUpdateUserService().updateUserInfo(getHeaderAuthenToken(), name, gender, age, phone, description, city, workplace)
+        UpdateUserService.UpdateInfoBody body = new UpdateUserService.UpdateInfoBody(name, gender, age, phone, description, city, workplace);
+        RetrofitClient.getUpdateUserService().updateUserInfo(getHeaderAuthenToken(), body)
                 .enqueue(new Callback<MessageError>() {
                     @Override
                     public void onResponse(Call<MessageError> call, Response<MessageError> response) {
                         if (response.code() == 200) {
-                            Log.d("update","update info ok");
+                            Toast.makeText(activity, "Updated", Toast.LENGTH_SHORT).show();
                             User.this.name = name;
                             User.this.gender = gender;
                             User.this.age = age;
@@ -471,14 +477,18 @@ public class User {
                             User.this.city = city;
                             User.this.workplace = workplace;
                             updateInfoToLocal();
+                        } else if (response.code() == 400) {
+                            Toast.makeText(activity, "Information is invalid", Toast.LENGTH_SHORT).show();
+                            Log.d("update", "data is invalid");
                         } else {
-                            Log.d("update", "update info fail");
+                            Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MessageError> call, Throwable t) {
-                        Log.d("update info", "connect error");
+                        t.printStackTrace();
+                        Toast.makeText(activity, "Error Connect", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
