@@ -3,7 +3,6 @@ package com.example.tinder;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -22,7 +21,6 @@ import com.example.common.OnBackPressEvent;
 import com.example.internet_connection.SocketIO;
 import com.example.common.UserLocation;
 import com.example.model.User;
-import com.example.rest.service.UpdateUserService;
 import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.editinfor.EditInforFragment;
 import com.example.tinder.home.HomeFragment;
@@ -72,10 +70,10 @@ public class MainActivity extends AppCompatActivity
         checkLogin();
     }
 
-    private void checkLocationPermission () {
+    private void checkLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     UserLocation.LOCATION_PERMISSION_REQUEST);
         } else {
             initLocation();
@@ -125,7 +123,7 @@ public class MainActivity extends AppCompatActivity
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
             public void onStateChange(int state, int messageCode) {
-                switch (state){
+                switch (state) {
                     case UserAuth.AUTHENTICATED:
                         UserAuth.getInstance().getUser().setActivity(MainActivity.this);
                         checkLocationPermission();
