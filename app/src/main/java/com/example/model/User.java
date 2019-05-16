@@ -52,7 +52,6 @@ public class User {
     public static final String MAX_AGE = "max_age";
     public static final String MAX_DISTANCE = "max_distance";
 
-    public static final String SWIPE_GENDER_DEFAULT_VALUE = null;
     public static final int MIN_AGE_DEFAULT_VALUE = 18;
     public static final int MAX_AGE_DEFAULT_VALUE = 30;
     public static final int MAX_DISTANCE_DEFAULT_VALUE = 5000;
@@ -73,7 +72,6 @@ public class User {
     private int max_distance;
     private int min_age;
     private int max_age;
-    private String swipe_gender;
     private boolean is_active;
     private boolean is_banned;
     private String ban_reason;
@@ -82,6 +80,7 @@ public class User {
     private String updated_at;
     private String workplace;
     private String city;
+    private String swipe_gender;
 
     // call back
     private OnRegisterCallBack registerCallBack;
@@ -106,7 +105,7 @@ public class User {
         name = "No Data";
         decription = "No Data";
         age = 0;
-        gender = "No Data";
+        gender = "male";
         longtitude = -1;
         latitude = -1;
         max_distance = -1;
@@ -118,6 +117,9 @@ public class User {
         exprired_ban = "No Data";
         created_at = "No Data";
         updated_at = "No Data";
+        workplace = "";
+        city = "";
+        swipe_gender = "female";
     }
 
     public User(String mail, String password, String name, int age, String gender) {
@@ -203,7 +205,7 @@ public class User {
         user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
         user.setCity(sharedPreferences.getString(CITY, ""));
         user.setWorkplace(sharedPreferences.getString(WORK_PLACE, ""));
-        user.setSwipe_gender(sharedPreferences.getString(SWIPE_GENDER, SWIPE_GENDER_DEFAULT_VALUE));
+        user.setSwipe_gender(sharedPreferences.getString(SWIPE_GENDER, "male"));
         user.setMin_age(sharedPreferences.getInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE));
         user.setMax_age(sharedPreferences.getInt(MAX_AGE, MAX_AGE_DEFAULT_VALUE));
         user.setMax_distance(sharedPreferences.getInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE));
@@ -225,10 +227,16 @@ public class User {
         editor.putBoolean(IS_BANNED, this.is_banned);
         editor.putString(WORK_PLACE, this.workplace);
         editor.putString(CITY, this.city);
-        editor.putString(SWIPE_GENDER, SWIPE_GENDER_DEFAULT_VALUE);
+        editor.putString(SWIPE_GENDER, this.gender.equals("male") ? "female" : "male");
         editor.putInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE);
         editor.putInt(MAX_AGE, 	MAX_AGE_DEFAULT_VALUE);
         editor.putInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE);
+
+        // set default value to this user
+        this.swipe_gender = this.gender.equals("male") ? "female" : "male";
+        this.min_age = MIN_AGE_DEFAULT_VALUE;
+        this.max_age = MAX_AGE_DEFAULT_VALUE;
+        this.max_distance = MAX_DISTANCE_DEFAULT_VALUE;
 
         editor.apply();
     }

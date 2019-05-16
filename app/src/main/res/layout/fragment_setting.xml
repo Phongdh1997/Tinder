@@ -53,7 +53,7 @@
                     android:text="Nam" />
 
                 <RadioButton
-                    android:id="@+id/radiobuttonFemale"
+                    android:id="@+id/radioButtonFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nữ" />
