@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +45,8 @@ public class SettingFragment extends Fragment {
     private RangeSeekBar<Integer> seekBar;
     private TextView txtDistance,txtAge;
     private SeekBar seekBarDistance;
+    private RadioButton rdbMale,rdbFemale;
+    private Button btnLogout, btnSaveSetting;
 
     private OnFragmentInteractionListener mListener;
 
@@ -93,9 +97,20 @@ public class SettingFragment extends Fragment {
 
     private void addControls(View view) {
         seekBar = new RangeSeekBar<>(getActivity());
+        // Set the range
+        seekBar.setRangeValues(18, 90);
+        seekBar.setTextAboveThumbsColor(R.drawable.text_thumb_color);
+        // Add to layout
+        FrameLayout layout = view.findViewById(R.id.seekbar_placeholder);
+        layout.addView(seekBar);
         seekBarDistance = view.findViewById(R.id.seekBarDistance);
         txtAge = view.findViewById(R.id.textViewAge);
         txtDistance = view.findViewById(R.id.textViewDistance);
+        rdbMale = view.findViewById(R.id.radioButtonMale);
+        rdbFemale = view.findViewById(R.id.radioButtonFemale);
+        btnSaveSetting = view.findViewById(R.id.buttonSaveSetting);
+        btnLogout = view.findViewById(R.id.buttonLogout);
+        updateUI();
     }
 
     private void addEvent(View view){
@@ -115,14 +130,7 @@ public class SettingFragment extends Fragment {
 
             }
         });
-        Log.d("event","test1");
-        // Set the range
-        seekBar.setRangeValues(18, 90);
-        seekBar.setSelectedMaxValue(80);
-        seekBar.setTextAboveThumbsColor(R.drawable.text_thumb_color);
-        // Add to layout
-        FrameLayout layout = view.findViewById(R.id.seekbar_placeholder);
-        layout.addView(seekBar);
+
         seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
@@ -153,6 +161,13 @@ public class SettingFragment extends Fragment {
         int max_distance = currUser.getMax_distance();
 
         // TODO: set data to UI
+        rdbMale.setChecked(swipe_gender.equals("male"));
+        rdbFemale.setChecked(swipe_gender.equals("female"));
+        seekBarDistance.setProgress(max_distance);
+        txtDistance.setText(String.valueOf(max_distance/1000) + "km.");
+        txtAge.setText(min_age + " - " + max_age);
+        seekBar.setSelectedMaxValue(max_age);
+        seekBar.setSelectedMinValue(min_age);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
