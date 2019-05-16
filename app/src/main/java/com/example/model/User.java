@@ -1,18 +1,26 @@
 package com.example.model;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.rest.RetrofitClient;
+import com.example.rest.model.MessageError;
 import com.example.rest.model.UserPojo;
 import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
+import com.example.rest.service.UpdateUserService;
+import com.example.tinder.authentication.UserAuth;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +47,15 @@ public class User {
     public static final String IS_BANNED = "is_banned";
     public static final String WORK_PLACE = "workplace";
     public static final String CITY = "city";
+    public static final String SWIPE_GENDER = "swipe_gender";
+    public static final String MIN_AGE = "min_age";
+    public static final String MAX_AGE = "max_age";
+    public static final String MAX_DISTANCE = "max_distance";
+
+    public static final String SWIPE_GENDER_DEFAULT_VALUE = null;
+    public static final int MIN_AGE_DEFAULT_VALUE = 18;
+    public static final int MAX_AGE_DEFAULT_VALUE = 30;
+    public static final int MAX_DISTANCE_DEFAULT_VALUE = 5000;
 
     public static final int INT_NULL = -100;
 
@@ -56,6 +73,7 @@ public class User {
     private int max_distance;
     private int min_age;
     private int max_age;
+    private String swipe_gender;
     private boolean is_active;
     private boolean is_banned;
     private String ban_reason;
@@ -68,6 +86,8 @@ public class User {
     // call back
     private OnRegisterCallBack registerCallBack;
     private OnLoginCallBack onLoginCallBack;
+
+    private Activity activity;
 
     public void setRegisterCallBack(OnRegisterCallBack registerCallBack) {
         this.registerCallBack = registerCallBack;
@@ -173,7 +193,6 @@ public class User {
         }
         user.setId(id);
         user.setMail(sharedPreferences.getString(MAIL, ""));
-        user.setHashedPassword(sharedPreferences.getString(PASSWORD, ""));
         user.setName(sharedPreferences.getString(NAME, ""));
         user.setAge(sharedPreferences.getInt(AGE, 0));
         user.setGender(sharedPreferences.getString(GENDER, ""));
@@ -184,14 +203,20 @@ public class User {
         user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
         user.setCity(sharedPreferences.getString(CITY, ""));
         user.setWorkplace(sharedPreferences.getString(WORK_PLACE, ""));
+        user.setSwipe_gender(sharedPreferences.getString(SWIPE_GENDER, SWIPE_GENDER_DEFAULT_VALUE));
+        user.setMin_age(sharedPreferences.getInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE));
+        user.setMax_age(sharedPreferences.getInt(MAX_AGE, MAX_AGE_DEFAULT_VALUE));
+        user.setMax_distance(sharedPreferences.getInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE));
 
+        Log.d("token", user.getAuthen_token());
         return user;
     }
 
-    public void storeToLocal(SharedPreferences.Editor editor) {
+    public void storeToLocal() {
+        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
+
         editor.putInt(ID, this.id);
         editor.putString(MAIL, this.mail);
-        editor.putString(PASSWORD, this.password);
         editor.putString(NAME, this.name);
         editor.putInt(AGE, this.age);
         editor.putString(GENDER, this.gender);
@@ -202,9 +227,34 @@ public class User {
         editor.putBoolean(IS_BANNED, this.is_banned);
         editor.putString(WORK_PLACE, this.workplace);
         editor.putString(CITY, this.city);
+        editor.putString(SWIPE_GENDER, SWIPE_GENDER_DEFAULT_VALUE);
+        editor.putInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE);
+        editor.putInt(MAX_AGE, 	MAX_AGE_DEFAULT_VALUE);
+        editor.putInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE);
 
         editor.apply();
+    }
+
+    private void updateInfoToLocal() {
+        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
+        editor.putString(NAME, this.name);
+        editor.putInt(AGE, this.age);
+        editor.putString(GENDER, this.gender);
+        editor.putString(PHONE, this.phone);
+        editor.putString(DESCRIPTION, this.decription);
+        editor.putString(WORK_PLACE, this.workplace);
+        editor.putString(CITY, this.city);
+        editor.apply();
         Log.d("save", "saveAthenToken: ");
+    }
+
+    private void updateSettingToLocal () {
+        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
+        editor.putString(SWIPE_GENDER, swipe_gender);
+        editor.putInt(MIN_AGE, min_age);
+        editor.putInt(MAX_AGE, max_age);
+        editor.putInt(MAX_DISTANCE, max_distance);
+        editor.apply();
     }
 
     public void register() {
@@ -300,7 +350,7 @@ public class User {
         });
     }
 
-    public static interface OnRegisterCallBack {
+    public interface OnRegisterCallBack {
         int NONCE_NULL = -1;
         int SUCCESS = 200;
         int EMAIL_INVALID = 400;
@@ -365,7 +415,20 @@ public class User {
      */
     public void dislikeFriend(int friendId) {
         Log.d("dislike friend", "id = " + friendId);
-        //TODO: call API dislike friend here
+
+        JSONObject data = new JSONObject();
+        try {
+            // current user_id
+            data.put("passer_id", this.getId());
+
+            // passed user_id
+            data.put("passed_id", friendId);
+
+            // call socketIO to push data to the server
+            UserAuth.getInstance().getSocketIO().push_data(data, "pass");
+        } catch (JSONException e) {
+            Log.e("JSON exception", e.toString());
+        }
     }
 
     /**
@@ -374,7 +437,20 @@ public class User {
      */
     public void likeFriend(int friendId) {
         Log.d("like friend", "id = " + friendId);
-        //TODO: call API like friend here
+
+        JSONObject data = new JSONObject();
+        try {
+            // current user_id
+            data.put("liker_id", this.getId());
+
+            // liked user_id
+            data.put("liked_id", friendId);
+
+            // call socketIO to push data to the server
+            UserAuth.getInstance().getSocketIO().push_data(data, "like");
+        } catch (JSONException e) {
+            Log.e("JSON exception", e.toString());
+        }
     }
 
     /**
@@ -384,6 +460,82 @@ public class User {
      */
     public static String getImageUrl(int id, int n) {
         return RetrofitClient.BASE_URL + "/upload/"+ id +"_image" + n + ".jpg";
+    }
+
+    public void updateUserSettings(final String swipe_gender, final int min_age, final int max_age, final int max_distance) {
+        UpdateUserService.UpdateSettingBody body = new UpdateUserService.UpdateSettingBody(swipe_gender, min_age, max_age, max_distance);
+        RetrofitClient.getUpdateUserService().updateUserSettings(getHeaderAuthenToken(), body)
+                .enqueue(new Callback<MessageError>() {
+                    @Override
+                    public void onResponse(Call<MessageError> call, Response<MessageError> response) {
+                        if (response.code() == 200) {
+                            Toast.makeText(activity, "Updated", Toast.LENGTH_SHORT).show();
+                            User.this.swipe_gender = swipe_gender;
+                            User.this.min_age = min_age;
+                            User.this.max_age = max_age;
+                            User.this.max_distance = max_distance;
+                            updateSettingToLocal();
+                        } else if (response.code() == 400){
+                            Toast.makeText(activity, "Information is invalid", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MessageError> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(activity, "Error Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void updateUserInfo (final String name, final String gender, final int age, final String phone, final String description, final String city, final String workplace) {
+        UpdateUserService.UpdateInfoBody body = new UpdateUserService.UpdateInfoBody(name, gender, age, phone, description, city, workplace);
+        RetrofitClient.getUpdateUserService().updateUserInfo(getHeaderAuthenToken(), body)
+                .enqueue(new Callback<MessageError>() {
+                    @Override
+                    public void onResponse(Call<MessageError> call, Response<MessageError> response) {
+                        if (response.code() == 200) {
+                            Toast.makeText(activity, "Updated", Toast.LENGTH_SHORT).show();
+                            User.this.name = name;
+                            User.this.gender = gender;
+                            User.this.age = age;
+                            User.this.phone = phone;
+                            User.this.decription = description;
+                            User.this.city = city;
+                            User.this.workplace = workplace;
+                            updateInfoToLocal();
+                        } else if (response.code() == 400) {
+                            Toast.makeText(activity, "Information is invalid", Toast.LENGTH_SHORT).show();
+                            Log.d("update", "data is invalid");
+                        } else {
+                            Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MessageError> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(activity, "Error Connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity context) {
+        this.activity = context;
+    }
+
+    public String getSwipe_gender() {
+        return swipe_gender;
+    }
+
+    public void setSwipe_gender(String swipe_gender) {
+        this.swipe_gender = swipe_gender;
     }
 
     public String getWorkplace() {

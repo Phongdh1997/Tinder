@@ -9,4 +9,6 @@
 
     <color name="background">#686666</color>
     <color name="colorBlueIndicaior">#8BB1F8</color>
+    <color name="red">#E44150</color>
+    <color name="green">#6F9F53</color>
 </resources>

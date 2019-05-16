@@ -3,7 +3,6 @@ package com.example.tinder;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -19,6 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.common.OnBackPressEvent;
+import com.example.internet_connection.SocketIO;
 import com.example.common.UserLocation;
 import com.example.model.User;
 import com.example.tinder.authentication.UserAuth;
@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity
         checkLogin();
     }
 
-    private void checkLocationPermission () {
+    private void checkLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     UserLocation.LOCATION_PERMISSION_REQUEST);
         } else {
             initLocation();
@@ -94,12 +94,15 @@ public class MainActivity extends AppCompatActivity
     private void checkLogin() {
         // check login
         User user = User.getLocalUser(getPreferences(MODE_PRIVATE));
+        // first time login
         if (user == null) {
             userAuth.setState(UserAuth.UN_AUTHENTICATED, UserAuth.NONE);
             Log.d("authen", "continue");
         } else {
-            userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
             userAuth.setUser(user);
+            userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
+            String authenToken = user.getAuthen_token();
+            userAuth.setSocketIO(new SocketIO("http://167.99.69.92:8889", authenToken));
         }
 
 
@@ -118,13 +121,13 @@ public class MainActivity extends AppCompatActivity
 
         // add controls
 
-
         // listen authen state changed
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
             public void onStateChange(int state, int messageCode) {
-                switch (state){
+                switch (state) {
                     case UserAuth.AUTHENTICATED:
+                        UserAuth.getInstance().getUser().setActivity(MainActivity.this);
                         checkLocationPermission();
                         updateUI();
                         break;
@@ -145,7 +148,7 @@ public class MainActivity extends AppCompatActivity
 
     private void saveAthenToken(String authenToken) {
         User user = UserAuth.getInstance().getUser();
-        user.storeToLocal(getPreferences(MODE_PRIVATE).edit());
+        user.storeToLocal();
     }
 
     @Override

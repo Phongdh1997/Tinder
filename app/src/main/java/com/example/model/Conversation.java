@@ -7,10 +7,22 @@ public class Conversation {
     private String created_at;
     private String updated_at;
     private String deleted_at;
+    // the name of member id
+    private String conversation_name;
+
+    // add lasted message to update UI in MatchListApdapter
+    private String lasted_message;
 
     public Conversation(int creator_id, int member_id) {
         this.creator_id = creator_id;
         this.member_id = member_id;
+    }
+
+    public Conversation(int id, int creator_id, int member_id, String conversation_name) {
+        this.id = id;
+        this.creator_id = creator_id;
+        this.member_id = member_id;
+        this.conversation_name = conversation_name;
     }
 
     public int getId() {
@@ -59,5 +71,21 @@ public class Conversation {
 
     public void setDeleted_at(String deleted_at) {
         this.deleted_at = deleted_at;
+    }
+
+    public void setLasted_message(String lasted_message) {
+        this.lasted_message = lasted_message;
+    }
+
+    public String getLasted_message() {
+        return lasted_message;
+    }
+
+    public void setConversation_name(String conversation_name) {
+        this.conversation_name = conversation_name;
+    }
+
+    public String getConversation_name() {
+        return conversation_name;
     }
 }

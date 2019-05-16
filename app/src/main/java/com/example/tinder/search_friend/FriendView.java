@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,6 +16,7 @@ import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.model.User;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
+
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -26,6 +26,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     private User friend;
 
     private TextView txtName;
+    private TextView txtWorkplace;
     private ImageButton btnDetailInfo;
     private ShimmerFrameLayout shimmerViewContainer;
     private RoundedImageView imgSearchFriendAvatar;
@@ -61,6 +62,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     private void addControls() {
         // add controls
         txtName = findViewById(R.id.txtName);
+        txtWorkplace = findViewById(R.id.txtWorkplace);
         btnDetailInfo = findViewById(R.id.btnDetailInfo);
         shimmerViewContainer = findViewById(R.id.shimmer_view_container);
         imgSearchFriendAvatar = findViewById(R.id.imgSearchFriendAvatar);
@@ -70,16 +72,21 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
 
     private void updateUI() {
         if (friend == null) {
+            txtName.setText("");
+            txtWorkplace.setText("");
+
             shimmerViewContainer.startShimmerAnimation();
             shimmerViewContainer.setVisibility(View.VISIBLE);
         } else {
             // update view
-            txtName.setText(friend.getName());
             new AvatarLoading(friend.getId(), shimmerViewContainer, new OnImageLoadDoneListener() {
                 @Override
                 public void onImageLoadDone(Drawable image, int i) {
                     if (image != null) {
                         imgSearchFriendAvatar.setImageDrawable(image);
+                        String nameAge = friend.getName() + ", " + friend.getAge();
+                        txtName.setText(nameAge);
+                        txtWorkplace.setText(friend.getWorkplace());
                     }
                 }
             }).execute();
@@ -95,20 +102,6 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
                 }
             }
         });
-    }
-
-    /**
-     * Description: current user perform like this friend. Invoked when user click like this user.
-     * @param currUserId: id of current user who like this friend
-     */
-    public void likeFriend(int currUserId) {
-        if (friend == null) {
-            return;
-        }
-        int friendId = friend.getId();
-        Log.d("friend", "id = " + friendId);
-
-        // TODO: call API like friend
     }
 
     public void likeFriend() {

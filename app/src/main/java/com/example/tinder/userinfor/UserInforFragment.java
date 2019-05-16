@@ -1,5 +1,6 @@
 package com.example.tinder.userinfor;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -30,6 +31,7 @@ import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.internet_connection.SingleImageLoading;
 import com.example.model.User;
 import com.example.tinder.R;
+import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.search_friend.SearchFriendFragment;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -58,7 +60,7 @@ public class UserInforFragment extends Fragment {
 
     private TextView txtNameAge;
     private User userData;
-    private TextView txtDescription;
+    private TextView txtDescription,txtAddress,txtWorkPlace,txtLocation;
 
     private List<View> imageList;
 
@@ -115,10 +117,17 @@ public class UserInforFragment extends Fragment {
     }
 
     private void addControls(View view) {
+        if (getArguments() != null) {
+            userData = User.getUserFromBundle(getArguments());
+        } else {
+            userData = UserAuth.getInstance().getUser();
+        }
+
         txtNameAge = view.findViewById(R.id.txtNameAge);
         txtDescription = view.findViewById(R.id.txtDescription);
-
-        userData = User.getUserFromBundle(getArguments());
+        txtAddress = view.findViewById(R.id.textViewAddress);
+        txtWorkPlace = view.findViewById(R.id.textViewWorkPlace);
+        txtLocation = view.findViewById(R.id.textViewLocation);
 
         fab =(FloatingActionButton) view.findViewById(R.id.fab);
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
@@ -147,14 +156,25 @@ public class UserInforFragment extends Fragment {
 
     }
 
+    @SuppressLint("RestrictedApi")
     private void updateUI() {
         String nameAge = userData.getName() + ", " + userData.getAge();
         txtNameAge.setText(nameAge);
+        txtAddress.setText(userData.getCity());
+        txtWorkPlace.setText(userData.getWorkplace());
+        txtLocation.setText("Cách chưa tới " + userData.getMax_distance() + " km");
         txtDescription.setText(userData.getDecription());
+
+        if (getArguments() == null) {
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, null));
+        } else {
+            fab.setVisibility(View.GONE);
+        }
     }
 
     private void addEvents(View view) {
-        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userInforFragment_to_editInforFragment, getArguments()));
+
     }
 
     private static Bitmap decodeResource(Resources res, int id) {

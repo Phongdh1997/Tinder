@@ -13,9 +13,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 import android.widget.ImageButton;
+import android.widget.QuickContactBadge;
+
+import com.example.internet_connection.SocketIO;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +46,7 @@ public class SearchFriendFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ViewPager pgSearchFriend;
+    private SocketIO mSocket;
     private FriendView currPage;
 
     private ImageButton btnLike;
@@ -112,8 +121,7 @@ public class SearchFriendFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (currPage != null) {
-                    currPage.likeFriend(UserAuth.getInstance().getUser().getId());
-                    // reminded use: currPage.likeFriend();
+                    currPage.likeFriend();
                 }
             }
         });

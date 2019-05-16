@@ -162,16 +162,16 @@
             <TextView
                 android:id="@+id/fdafdsa"
                 android:layout_width="0dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="30dp"
+                android:layout_height="40dp"
                 android:background="#F5F5E4"
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:text="Số Điện Thoại"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgAvatar5" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextWordPlace" />
 
             <EditText
                 android:id="@+id/editTextSDT"
@@ -381,7 +381,7 @@
                 app:layout_constraintTop_toTopOf="@+id/imgAvatar6" />
 
             <EditText
-                android:id="@+id/editTextDecription"
+                android:id="@+id/txtDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -400,6 +400,62 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDecription" />
+
+            <TextView
+                android:id="@+id/textViewAddress"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="32dp"
+                android:background="#F5F5E4"
+                android:text="Địa chỉ"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgAvatar5" />
+
+            <EditText
+                android:id="@+id/editTextAddress"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                android:ems="10"
+                android:hint="Địa chỉ..."
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAddress" />
+
+            <TextView
+                android:id="@+id/textViewWorkPlace"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="#F5F5E4"
+                android:text="Nơi làm việc"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
+
+            <EditText
+                android:id="@+id/editTextWordPlace"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@null"
+                android:ems="10"
+                android:hint="Nơi làm việc..."
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWorkPlace" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

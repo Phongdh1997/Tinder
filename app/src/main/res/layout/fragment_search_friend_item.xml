@@ -27,7 +27,7 @@
         app:riv_tile_mode="clamp" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/txtWorkplace"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -48,9 +48,9 @@
         android:textColor="@color/white"
         android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView14"
+        app:layout_constraintBottom_toTopOf="@+id/txtWorkplace"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView14" />
+        app:layout_constraintStart_toStartOf="@+id/txtWorkplace" />
 
     <ImageButton
         android:id="@+id/btnDetailInfo"
