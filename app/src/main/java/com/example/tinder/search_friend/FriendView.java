@@ -26,6 +26,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     private User friend;
 
     private TextView txtName;
+    private TextView txtWorkplace;
     private ImageButton btnDetailInfo;
     private ShimmerFrameLayout shimmerViewContainer;
     private RoundedImageView imgSearchFriendAvatar;
@@ -61,6 +62,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     private void addControls() {
         // add controls
         txtName = findViewById(R.id.txtName);
+        txtWorkplace = findViewById(R.id.txtWorkplace);
         btnDetailInfo = findViewById(R.id.btnDetailInfo);
         shimmerViewContainer = findViewById(R.id.shimmer_view_container);
         imgSearchFriendAvatar = findViewById(R.id.imgSearchFriendAvatar);
@@ -70,16 +72,20 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
 
     private void updateUI() {
         if (friend == null) {
+            txtName.setText("");
+
             shimmerViewContainer.startShimmerAnimation();
             shimmerViewContainer.setVisibility(View.VISIBLE);
         } else {
             // update view
-            txtName.setText(friend.getName());
             new AvatarLoading(friend.getId(), shimmerViewContainer, new OnImageLoadDoneListener() {
                 @Override
                 public void onImageLoadDone(Drawable image, int i) {
                     if (image != null) {
                         imgSearchFriendAvatar.setImageDrawable(image);
+                        String nameAge = friend.getName() + ", " + friend.getAge();
+                        txtName.setText(nameAge);
+                        txtWorkplace.setText(friend.getWorkplace());
                     }
                 }
             }).execute();
