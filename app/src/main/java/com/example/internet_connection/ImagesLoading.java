@@ -27,10 +27,8 @@ public class ImagesLoading extends AsyncTask<Void, Object[], Void> {
                 Drawable d = Drawable.createFromStream(is, "avatar");
                 publishProgress(new Object[]{d, i});
             } catch (MalformedURLException e) {
-                e.printStackTrace();
                 publishProgress(new Object[]{null, i});
             } catch (IOException e) {
-                e.printStackTrace();
                 publishProgress(new Object[]{null, i});
             }
         }

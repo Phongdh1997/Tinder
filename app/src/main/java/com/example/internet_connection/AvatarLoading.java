@@ -47,9 +47,8 @@ public class AvatarLoading extends AsyncTask<Void, Void, Object[]> {
                 Drawable d = Drawable.createFromStream(is, "avatar");
                 return new Object[]{d, i};
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
         return null;
@@ -61,7 +60,7 @@ public class AvatarLoading extends AsyncTask<Void, Void, Object[]> {
         try {
             onImageLoadDoneListener.onImageLoadDone((Drawable) drawable[0], (int)drawable[1]);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         ShimmerFrameLayout loading = loadingManagement.get();
         if (loading != null) {

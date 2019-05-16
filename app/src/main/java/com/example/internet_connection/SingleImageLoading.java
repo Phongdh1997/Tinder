@@ -28,9 +28,9 @@ public class SingleImageLoading extends AsyncTask<Void, Void, Object[]> {
             Drawable d = Drawable.createFromStream(is, "avatar");
             return new Object[]{d, imageNumber};
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
         return null;
     }

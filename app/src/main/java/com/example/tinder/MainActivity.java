@@ -3,9 +3,7 @@ package com.example.tinder;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -17,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.common.OnBackPressEvent;
@@ -109,9 +106,8 @@ public class MainActivity extends AppCompatActivity
             userAuth.setState(UserAuth.UN_AUTHENTICATED, UserAuth.NONE);
             Log.d("authen", "continue");
         } else {
-            // get information from c
-            userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
             userAuth.setUser(user);
+            userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
             String authenToken = user.getAuthen_token();
             userAuth.setSocketIO(new SocketIO("http://167.99.69.92:8889", authenToken));
             saveDefaultAvatar();
@@ -133,13 +129,13 @@ public class MainActivity extends AppCompatActivity
 
         // add controls
 
-
         // listen authen state changed
         userAuth.addStateObserver(new UserAuth.StateObserver() {
             @Override
             public void onStateChange(int state, int messageCode) {
                 switch (state) {
                     case UserAuth.AUTHENTICATED:
+                        UserAuth.getInstance().getUser().setActivity(MainActivity.this);
                         checkLocationPermission();
                         updateUI();
                         break;
@@ -180,7 +176,7 @@ public class MainActivity extends AppCompatActivity
 
     private void saveAthenToken(String authenToken) {
         User user = UserAuth.getInstance().getUser();
-        user.storeToLocal(getPreferences(MODE_PRIVATE).edit());
+        user.storeToLocal();
     }
 
     @Override
