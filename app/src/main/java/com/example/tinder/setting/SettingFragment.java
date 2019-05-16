@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.model.User;
 import com.example.tinder.R;
@@ -152,7 +151,7 @@ public class SettingFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: logout
+                UserAuth.getInstance().getUser().logout();
             }
         });
 

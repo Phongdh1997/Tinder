@@ -15,6 +15,7 @@ import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 import com.example.rest.service.UpdateUserService;
+import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 
 import org.apache.commons.codec.binary.Hex;
@@ -27,6 +28,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import androidx.navigation.Navigation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -354,6 +356,17 @@ public class User {
                 }
             }
         });
+    }
+
+    public void logout() {
+        // clear shareReferences
+        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.commit();
+
+        // perform logout
+        Navigation.findNavController(activity, R.id.profileNavHostFragment).popBackStack();
+        UserAuth.getInstance().setState(UserAuth.UN_AUTHENTICATED, -100);
     }
 
     public interface OnRegisterCallBack {

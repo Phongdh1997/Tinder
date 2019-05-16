@@ -23,6 +23,7 @@ import com.example.tinder.authentication.UserAuth;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import it.xabaras.android.viewpagerindicator.widget.ViewPagerIndicator;
 
 /**
@@ -102,9 +103,36 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-        btnToSetting.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_settingFragment, null));
-        imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
-        btnToEditInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_editInforFragment, null));
+        btnToSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_homeFragment_to_settingFragment);
+                } catch (Exception e) {
+
+                }
+            }
+        });
+        imvToUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_homeFragment_to_userInforFragment);
+                } catch (Exception e) {
+
+                }
+            }
+        });
+        btnToEditInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_homeFragment_to_editInforFragment);
+                } catch (Exception e) {
+
+                }
+            }
+        });
     }
 
     private void addControls(View view) {
