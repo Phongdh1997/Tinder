@@ -71,6 +71,7 @@ public class EditInforFragment extends Fragment {
     private User user;
     private EditText edtPhone, edtDcription,edtAddress,edtWorkPlace;
     private RadioButton rdbMale;
+    private RadioButton rdbFemale;
 
     private OnFragmentInteractionListener mListener;
 
@@ -219,6 +220,7 @@ public class EditInforFragment extends Fragment {
         edtDcription = view.findViewById(R.id.txtDescription);
         edtPhone = view.findViewById(R.id.editTextSDT);
         rdbMale = view.findViewById(R.id.radioButtonMale);
+        rdbFemale = view.findViewById(R.id.radioButtonFemale);
 
         updateUI();
     }
@@ -229,6 +231,7 @@ public class EditInforFragment extends Fragment {
         edtPhone.setText(user.getPhone());
         edtDcription.setText(user.getDecription());
         rdbMale.setChecked(user.getGender().equals("male"));
+        rdbFemale.setChecked(user.getGender().equals("female"));
 
         new ImagesLoading(user.getId(), new OnImageLoadDoneListener() {
             @Override

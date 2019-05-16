@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.internet_connection.AvatarLoading;
 import com.example.internet_connection.OnImageLoadDoneListener;
@@ -45,6 +46,10 @@ public class ProfileFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ImageView imvToUserInfo;
+    private ImageButton btnToEditInfo;
+    private TextView txtNameAge;
+    private TextView txtWorkplace;
+
     private ViewPager pgIntroduceSlider;
     private ViewPagerIndicator introducePagerIndicator;
     private User currUser;
@@ -96,7 +101,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-        imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, currUser.toBundle()));
+        imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
+        btnToEditInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_editInforFragment, null));
     }
 
     private void addControls(View view) {
@@ -105,6 +111,10 @@ public class ProfileFragment extends Fragment {
             currUser = new User();
         }
         imvToUserInfo = view.findViewById(R.id.imvToUserInfo);
+        btnToEditInfo = view.findViewById(R.id.btnToEditInfo);
+        txtNameAge = view.findViewById(R.id.txtNameAge);
+        txtWorkplace = view.findViewById(R.id.txtWorkplace);
+
         new AvatarLoading(currUser.getId(), null, new OnImageLoadDoneListener() {
             @Override
             public void onImageLoadDone(Drawable image, int i) {
@@ -119,6 +129,14 @@ public class ProfileFragment extends Fragment {
 
         introducePagerIndicator = view.findViewById(R.id.introducePagerIndicator);
         introducePagerIndicator.initWithViewPager(pgIntroduceSlider);
+
+        updateUI();
+    }
+
+    private void updateUI() {
+        String nameAge = currUser.getName() + ", " + currUser.getAge();
+        txtNameAge.setText(nameAge);
+        txtWorkplace.setText(currUser.getWorkplace());
     }
 
     // TODO: Rename method, update argument and hook method into UI event
