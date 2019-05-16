@@ -21,7 +21,6 @@ import com.example.common.OnBackPressEvent;
 import com.example.internet_connection.SocketIO;
 import com.example.common.UserLocation;
 import com.example.model.User;
-import com.example.rest.RetrofitClient;
 import com.example.tinder.authentication.UserAuth;
 import com.example.tinder.editinfor.EditInforFragment;
 import com.example.tinder.home.HomeFragment;
@@ -33,18 +32,10 @@ import com.example.tinder.login.LoginFragment;
 import com.example.tinder.signup.SignUpFragment;
 import com.example.tinder.userinfor.UserInforFragment;
 
-import java.io.File;
 import java.util.List;
 
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements LoginFragment.OnFragmentInteractionListener,
@@ -110,7 +101,6 @@ public class MainActivity extends AppCompatActivity
             userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
             String authenToken = user.getAuthen_token();
             userAuth.setSocketIO(new SocketIO("http://167.99.69.92:8889", authenToken));
-            saveDefaultAvatar();
         }
 
 
@@ -150,29 +140,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onAuthenSuccess(String authenToken) {
                 saveAthenToken(authenToken);
-                saveDefaultAvatar();
             }
         });
     }
-
-    private void saveDefaultAvatar() {
-        File file = new File("android.resource://" + BuildConfig.APPLICATION_ID + "/" + R.drawable.phongcanh_default);
-        RequestBody num = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(1));
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
-        RetrofitClient.getPostImageService().upImage("Barer " + UserAuth.getInstance().getUser().getAuthen_token(), num, body).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Toast.makeText(MainActivity.this, "ok " + response.code(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "fail ", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
 
     private void saveAthenToken(String authenToken) {
         User user = UserAuth.getInstance().getUser();
