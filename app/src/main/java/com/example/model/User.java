@@ -122,6 +122,9 @@ public class User {
         workplace = "";
         city = "";
         swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(String mail, String password, String name, int age, String gender) {
@@ -130,6 +133,10 @@ public class User {
         this.name = name;
         this.age = age;
         this.gender = gender;
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(int id, String mail, String password, String name, int age, String gender) {
@@ -139,6 +146,10 @@ public class User {
         this.age = age;
         this.gender = gender;
         this.id = id;
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(int id, String mail, String password, String name, int age, String gender, String phone, String decription) {
@@ -150,6 +161,10 @@ public class User {
         this.id = id;
         this.phone = phone;
         this.decription = decription;
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(int id, String mail, String password, String name, int age, String gender, String phone, String decription, String city, String workplace) {
@@ -163,6 +178,10 @@ public class User {
         this.decription = decription;
         this.workplace = workplace;
         this.city = city;
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(SigninService.User user) {
@@ -175,6 +194,10 @@ public class User {
         this.gender = user.getGender();
         this.workplace = user.getWorkplace();
         this.city = user.getCity();
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(SearchFriendService.User user) {
@@ -187,6 +210,10 @@ public class User {
         this.gender = user.getGender();
         this.workplace = user.getWorkplace();
         this.city = user.getCity();
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public static User getLocalUser(SharedPreferences sharedPreferences) {
@@ -230,15 +257,9 @@ public class User {
         editor.putString(WORK_PLACE, this.workplace);
         editor.putString(CITY, this.city);
         editor.putString(SWIPE_GENDER, this.gender.equals("male") ? "female" : "male");
-        editor.putInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE);
-        editor.putInt(MAX_AGE, 	MAX_AGE_DEFAULT_VALUE);
-        editor.putInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE);
-
-        // set default value to this user
-        this.swipe_gender = this.gender.equals("male") ? "female" : "male";
-        this.min_age = MIN_AGE_DEFAULT_VALUE;
-        this.max_age = MAX_AGE_DEFAULT_VALUE;
-        this.max_distance = MAX_DISTANCE_DEFAULT_VALUE;
+        editor.putInt(MIN_AGE, this.min_age);
+        editor.putInt(MAX_AGE, 	this.max_age);
+        editor.putInt(MAX_DISTANCE, this.max_distance);
 
         editor.apply();
     }
@@ -479,6 +500,10 @@ public class User {
      */
     public static String getImageUrl(int id, int n) {
         return RetrofitClient.BASE_URL + "/upload/"+ id +"_image" + n + ".jpg";
+    }
+
+    public static String getDefaultAvatarUrl(String gender) {
+        return RetrofitClient.BASE_URL + "/upload/" + gender + ".jpg";
     }
 
     public void updateUserSettings(final String swipe_gender, final int min_age, final int max_age, final int max_distance) {

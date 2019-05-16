@@ -51,6 +51,16 @@ public class AvatarLoading extends AsyncTask<Void, Void, Object[]> {
             } catch (IOException e) {
             }
         }
+
+        // get default avatar
+        try {
+            InputStream is = (InputStream) new URL(User.getDefaultAvatarUrl("male")).getContent();
+            Drawable d = Drawable.createFromStream(is, "avatar");
+            return new Object[]{d, 1};
+        } catch (MalformedURLException e) {
+
+        } catch (IOException e) {
+        }
         return null;
     }
 
