@@ -11,6 +11,7 @@ import com.example.rest.service.LocationService;
 import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
+import com.example.rest.service.UpdateUserService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -57,6 +58,10 @@ public class RetrofitClient {
 
     public static LocationService getLocationService () {
         return getNewInstance(BASE_URL).create(LocationService.class);
+    }
+
+    public static UpdateUserService getUpdateUserService() {
+        return getNewInstance(BASE_URL).create(UpdateUserService.class);
     }
 
     public static ConversationService getConversationService() {
