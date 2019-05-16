@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.model.User;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 
@@ -142,6 +143,16 @@ public class SettingFragment extends Fragment {
         int max_distance = 0;
 
         UserAuth.getInstance().getUser().updateUserSettings(swipe_gender, min_age, max_age, max_distance);
+    }
+
+    private void updateUI() {
+        User currUser = UserAuth.getInstance().getUser();
+        String swipe_gender = currUser.getSwipe_gender();
+        int min_age = currUser.getMin_age();
+        int max_age = currUser.getMax_age();
+        int max_distance = currUser.getMax_distance();
+
+        // TODO: set data to UI
     }
 
     // TODO: Rename method, update argument and hook method into UI event
