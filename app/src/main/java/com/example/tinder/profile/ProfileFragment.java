@@ -23,6 +23,7 @@ import com.example.tinder.authentication.UserAuth;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import it.xabaras.android.viewpagerindicator.widget.ViewPagerIndicator;
 
 /**
@@ -46,6 +47,7 @@ public class ProfileFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ImageView imvToUserInfo;
+    private ImageButton btnToSetting;
     private ImageButton btnToEditInfo;
     private TextView txtNameAge;
     private TextView txtWorkplace;
@@ -101,8 +103,36 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addEvents(View view) {
-        imvToUserInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_userInforFragment, null));
-        btnToEditInfo.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_editInforFragment, null));
+        btnToSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_homeFragment_to_settingFragment);
+                } catch (Exception e) {
+
+                }
+            }
+        });
+        imvToUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_homeFragment_to_userInforFragment);
+                } catch (Exception e) {
+
+                }
+            }
+        });
+        btnToEditInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    NavHostFragment.findNavController(ProfileFragment.this).navigate(R.id.action_homeFragment_to_editInforFragment);
+                } catch (Exception e) {
+
+                }
+            }
+        });
     }
 
     private void addControls(View view) {
@@ -111,6 +141,7 @@ public class ProfileFragment extends Fragment {
             currUser = new User();
         }
         imvToUserInfo = view.findViewById(R.id.imvToUserInfo);
+        btnToSetting = view.findViewById(R.id.btnToSetting);
         btnToEditInfo = view.findViewById(R.id.btnToEditInfo);
         txtNameAge = view.findViewById(R.id.txtNameAge);
         txtWorkplace = view.findViewById(R.id.txtWorkplace);

@@ -21,15 +21,29 @@ public class ImagesLoading extends AsyncTask<Void, Object[], Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
+        boolean noImage = true;
         for (int i = 1; i < 7; i++) {
             try {
                 InputStream is = (InputStream) new URL(User.getImageUrl(userId, i)).getContent();
                 Drawable d = Drawable.createFromStream(is, "avatar");
+                noImage = false;
                 publishProgress(new Object[]{d, i});
             } catch (MalformedURLException e) {
                 publishProgress(new Object[]{null, i});
             } catch (IOException e) {
                 publishProgress(new Object[]{null, i});
+            }
+        }
+        if (noImage) {
+            // get default avatar
+            try {
+                InputStream is = (InputStream) new URL(User.getDefaultAvatarUrl("male")).getContent();
+                Drawable d = Drawable.createFromStream(is, "avatar");
+                publishProgress(new Object[]{d, 1});
+            } catch (MalformedURLException e) {
+                publishProgress(new Object[]{null, 1});
+            } catch (IOException e) {
+                publishProgress(new Object[]{null, 1});
             }
         }
         return null;

@@ -42,6 +42,9 @@
             android:id="@+id/action_homeFragment_to_messageChatFragment"
             app:destination="@id/messageChatFragment"/>
         <action
+            android:id="@+id/action_homeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
             android:id="@+id/action_homeFragment_to_editInforFragment"
             app:destination="@id/editInforFragment" />
     </fragment>
@@ -57,4 +60,9 @@
         android:name="com.example.tinder.signup.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.tinder.setting.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

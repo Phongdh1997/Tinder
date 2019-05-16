@@ -101,6 +101,9 @@ public class UserAuth implements User.OnLoginCallBack {
         this.state = AUTHENTICATED;
         this.user = new User(response.getUser());
         this.user.setAuthen_token(response.getAuthToken());
+
+        // TODO: add setting field here
+
         if (this.onFirstAuthenListener != null) {
             this.onFirstAuthenListener.onAuthenSuccess(response.getAuthToken());
         }

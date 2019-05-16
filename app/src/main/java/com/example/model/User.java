@@ -15,6 +15,7 @@ import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 import com.example.rest.service.UpdateUserService;
+import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 
 import org.apache.commons.codec.binary.Hex;
@@ -27,6 +28,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import androidx.navigation.Navigation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,7 +54,6 @@ public class User {
     public static final String MAX_AGE = "max_age";
     public static final String MAX_DISTANCE = "max_distance";
 
-    public static final String SWIPE_GENDER_DEFAULT_VALUE = null;
     public static final int MIN_AGE_DEFAULT_VALUE = 18;
     public static final int MAX_AGE_DEFAULT_VALUE = 30;
     public static final int MAX_DISTANCE_DEFAULT_VALUE = 5000;
@@ -73,7 +74,6 @@ public class User {
     private int max_distance;
     private int min_age;
     private int max_age;
-    private String swipe_gender;
     private boolean is_active;
     private boolean is_banned;
     private String ban_reason;
@@ -82,6 +82,7 @@ public class User {
     private String updated_at;
     private String workplace;
     private String city;
+    private String swipe_gender;
 
     // call back
     private OnRegisterCallBack registerCallBack;
@@ -106,7 +107,7 @@ public class User {
         name = "No Data";
         decription = "No Data";
         age = 0;
-        gender = "No Data";
+        gender = "male";
         longtitude = -1;
         latitude = -1;
         max_distance = -1;
@@ -118,6 +119,12 @@ public class User {
         exprired_ban = "No Data";
         created_at = "No Data";
         updated_at = "No Data";
+        workplace = "";
+        city = "";
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(String mail, String password, String name, int age, String gender) {
@@ -126,6 +133,10 @@ public class User {
         this.name = name;
         this.age = age;
         this.gender = gender;
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(int id, String mail, String password, String name, int age, String gender) {
@@ -135,6 +146,10 @@ public class User {
         this.age = age;
         this.gender = gender;
         this.id = id;
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(int id, String mail, String password, String name, int age, String gender, String phone, String decription) {
@@ -146,6 +161,10 @@ public class User {
         this.id = id;
         this.phone = phone;
         this.decription = decription;
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(int id, String mail, String password, String name, int age, String gender, String phone, String decription, String city, String workplace) {
@@ -159,6 +178,10 @@ public class User {
         this.decription = decription;
         this.workplace = workplace;
         this.city = city;
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(SigninService.User user) {
@@ -171,6 +194,10 @@ public class User {
         this.gender = user.getGender();
         this.workplace = user.getWorkplace();
         this.city = user.getCity();
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public User(SearchFriendService.User user) {
@@ -183,6 +210,10 @@ public class User {
         this.gender = user.getGender();
         this.workplace = user.getWorkplace();
         this.city = user.getCity();
+        swipe_gender = "female";
+        min_age = MIN_AGE_DEFAULT_VALUE;
+        max_age = MAX_AGE_DEFAULT_VALUE;
+        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
     }
 
     public static User getLocalUser(SharedPreferences sharedPreferences) {
@@ -203,7 +234,7 @@ public class User {
         user.setIs_banned(sharedPreferences.getBoolean(IS_BANNED, false));
         user.setCity(sharedPreferences.getString(CITY, ""));
         user.setWorkplace(sharedPreferences.getString(WORK_PLACE, ""));
-        user.setSwipe_gender(sharedPreferences.getString(SWIPE_GENDER, SWIPE_GENDER_DEFAULT_VALUE));
+        user.setSwipe_gender(sharedPreferences.getString(SWIPE_GENDER, "male"));
         user.setMin_age(sharedPreferences.getInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE));
         user.setMax_age(sharedPreferences.getInt(MAX_AGE, MAX_AGE_DEFAULT_VALUE));
         user.setMax_distance(sharedPreferences.getInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE));
@@ -212,9 +243,7 @@ public class User {
         return user;
     }
 
-    public void storeToLocal() {
-        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
-
+    public void storeToLocal(SharedPreferences.Editor editor) {
         editor.putInt(ID, this.id);
         editor.putString(MAIL, this.mail);
         editor.putString(NAME, this.name);
@@ -227,10 +256,10 @@ public class User {
         editor.putBoolean(IS_BANNED, this.is_banned);
         editor.putString(WORK_PLACE, this.workplace);
         editor.putString(CITY, this.city);
-        editor.putString(SWIPE_GENDER, SWIPE_GENDER_DEFAULT_VALUE);
-        editor.putInt(MIN_AGE, MIN_AGE_DEFAULT_VALUE);
-        editor.putInt(MAX_AGE, 	MAX_AGE_DEFAULT_VALUE);
-        editor.putInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE);
+        editor.putString(SWIPE_GENDER, this.gender.equals("male") ? "female" : "male");
+        editor.putInt(MIN_AGE, this.min_age);
+        editor.putInt(MAX_AGE, 	this.max_age);
+        editor.putInt(MAX_DISTANCE, this.max_distance);
 
         editor.apply();
     }
@@ -350,6 +379,17 @@ public class User {
         });
     }
 
+    public void logout() {
+        // clear shareReferences
+        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.commit();
+
+        // perform logout
+        Navigation.findNavController(activity, R.id.profileNavHostFragment).popBackStack();
+        UserAuth.getInstance().setState(UserAuth.UN_AUTHENTICATED, -100);
+    }
+
     public interface OnRegisterCallBack {
         int NONCE_NULL = -1;
         int SUCCESS = 200;
@@ -460,6 +500,10 @@ public class User {
      */
     public static String getImageUrl(int id, int n) {
         return RetrofitClient.BASE_URL + "/upload/"+ id +"_image" + n + ".jpg";
+    }
+
+    public static String getDefaultAvatarUrl(String gender) {
+        return RetrofitClient.BASE_URL + "/upload/" + gender + ".jpg";
     }
 
     public void updateUserSettings(final String swipe_gender, final int min_age, final int max_age, final int max_distance) {

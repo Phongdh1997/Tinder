@@ -26,7 +26,6 @@ import com.example.internet_connection.ImagesLoading;
 import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.model.User;
 import com.example.rest.RetrofitClient;
-import com.example.rest.service.DeleteImageService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -69,9 +68,11 @@ public class EditInforFragment extends Fragment {
     private Toolbar toolbar;
 
     private User user;
-    private EditText edtPhone, edtDcription,edtAddress,edtWorkPlace;
+    private EditText txtPhone, txtDescription, txtAddress,txtWorkplace;
     private RadioButton rdbMale;
     private RadioButton rdbFemale;
+
+    private Button btnUpdateInfo;
 
     private OnFragmentInteractionListener mListener;
 
@@ -166,6 +167,27 @@ public class EditInforFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+        btnUpdateInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String address = txtAddress.getText().toString();
+                String workplace = txtWorkplace.getText().toString();
+                String description = txtDescription.getText().toString();
+                String phone = txtPhone.getText().toString();
+                String gender = rdbMale.isChecked() ? "male" : "female";
+
+                user.updateUserInfo(user.getName(), gender, user.getAge(), phone, description, address, workplace);
+            }
+        });
+    }
+
+    private void updateInfo () {
+        txtAddress.setText(user.getCity());
+        txtWorkplace.setText(user.getWorkplace());
+        txtPhone.setText(user.getPhone());
+        txtDescription.setText(user.getDecription());
+        rdbMale.setChecked(user.getGender().equals("male"));
+        rdbFemale.setChecked(user.getGender().equals("female"));
     }
 
     private void buttonClickHandle(int index) {
@@ -215,21 +237,22 @@ public class EditInforFragment extends Fragment {
         arrayButton.add((Button) view.findViewById(R.id.btnAvatar5));
         arrayButton.add((Button) view.findViewById(R.id.btnAvatar6));
 
-        edtAddress = view.findViewById(R.id.editTextAddress);
-        edtWorkPlace = view.findViewById(R.id.editTextWordPlace);
-        edtDcription = view.findViewById(R.id.txtDescription);
-        edtPhone = view.findViewById(R.id.editTextSDT);
-        rdbMale = view.findViewById(R.id.radioButtonMale);
-        rdbFemale = view.findViewById(R.id.radioButtonFemale);
+        txtAddress = view.findViewById(R.id.txtAddress);
+        txtWorkplace = view.findViewById(R.id.txtWorkplace);
+        txtDescription = view.findViewById(R.id.txtDescription);
+        txtPhone = view.findViewById(R.id.txtPhone);
+        rdbMale = view.findViewById(R.id.radMale);
+        rdbFemale = view.findViewById(R.id.radFemale);
+        btnUpdateInfo = view.findViewById(R.id.btnUpdateInfo);
 
         updateUI();
     }
 
     private void updateUI() {
-        edtAddress.setText(user.getCity());
-        edtWorkPlace.setText(user.getWorkplace());
-        edtPhone.setText(user.getPhone());
-        edtDcription.setText(user.getDecription());
+        txtAddress.setText(user.getCity());
+        txtWorkplace.setText(user.getWorkplace());
+        txtPhone.setText(user.getPhone());
+        txtDescription.setText(user.getDecription());
         rdbMale.setChecked(user.getGender().equals("male"));
         rdbFemale.setChecked(user.getGender().equals("female"));
 
