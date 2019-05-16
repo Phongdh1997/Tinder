@@ -1,6 +1,7 @@
 package com.example.tinder;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity
 
     private void saveAthenToken(String authenToken) {
         User user = UserAuth.getInstance().getUser();
-        user.storeToLocal();
+        user.storeToLocal(getPreferences(Activity.MODE_PRIVATE).edit());
     }
 
     @Override

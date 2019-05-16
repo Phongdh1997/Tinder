@@ -212,9 +212,7 @@ public class User {
         return user;
     }
 
-    public void storeToLocal() {
-        SharedPreferences.Editor editor = activity.getPreferences(Activity.MODE_PRIVATE).edit();
-
+    public void storeToLocal(SharedPreferences.Editor editor) {
         editor.putInt(ID, this.id);
         editor.putString(MAIL, this.mail);
         editor.putString(NAME, this.name);
