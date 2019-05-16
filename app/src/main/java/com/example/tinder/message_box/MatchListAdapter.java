@@ -7,24 +7,32 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.model.Conversation;
 import com.example.tinder.R;
+
+import com.example.model.Message;
 
 import java.util.ArrayList;
 
 public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.MatchViewHolder> {
 
-    private ArrayList<String> datas;
+    private ArrayList<Conversation> conversations;
 
-    public MatchListAdapter(ArrayList<String> list) {
-        this.datas = list;
+    public MatchListAdapter() {
+        // empty constructor
+        this.conversations = new ArrayList<>();
     }
 
-    public static class  MatchViewHolder extends RecyclerView.ViewHolder {
-        public MatchViewHolder(View view) {
-            super(view);
-        }
+    public MatchListAdapter(ArrayList<Conversation> conversations) {
+        this.conversations = conversations;
     }
+
+    public MatchListAdapter(Conversation new_conversation) {
+        this.conversations.add(new_conversation);
+    }
+
 
     @NonNull
     @Override
@@ -34,6 +42,7 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
         return new MatchViewHolder(v);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull MatchViewHolder matchViewHolder, int i) {
 
@@ -41,7 +50,19 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
 
     @Override
     public int getItemCount() {
-        return this.datas.size();
+        return this.conversations.size();
+    }
+
+    public void createNewConversation(Conversation conversation) {
+        this.conversations.add(conversation);
+        notifyDataSetChanged();
+    }
+
+    public static class  MatchViewHolder extends RecyclerView.ViewHolder {
+
+        public MatchViewHolder(View view) {
+            super(view);
+        }
     }
 
 }

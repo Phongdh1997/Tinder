@@ -8,7 +8,7 @@
     android:paddingBottom="6dp">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/fdafds"
+        android:id="@+id/user_circelImageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/girl_2"
@@ -23,7 +23,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/user_name_txtView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -33,10 +33,10 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/lasted_msg_txtView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="hello !! I am very happy!!"
+            android:text=""
             android:textAllCaps="false"
             android:textColor="@android:color/tertiary_text_light"
             android:textSize="12sp" />

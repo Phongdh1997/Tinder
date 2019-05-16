@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,6 +16,7 @@ import com.example.internet_connection.OnImageLoadDoneListener;
 import com.example.model.User;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
+
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -95,20 +95,6 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
                 }
             }
         });
-    }
-
-    /**
-     * Description: current user perform like this friend. Invoked when user click like this user.
-     * @param currUserId: id of current user who like this friend
-     */
-    public void likeFriend(int currUserId) {
-        if (friend == null) {
-            return;
-        }
-        int friendId = friend.getId();
-        Log.d("friend", "id = " + friendId);
-
-        // TODO: call API like friend
     }
 
     public void likeFriend() {
