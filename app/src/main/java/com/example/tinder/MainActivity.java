@@ -19,6 +19,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.common.OnBackPressEvent;
+import com.example.internet_connection.SocketIO;
 import com.example.common.UserLocation;
 import com.example.model.User;
 import com.example.rest.service.UpdateUserService;
@@ -93,12 +94,15 @@ public class MainActivity extends AppCompatActivity
     private void checkLogin() {
         // check login
         User user = User.getLocalUser(getPreferences(MODE_PRIVATE));
+        // first time login
         if (user == null) {
             userAuth.setState(UserAuth.UN_AUTHENTICATED, UserAuth.NONE);
             Log.d("authen", "continue");
         } else {
             userAuth.setUser(user);
             userAuth.setState(UserAuth.AUTHENTICATED, UserAuth.NONE);
+            String authenToken = user.getAuthen_token();
+            userAuth.setSocketIO(new SocketIO("http://167.99.69.92:8889", authenToken));
         }
 
 

@@ -15,9 +15,12 @@ import com.example.rest.service.SearchFriendService;
 import com.example.rest.service.SigninService;
 import com.example.rest.service.SignupService;
 import com.example.rest.service.UpdateUserService;
+import com.example.tinder.authentication.UserAuth;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -205,6 +208,7 @@ public class User {
         user.setMax_age(sharedPreferences.getInt(MAX_AGE, MAX_AGE_DEFAULT_VALUE));
         user.setMax_distance(sharedPreferences.getInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE));
 
+        Log.d("token", user.getAuthen_token());
         return user;
     }
 
@@ -229,7 +233,6 @@ public class User {
         editor.putInt(MAX_DISTANCE, MAX_DISTANCE_DEFAULT_VALUE);
 
         editor.apply();
-        Log.d("save", "saveAthenToken: ");
     }
 
     private void updateInfoToLocal() {
@@ -412,7 +415,20 @@ public class User {
      */
     public void dislikeFriend(int friendId) {
         Log.d("dislike friend", "id = " + friendId);
-        //TODO: call API dislike friend here
+
+        JSONObject data = new JSONObject();
+        try {
+            // current user_id
+            data.put("passer_id", this.getId());
+
+            // passed user_id
+            data.put("passed_id", friendId);
+
+            // call socketIO to push data to the server
+            UserAuth.getInstance().getSocketIO().push_data(data, "pass");
+        } catch (JSONException e) {
+            Log.e("JSON exception", e.toString());
+        }
     }
 
     /**
@@ -421,7 +437,20 @@ public class User {
      */
     public void likeFriend(int friendId) {
         Log.d("like friend", "id = " + friendId);
-        //TODO: call API like friend here
+
+        JSONObject data = new JSONObject();
+        try {
+            // current user_id
+            data.put("liker_id", this.getId());
+
+            // liked user_id
+            data.put("liked_id", friendId);
+
+            // call socketIO to push data to the server
+            UserAuth.getInstance().getSocketIO().push_data(data, "like");
+        } catch (JSONException e) {
+            Log.e("JSON exception", e.toString());
+        }
     }
 
     /**

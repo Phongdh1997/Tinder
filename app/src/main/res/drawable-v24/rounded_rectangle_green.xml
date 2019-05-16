@@ -6,5 +6,5 @@
     <solid android:color="#c72c65d6"></solid>
 
     <!-- The radius makes the corners rounded -->
-    <corners android:radius="20dp"></corners>
+    <corners android:radius="8dp"></corners>
 </shape>
