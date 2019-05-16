@@ -72,38 +72,6 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
         if (i == 0) {
             // onTopReached
             Log.e("onTopReached", "Reach the last message in the view.");
-//            MessageService messageService = RetrofitClient.getMessageService();
-//            Log.d("authenToken", UserAuth.getInstance().getUser().getAuthen_token());
-//            Log.d("basetime", Integer.toString(last_base_time));
-//            messageService.getHistoricalMessage("Barer " + UserAuth.getInstance().getUser().getAuthen_token(),
-//                    conversation_id, last_base_time).enqueue(
-//                    new Callback<MessageService.MessageResponse>() {
-//                        @Override
-//                        public void onResponse(Call<MessageService.MessageResponse> call, Response<MessageService.MessageResponse> response) {
-//                            Log.i("onResponse", "Send request to get historical message with code: " + response.code());
-//                            if (response.isSuccessful()) {
-//                                if (response.body() != null) {
-//                                    response.body().printMessageString();
-//                                    mMessageList.addAll(response.body().getAllMessages(conversation_name));
-//
-//                                    // update the last_base_time
-//                                    last_base_time = response.body().getLastBaseTime();
-//
-//                                    messageChatAdapter.setMessageList(null);
-//                                    messageChatAdapter.setMessageList(response.body().getAllMessages(conversation_name));
-//                                    messageChatAdapter.notifyDataSetChanged();
-//                                    recyclerView.setAdapter(messageChatAdapter);
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<MessageService.MessageResponse> call, Throwable t) {
-//                            Log.i("onFailure", "Send request to get historical message failed.");
-//                            t.printStackTrace();
-//                        }
-//                    }
-//            );
         }
         Message message = mMessageList.get(i);
         int user_id = message.getSender_id();
@@ -164,21 +132,18 @@ public class MessageChatAdapter extends RecyclerView.Adapter {
 
     private class SentMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText;
-//        CheckBox messageResult;
         TextView messageTime;
 
         SentMessageHolder(View itemView) {
             super(itemView);
 
             messageText = itemView.findViewById(R.id.text_message_body);
-//            messageResult = itemView.findViewById(R.id.sent_message_result);
             messageTime  = itemView.findViewById(R.id.sent_message_time);
         }
 
         void bind(Message message) {
 
             messageText.setText(message.getMessage());
-//            messageResult.setChecked(message.getIs_received());
             Date created_at = message.getCreated_at();
             String created_at_str = sdf.format(created_at);
             messageTime.setText(created_at_str);

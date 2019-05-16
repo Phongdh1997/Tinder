@@ -92,9 +92,6 @@ public class MessageChatFragment extends Fragment {
         // listen new message
         mSocket.getInstance().on("chat_message", onNewMessage).on("chat_message_result", onSentMessageSuccess);
 
-        // listen the status of sent message
-        // mSocket.getInstance().on("chat_message_result", onSentMessageSuccess);
-
         // get data from the previous fragment
         mBundle = getArguments();
     }
