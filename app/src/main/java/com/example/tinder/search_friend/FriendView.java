@@ -73,6 +73,7 @@ public class FriendView extends ConstraintLayout implements SearchFriendData.OnD
     private void updateUI() {
         if (friend == null) {
             txtName.setText("");
+            txtWorkplace.setText("");
 
             shimmerViewContainer.startShimmerAnimation();
             shimmerViewContainer.setVisibility(View.VISIBLE);
