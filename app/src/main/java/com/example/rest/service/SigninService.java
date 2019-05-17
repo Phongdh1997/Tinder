@@ -3,6 +3,8 @@ package com.example.rest.service;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.stream.IntStream;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -78,6 +80,50 @@ public interface SigninService {
         @SerializedName("city")
         @Expose
         private String city;
+        @SerializedName("swipe_gender")
+        @Expose
+        private String swipe_gender;
+        @SerializedName("min_age")
+        @Expose
+        private Integer min_age;
+        @SerializedName("max_age")
+        @Expose
+        private Integer max_age;
+        @SerializedName("max_distance")
+        @Expose
+        private Integer max_distance;
+
+        public String getSwipe_gender() {
+            return swipe_gender;
+        }
+
+        public void setSwipe_gender(String swipe_gender) {
+            this.swipe_gender = swipe_gender;
+        }
+
+        public Integer getMin_age() {
+            return min_age;
+        }
+
+        public void setMin_age(Integer min_age) {
+            this.min_age = min_age;
+        }
+
+        public Integer getMax_age() {
+            return max_age;
+        }
+
+        public void setMax_age(Integer max_age) {
+            this.max_age = max_age;
+        }
+
+        public Integer getMax_distance() {
+            return max_distance;
+        }
+
+        public void setMax_distance(Integer max_distance) {
+            this.max_distance = max_distance;
+        }
 
         public String getWorkplace() {
             return workplace;

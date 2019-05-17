@@ -194,10 +194,10 @@ public class User {
         this.gender = user.getGender();
         this.workplace = user.getWorkplace();
         this.city = user.getCity();
-        swipe_gender = "female";
-        min_age = MIN_AGE_DEFAULT_VALUE;
-        max_age = MAX_AGE_DEFAULT_VALUE;
-        max_distance = MAX_DISTANCE_DEFAULT_VALUE;
+        this.swipe_gender = user.getSwipe_gender();
+        this.min_age = user.getMin_age();
+        this.max_age = user.getMax_age();
+        this.max_distance = user.getMax_distance();
     }
 
     public User(SearchFriendService.User user) {
