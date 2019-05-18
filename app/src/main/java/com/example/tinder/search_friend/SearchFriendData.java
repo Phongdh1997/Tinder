@@ -106,6 +106,9 @@ public class SearchFriendData {
             if (index < dataBuff.size()) {
                 newUser = new User(dataBuff.get(index));
             }
+            if (dataBuff.size() < 3) {
+                return null;
+            }
         }
         if (this.isExhaustedBuff()) {
             this.loadData();
