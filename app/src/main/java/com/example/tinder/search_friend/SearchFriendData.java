@@ -70,7 +70,7 @@ public class SearchFriendData {
         return false;
     }
 
-    private void getUsersFromServer() {
+    public void getUsersFromServer() {
         RetrofitClient.getSearchFriendService().getUsers(UserAuth.getInstance().getUser().getHeaderAuthenToken())
                 .enqueue(new Callback<List<SearchFriendService.User>>() {
             @Override

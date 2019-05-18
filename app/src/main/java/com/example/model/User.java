@@ -17,6 +17,7 @@ import com.example.rest.service.SignupService;
 import com.example.rest.service.UpdateUserService;
 import com.example.tinder.R;
 import com.example.tinder.authentication.UserAuth;
+import com.example.tinder.search_friend.SearchFriendData;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -324,11 +325,13 @@ public class User {
                 Log.i("responseCode", " " + response.code());
                 switch (response.code()) {
                     case OnRegisterCallBack.SUCCESS:
+                        Toast.makeText(activity, "Đăng kí thành công, kiểm tra mail để kích hoạt tài khoản...", Toast.LENGTH_LONG).show();
                         if (registerCallBack != null) {
                             registerCallBack.onRegisterSuccess(response.body());
                         }
                         break;
                         default:
+                            Toast.makeText(activity, "Đăng kí không thành công, vui lòng nhập đúng thông tin...", Toast.LENGTH_LONG).show();
                             if (registerCallBack != null) {
                                 registerCallBack.onRegisterFail(response.code());
                             }
@@ -338,6 +341,7 @@ public class User {
             @Override
             public void onFailure(Call<SignupService.Message> call, Throwable t) {
                 t.printStackTrace();
+                Toast.makeText(activity, "Đăng kí không thành công, vui lòng kiểm tra kết nối...", Toast.LENGTH_LONG).show();
                 if (registerCallBack != null) {
                     registerCallBack.onRegisterFail(OnRegisterCallBack.REQUEST_FAIL);
                 }
@@ -363,6 +367,7 @@ public class User {
                         }
                         break;
                     default:
+                        Toast.makeText(activity, "Đăng nhập không thành công, Vui lòng nhập đúng tài khoản, mât khẩu...", Toast.LENGTH_LONG).show();
                         if (onLoginCallBack != null) {
                             onLoginCallBack.onLoginFail(response.code());
                         }
@@ -372,6 +377,7 @@ public class User {
             @Override
             public void onFailure(Call<SigninService.SigninResponse> call, Throwable t) {
                 t.printStackTrace();
+                Toast.makeText(activity, "Đăng Nhập không thành công, vui lòng kiểm tra kết nối...", Toast.LENGTH_LONG).show();
                 if (onLoginCallBack != null) {
                     onLoginCallBack.onLoginFail(OnLoginCallBack.REQUEST_FAIL);
                 }
@@ -518,6 +524,7 @@ public class User {
                             User.this.min_age = min_age;
                             User.this.max_age = max_age;
                             User.this.max_distance = max_distance;
+                            SearchFriendData.getInstance().getUsersFromServer();
                             updateSettingToLocal();
                         } else if (response.code() == 400){
                             Toast.makeText(activity, "Information is invalid", Toast.LENGTH_SHORT).show();
